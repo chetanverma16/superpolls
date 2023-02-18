@@ -2,7 +2,7 @@ import Link from "next/link";
 import React from "react";
 import Button from "components/Button";
 import HeaderProps from "./header";
-import { CreditCardIcon, Plus, User } from "lucide-react";
+import { CreditCard, Plus, User } from "lucide-react";
 
 const Header = ({}: HeaderProps) => {
   return (
@@ -10,7 +10,7 @@ const Header = ({}: HeaderProps) => {
       <h1 className="text-xl font-bold">Superpolls</h1>
       <nav className="flex items-center gap-x-4">
         <Link href="/">
-          <Button Icon={CreditCardIcon}>Pricing</Button>
+          <Button Icon={CreditCard}>Pricing</Button>
         </Link>
         <Link href="/">
           <Button type="secondary" Icon={User}>

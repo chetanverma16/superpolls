@@ -6,6 +6,7 @@ import { SessionProvider } from "next-auth/react";
 import { Provider as RWBProvider } from "react-wrap-balancer";
 import cx from "classnames";
 import { Inter } from "@next/font/google";
+import Layout from "@/components/Layout";
 
 const inter = Inter({
   variable: "--font-inter",
@@ -20,7 +21,9 @@ export default function MyApp({
     <SessionProvider session={session}>
       <RWBProvider>
         <div className={cx(inter.variable)}>
-          <Component {...pageProps} />
+          <Layout>
+            <Component {...pageProps} />
+          </Layout>
         </div>
       </RWBProvider>
       <Analytics />

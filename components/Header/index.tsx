@@ -2,7 +2,7 @@ import Link from "next/link";
 import React from "react";
 import Button from "components/Button";
 import HeaderProps from "./header";
-import { CreditCard, Plus, User } from "lucide-react";
+import { CreditCard, User } from "lucide-react";
 
 const Header = ({}: HeaderProps) => {
   return (
@@ -13,13 +13,8 @@ const Header = ({}: HeaderProps) => {
           <Button Icon={CreditCard}>Pricing</Button>
         </Link>
         <Link href="/">
-          <Button type="secondary" Icon={User}>
+          <Button type="primary" Icon={User}>
             Signin
-          </Button>
-        </Link>
-        <Link href="/">
-          <Button type="primary" Icon={Plus}>
-            Create
           </Button>
         </Link>
       </nav>

@@ -7,13 +7,15 @@ import { Provider as RWBProvider } from "react-wrap-balancer";
 import cx from "classnames";
 import { Inter } from "@next/font/google";
 import Layout from "@/components/Layout";
+import { trpc } from "@/lib/trpc";
+import { Toaster } from "react-hot-toast";
 
 const inter = Inter({
   variable: "--font-inter",
   subsets: ["latin"],
 });
 
-export default function MyApp({
+function MyApp({
   Component,
   pageProps: { session, ...pageProps },
 }: AppProps<{ session: Session }>) {
@@ -22,6 +24,7 @@ export default function MyApp({
       <RWBProvider>
         <div className={cx(inter.variable)}>
           <Layout>
+            <Toaster />
             <Component {...pageProps} />
           </Layout>
         </div>
@@ -30,3 +33,5 @@ export default function MyApp({
     </SessionProvider>
   );
 }
+
+export default trpc.withTRPC(MyApp);

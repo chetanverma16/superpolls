@@ -5,33 +5,32 @@ import { useRouter } from "next/router";
 export default function Home() {
   const router = useRouter();
   return (
-    <div className="mt-12 flex w-3/5 flex-col gap-y-6">
-      <h1 className="text-6xl font-semibold text-gray-900">
-        Make Your Voice Heard with Our Elegant and Intuitive Polling App
+    <div className="mt-20 flex w-full flex-col items-center gap-y-4 text-center">
+      <h1 className="text-5xl font-semibold text-gray-900">
+        Say Goodbye to Clunky Polls: Our App Offers an Elegant and Smooth
+        Interface
       </h1>
-      <p className="text-xl text-gray-500">
-        Our intuitive polling app is designed to help you share your opinions
-        and ideas in a clear and effortless way. Whether you&apos;re conducting
-        market research, collecting feedback, or simply running a fun poll, our
-        app offers a range of features to help you create beautiful polls that
-        resonate with your audience.
+      <p className="text-lg text-gray-500">
+        Our app offers an elegant and smooth interface that makes creating and
+        sharing polls a breeze. With our advanced features, including
+        customizable templates, real-time results, and detailed analytics, you
+        can create beautiful polls that engage your audience and provide
+        valuable insights.
       </p>
       <div className="flex items-center gap-x-4">
         <Button
           onClick={() => router.push("/create")}
           type="secondary"
-          classes="text-xl"
           Icon={Plus}
         >
-          Create Free
+          Create Free poll
         </Button>
         <Button
           onClick={() => router.push("/signin")}
           type="primary"
-          classes="text-xl"
           Icon={User}
         >
-          Sign In
+          Create account for free
         </Button>
       </div>
     </div>

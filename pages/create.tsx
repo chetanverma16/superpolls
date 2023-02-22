@@ -1,7 +1,7 @@
 import React from "react";
 
 const CreateGuest = () => {
-  return <>Nice</>;
+  return <div></div>;
 };
 
 export default CreateGuest;

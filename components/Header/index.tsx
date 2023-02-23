@@ -2,11 +2,14 @@ import Link from "next/link";
 import React from "react";
 import Button from "components/Button";
 import HeaderProps from "./header";
-import { CreditCard, LogOut, User } from "lucide-react";
+import { CreditCard, User } from "lucide-react";
 import { useSession, signOut } from "next-auth/react";
 import Avatar from "../Avatar";
+import Dropdown from "../Dropdown";
+import { useRouter } from "next/router";
 
 const Header = ({}: HeaderProps) => {
+  const router = useRouter();
   const { data: session } = useSession();
   console.log(session);
   return (
@@ -19,11 +22,24 @@ const Header = ({}: HeaderProps) => {
           <Button Icon={CreditCard}>Pricing</Button>
         </Link>
         {session ? (
-          <Avatar
-            email={session.user?.email || ""}
-            name={session.user?.name}
-            src={session.user?.image}
-          />
+          <>
+            <Dropdown
+              items={[
+                {
+                  title: "Dashboard",
+                  onClick: () => router.push("/"),
+                },
+                { title: "Sign out", onClick: () => signOut() },
+              ]}
+              Trigger={
+                <Avatar
+                  email={session.user?.email || ""}
+                  name={session.user?.name}
+                  src={session.user?.image}
+                />
+              }
+            />
+          </>
         ) : (
           <Link href="/signin">
             <Button type="primary" Icon={User}>

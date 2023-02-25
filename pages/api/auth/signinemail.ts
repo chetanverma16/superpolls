@@ -181,8 +181,8 @@ function html(params: { url: string; host: string; theme: Theme }) {
                         <table style="width: 100%" cellpadding="0" cellspacing="0" role="presentation">
                           <tr>
                             <td>
-                              <a href="https://example.com" class="dark-text-gray-50" style="text-decoration: none; font-weight: 700; color: #191847">
-                                COMPANY NAME
+                              <a href="https://superpolls.io" class="dark-text-gray-50" style="text-decoration: none; font-weight: 700; color: #191847">
+                                Superpolls                              
                               </a>
                             </td>
                             <td align="right">

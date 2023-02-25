@@ -45,6 +45,8 @@ model User {
   image         String?
   accounts      Account[]
   sessions      Session[]
+  Poll          Poll[]
+  Vote          Vote[]
 }
 
 model VerificationToken {
@@ -53,4 +55,40 @@ model VerificationToken {
   expires    DateTime
 
   @@unique([identifier, token])
+}
+
+model Poll {
+  id          String   @id @default(cuid())
+  title       String
+  description String
+  options     Option[]
+  votes       Vote[]
+  user        User     @relation(fields: [userId], references: [id], onDelete: Cascade)
+  userId      String
+
+  @@index([userId])
+}
+
+model Option {
+  id     String @id @default(cuid())
+  title  String
+  votes  Vote[]
+  poll   Poll   @relation(fields: [pollId], references: [id], onDelete: Cascade)
+  pollId String
+
+  @@index([pollId])
+}
+
+model Vote {
+  id       String  @id @default(cuid())
+  user     User    @relation(fields: [userId], references: [id], onDelete: Cascade)
+  userId   String
+  option   Option  @relation(fields: [optionId], references: [id], onDelete: Cascade)
+  optionId String
+  Poll     Poll?   @relation(fields: [pollId], references: [id])
+  pollId   String?
+
+  @@index([userId])
+  @@index([optionId])
+  @@index([pollId])
 }

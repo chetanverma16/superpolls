@@ -14,12 +14,12 @@ model Account {
   type              String
   provider          String
   providerAccountId String
-  refresh_token     String? @db.Text
-  access_token      String? @db.Text
+  refresh_token     String?
+  access_token      String?
   expires_at        Int?
   token_type        String?
   scope             String?
-  id_token          String? @db.Text
+  id_token          String?
   session_state     String?
   user              User    @relation(fields: [userId], references: [id], onDelete: Cascade)
 
@@ -39,10 +39,10 @@ model Session {
 
 model User {
   id            String    @id @default(cuid())
-  name          String?
   email         String?   @unique
   emailVerified DateTime?
   image         String?
+  name          String?
   accounts      Account[]
   sessions      Session[]
   Poll          Poll[]
@@ -60,35 +60,22 @@ model VerificationToken {
 model Poll {
   id          String   @id @default(cuid())
   title       String
-  description String
-  options     Option[]
+  pollOptions String[]
+  userId      String?
   votes       Vote[]
-  user        User     @relation(fields: [userId], references: [id], onDelete: Cascade)
-  userId      String
+  user        User?    @relation(fields: [userId], references: [id], onDelete: Cascade)
 
   @@index([userId])
-}
-
-model Option {
-  id     String @id @default(cuid())
-  title  String
-  votes  Vote[]
-  poll   Poll   @relation(fields: [pollId], references: [id], onDelete: Cascade)
-  pollId String
-
-  @@index([pollId])
 }
 
 model Vote {
-  id       String  @id @default(cuid())
-  user     User    @relation(fields: [userId], references: [id], onDelete: Cascade)
-  userId   String
-  option   Option  @relation(fields: [optionId], references: [id], onDelete: Cascade)
-  optionId String
-  Poll     Poll?   @relation(fields: [pollId], references: [id])
-  pollId   String?
+  id     String  @id @default(cuid())
+  userId String?
+  vote   String
+  pollId String?
+  user   User?   @relation(fields: [userId], references: [id], onDelete: Cascade)
+  Poll   Poll?   @relation(fields: [pollId], references: [id])
 
   @@index([userId])
-  @@index([optionId])
   @@index([pollId])
 }

@@ -11,7 +11,7 @@ import { useRouter } from "next/router";
 const Header = ({}: HeaderProps) => {
   const router = useRouter();
   const { data: session } = useSession();
-  console.log(session);
+
   return (
     <div className="flex items-center justify-between py-2">
       <Link href="/" className="text-xl font-bold">

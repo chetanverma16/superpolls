@@ -7,7 +7,7 @@ import { Provider as RWBProvider } from "react-wrap-balancer";
 import cx from "classnames";
 import { Inter } from "@next/font/google";
 import Layout from "@/components/Layout";
-import { trpc } from "@/lib/trpc";
+import { api } from "@/lib/trpc";
 import { Toaster } from "react-hot-toast";
 
 const inter = Inter({
@@ -34,4 +34,4 @@ function MyApp({
   );
 }
 
-export default trpc.withTRPC(MyApp);
+export default api.withTRPC(MyApp);

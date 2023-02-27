@@ -45,8 +45,8 @@ model User {
   name          String?
   accounts      Account[]
   sessions      Session[]
-  Poll          Poll[]
-  Vote          Vote[]
+  poll          Poll[]
+  vote          Vote[]
 }
 
 model VerificationToken {
@@ -58,24 +58,36 @@ model VerificationToken {
 }
 
 model Poll {
-  id          String   @id @default(cuid())
-  title       String
-  pollOptions String[]
-  userId      String?
-  votes       Vote[]
-  user        User?    @relation(fields: [userId], references: [id], onDelete: Cascade)
+  id      String   @id @default(cuid())
+  title   String
+  userId  String?
+  user    User?    @relation(fields: [userId], references: [id], onDelete: Cascade)
+  options Option[]
+  Vote    Vote[]
 
   @@index([userId])
 }
 
-model Vote {
-  id     String  @id @default(cuid())
-  userId String?
-  vote   String
-  pollId String?
-  user   User?   @relation(fields: [userId], references: [id], onDelete: Cascade)
-  Poll   Poll?   @relation(fields: [pollId], references: [id])
+model Option {
+  id     String @id @default(cuid())
+  title  String
+  pollId String
+  poll   Poll   @relation(fields: [pollId], references: [id], onDelete: Cascade)
+  Vote   Vote[]
 
-  @@index([userId])
+  @@index([pollId])
+}
+
+model Vote {
+  id       String @id @default(cuid())
+  userId   String
+  pollId   String
+  optionId String
+  user     User   @relation(fields: [userId], references: [id], onDelete: Cascade)
+  option   Option @relation(fields: [optionId], references: [id], onDelete: Cascade)
+  poll     Poll   @relation(fields: [pollId], references: [id], onDelete: Cascade)
+
+  @@unique([userId, pollId])
+  @@index([optionId])
   @@index([pollId])
 }

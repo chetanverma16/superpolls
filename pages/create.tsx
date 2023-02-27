@@ -12,9 +12,13 @@ import { Loader2, Plus, X } from "lucide-react";
 
 const CreateGuest = () => {
   const router = useRouter();
+  const mutation = api.polls.createPoll.useMutation();
+
+  // State
   const [question, setQuestion] = useState("");
   const [options, setOptions] = useState(["", ""]);
 
+  // Handlers
   const handleChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     const { value, name } = e.target;
     setOptions((prevOptions) => {
@@ -25,7 +29,8 @@ const CreateGuest = () => {
   };
 
   const handleAddOption = () => {
-    if (options.length >= 10) {
+    if (options.length >= 5) {
+      toast.error("You can only add up to 5 options, please login to add more");
       return;
     }
     setOptions((prevOptions) => [...prevOptions, ""]);
@@ -38,13 +43,13 @@ const CreateGuest = () => {
       return newOptions;
     });
   };
-  const mutation = api.polls.createPoll.useMutation();
+
   const createPoll = () => {
     const filteredOptions = options.filter((option) => option !== "");
     if (filteredOptions.length >= 2 && question.length > 0) {
       mutation.mutate({
         name: question,
-        pollOptions: filteredOptions,
+        options: filteredOptions,
       });
     } else {
       toast.error("Please enter a question and at least 2 options");

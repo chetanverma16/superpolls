@@ -7,11 +7,12 @@ export const pollsRouter = createTRPCRouter({
     .input(
       z.object({
         name: z.string(),
-        pollOptions: z.array(z.string()),
+        options: z.array(z.string()),
+        userId: z.string().optional(),
       }),
     )
     .mutation(({ ctx, input }) => {
-      if (input.pollOptions.length < 2) {
+      if (input.options.length < 2) {
         throw new TRPCError({
           code: "BAD_REQUEST",
           message: "Poll must have at least 2 options",
@@ -20,8 +21,48 @@ export const pollsRouter = createTRPCRouter({
       return ctx.prisma.poll.create({
         data: {
           title: input.name,
-          pollOptions: input.pollOptions,
+          options: {
+            create: input.options.map((option) => ({
+              title: option,
+            })),
+          },
+          userId: input.userId,
         },
       });
+    }),
+  getPoll: publicProcedure
+    .input(z.object({ id: z.string() }))
+    .query(async ({ ctx, input }) => {
+      return ctx.prisma.poll.findUnique({
+        where: {
+          id: input.id,
+        },
+        include: {
+          options: true,
+        },
+      });
+    }),
+  vote: publicProcedure
+    .input(
+      z.object({
+        pollId: z.string(),
+        vote: z.string(),
+        userId: z.string().optional(),
+      }),
+    )
+    .mutation(async ({ ctx, input }) => {
+      const poll = await ctx.prisma.poll.findUnique({
+        where: {
+          id: input.pollId,
+        },
+      });
+      if (!poll) {
+        throw new TRPCError({
+          code: "BAD_REQUEST",
+          message: "Poll not found",
+        });
+      }
+
+      return "ok";
     }),
 });

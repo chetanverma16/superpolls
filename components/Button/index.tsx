@@ -22,7 +22,7 @@ const Button = ({
         }}
         onClick={onClick}
         whileHover={{ scale: 1.05 }}
-        className={`inline-flex w-fit items-center rounded-lg bg-black px-3 py-2 text-base text-white transition-all duration-300 ease-in-out hover:bg-gray-900 ${classes} disabled:cursor-not-allowed disabled:opacity-50`}
+        className={`inline-flex w-fit items-center justify-center rounded-lg bg-black px-3 py-2 text-base text-white transition-all duration-300 ease-in-out hover:bg-gray-900 ${classes} disabled:cursor-not-allowed disabled:opacity-50`}
       >
         {Icon && <Icon size={20} className="mr-2" />}
         {children}
@@ -35,7 +35,7 @@ const Button = ({
       <button
         disabled={disabled}
         onClick={onClick}
-        className={`inline-flex w-fit items-center rounded-lg bg-gray-100 px-3 py-2 text-base text-gray-900 transition-all duration-300 ease-in-out hover:bg-gray-200 active:bg-gray-300 ${classes} disabled:cursor-not-allowed disabled:opacity-50`}
+        className={`inline-flex w-fit items-center justify-center rounded-lg bg-gray-100 px-3 py-2 text-base text-gray-900 transition-all duration-300 ease-in-out hover:bg-gray-200 active:bg-gray-300 ${classes} disabled:cursor-not-allowed disabled:opacity-50`}
       >
         {Icon && <Icon size={20} className="mr-2" />}
         {children}
@@ -46,7 +46,7 @@ const Button = ({
     <button
       disabled={disabled}
       onClick={onClick}
-      className={`inline-flex w-fit items-center rounded-lg px-3 py-2 text-base transition-all duration-300 ease-in-out hover:bg-gray-100 active:bg-gray-200 ${classes} disabled:cursor-not-allowed disabled:opacity-50`}
+      className={`inline-flex w-fit items-center justify-center rounded-lg px-3 py-2 text-base transition-all duration-300 ease-in-out hover:bg-gray-100 active:bg-gray-200 ${classes} disabled:cursor-not-allowed disabled:opacity-50`}
     >
       {Icon && <Icon size={20} className="mr-2" />}
       {children}

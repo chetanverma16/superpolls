@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import { useRouter } from "next/router";
 import Button from "@/components/Button";
 import { Link, Share } from "lucide-react";
@@ -16,10 +16,18 @@ const PollView = () => {
   // State
   const [selectedOptionId, setSelectedOptionId] = useState<string | null>(null);
   const [isVoted, setIsVoted] = useState(false);
+  const [votes, setVotes] = useLocalStorage<any>("votes", []);
 
   const handleLinkClick = () => {
     toast.success("Copied to clipboard!");
   };
+
+  useEffect(() => {
+    if (votes.find((vote: any) => vote.poll === id)) {
+      setIsVoted(true);
+      setSelectedOptionId(votes.find((vote: any) => vote.poll === id).option);
+    }
+  }, [id, votes]);
 
   const {
     data: poll,
@@ -33,6 +41,10 @@ const PollView = () => {
   );
 
   const handleCurrentOption = (id: string) => {
+    if (isVoted) {
+      toast.error("You have already voted");
+      return;
+    }
     if (selectedOptionId === id) {
       setSelectedOptionId(null);
     } else {
@@ -51,10 +63,18 @@ const PollView = () => {
       return;
     }
 
-    const votePromise = mutation.mutateAsync({
-      pollId: id as string,
-      optionId: selectedOptionId,
-    });
+    const votePromise = mutation.mutateAsync(
+      {
+        pollId: id as string,
+        optionId: selectedOptionId,
+      },
+      {
+        onSuccess: () => {
+          setIsVoted(true);
+          setVotes([...votes, { poll: id, option: selectedOptionId }]);
+        },
+      },
+    );
 
     toast.promise(votePromise, {
       loading: "Voting...",

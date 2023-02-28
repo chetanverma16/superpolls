@@ -7,20 +7,25 @@ import toast from "react-hot-toast";
 import { api } from "@/lib/trpc";
 import Skeleton from "@/components/Skeleton";
 import useLocalStorage from "@/lib/hooks/use-local-storage";
-import cx from "classnames";
 
 const PollView = () => {
   const router = useRouter();
   const { id } = router.query;
+  const mutation = api.polls.vote.useMutation();
 
   // State
   const [selectedOptionId, setSelectedOptionId] = useState<string | null>(null);
+  const [isVoted, setIsVoted] = useState(false);
 
   const handleLinkClick = () => {
     toast.success("Copied to clipboard!");
   };
 
-  const { data: poll, isLoading } = api.polls.getPoll.useQuery(
+  const {
+    data: poll,
+    isLoading,
+    error,
+  } = api.polls.getPoll.useQuery(
     {
       id: id as string,
     },
@@ -35,21 +40,27 @@ const PollView = () => {
     }
   };
 
+  if (error || poll === null) {
+    toast.error("poll not found");
+    router.push("/");
+  }
+
   const handleVote = () => {
-    // TODO: Add voting functionality
-    // if (poll) {
-    //   if (selectedOption === null) {
-    //     toast.error("Please select an option to vote");
-    //     return;
-    //   }
-    //   mutation.mutate({
-    //     pollId: id as string,
-    //     vote: poll.options[selectedOption],
-    //   });
-    //   setIsVoted(true);
-    // } else {
-    //   toast.error("Something went wrong, please try again later");
-    // }
+    if (selectedOptionId === null) {
+      toast.error("Please select an option to vote");
+      return;
+    }
+
+    const votePromise = mutation.mutateAsync({
+      pollId: id as string,
+      optionId: selectedOptionId,
+    });
+
+    toast.promise(votePromise, {
+      loading: "Voting...",
+      success: "Voted successfully!",
+      error: "Something went wrong",
+    });
   };
 
   return (
@@ -93,13 +104,12 @@ const PollView = () => {
           </div>
         )}
         <Button
-          // disabled={isVoted}
+          disabled={isVoted}
           onClick={handleVote}
           type="primary"
           classes="mt-10 w-full px-4 py-4 text-xl"
         >
-          Vote
-          {/* {isVoted ? "Voted" : "Vote"} */}
+          {isVoted ? "Voted" : "Vote"}
         </Button>
       </div>
     </div>

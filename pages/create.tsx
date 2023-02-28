@@ -47,19 +47,26 @@ const CreateGuest = () => {
   const createPoll = () => {
     const filteredOptions = options.filter((option) => option !== "");
     if (filteredOptions.length >= 2 && question.length > 0) {
-      mutation.mutate({
-        name: question,
-        options: filteredOptions,
+      const createPollPromise = mutation.mutateAsync(
+        {
+          name: question,
+          options: filteredOptions,
+        },
+        {
+          onSuccess: (data) => {
+            router.push(`/polls/${data.id}`);
+          },
+        },
+      );
+      toast.promise(createPollPromise, {
+        loading: "Creating Poll",
+        success: "Poll created successfully!",
+        error: "Something went wrong",
       });
     } else {
       toast.error("Please enter a question and at least 2 options");
     }
   };
-
-  if (mutation.isSuccess) {
-    toast.success("Poll created successfully!");
-    router.push(`/polls/${mutation.data.id}`);
-  }
 
   return (
     <div className="mt-10 flex flex-col items-center">

@@ -46,7 +46,7 @@ export const pollsRouter = createTRPCRouter({
     .input(
       z.object({
         pollId: z.string(),
-        vote: z.string(),
+        optionId: z.string(),
         userId: z.string().optional(),
       }),
     )
@@ -63,6 +63,11 @@ export const pollsRouter = createTRPCRouter({
         });
       }
 
-      return "ok";
+      return ctx.prisma.vote.create({
+        data: {
+          pollId: input.pollId,
+          optionId: input.optionId,
+        },
+      });
     }),
 });

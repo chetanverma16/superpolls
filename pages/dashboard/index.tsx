@@ -3,9 +3,30 @@ import { GetServerSidePropsContext } from "next";
 import { getServerSession } from "next-auth";
 import { getProviders } from "next-auth/react";
 import { authOptions } from "../api/auth/[...nextauth]";
+import Button from "@/components/Button";
+import { Plus } from "lucide-react";
+import { useRouter } from "next/router";
 
 const Dashboard = () => {
-  return <div>Dashboard</div>;
+  const router = useRouter();
+  return (
+    <div>
+      <div className="flex w-full justify-between rounded-xl border bg-white p-2 shadow-xl">
+        <div className="flex items-center gap-x-6">
+          <Button>Dashboard</Button>
+          <Button>All Polls</Button>
+          <Button>All Votes</Button>
+        </div>
+        <Button
+          type="primary"
+          Icon={Plus}
+          onClick={() => router.push("/create")}
+        >
+          Create Poll
+        </Button>
+      </div>
+    </div>
+  );
 };
 
 export default Dashboard;

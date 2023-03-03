@@ -19,10 +19,10 @@ export default function Dropdown({ Trigger, items }: DropdownProps) {
         leaveFrom="transform opacity-100 scale-100"
         leaveTo="transform opacity-0 scale-95"
       >
-        <Menu.Items className="absolute right-0 z-10 mt-2 w-56 origin-top-right rounded-lg border bg-white p-2 shadow-xl">
+        <Menu.Items className="absolute right-0 z-10 mt-2 w-fit origin-top-right rounded-lg border bg-white p-2 shadow-xl">
           {items.map(({ title, onClick }, index) => (
             <Menu.Item key={index}>
-              <Button classes="w-full" onClick={onClick}>
+              <Button classes="w-full truncate" onClick={onClick}>
                 {title}
               </Button>
             </Menu.Item>

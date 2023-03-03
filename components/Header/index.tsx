@@ -2,7 +2,7 @@ import Link from "next/link";
 import React from "react";
 import Button from "components/Button";
 import HeaderProps from "./header";
-import { CreditCard, User } from "lucide-react";
+import { CreditCard, Database, Home, Plus, User } from "lucide-react";
 import { useSession, signOut } from "next-auth/react";
 import Avatar from "../Avatar";
 import Dropdown from "../Dropdown";
@@ -18,16 +18,22 @@ const Header = ({}: HeaderProps) => {
         Superpolls
       </Link>
       <nav className="flex items-center gap-x-4">
-        <Link href="/pricing">
-          <Button Icon={CreditCard}>Pricing</Button>
-        </Link>
+        {!session && (
+          <Link href="/pricing">
+            <Button Icon={CreditCard}>Pricing</Button>
+          </Link>
+        )}
+
         {session ? (
           <>
+            <Link href="/dashboard">
+              <Button Icon={Home}>Dashboard</Button>
+            </Link>
             <Dropdown
               items={[
                 {
-                  title: "Dashboard",
-                  onClick: () => router.push("/"),
+                  title: "Pricing",
+                  onClick: () => router.push("/pricing"),
                 },
                 { title: "Sign out", onClick: () => signOut() },
               ]}

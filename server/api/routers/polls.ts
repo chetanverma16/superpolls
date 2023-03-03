@@ -12,6 +12,7 @@ export const pollsRouter = createTRPCRouter({
       }),
     )
     .mutation(({ ctx, input }) => {
+      console.log(input);
       if (input.options.length < 2) {
         throw new TRPCError({
           code: "BAD_REQUEST",
@@ -67,6 +68,15 @@ export const pollsRouter = createTRPCRouter({
         data: {
           pollId: input.pollId,
           optionId: input.optionId,
+        },
+      });
+    }),
+  getAllVotes: publicProcedure
+    .input(z.object({ pollId: z.string() }))
+    .query(async ({ ctx, input }) => {
+      return ctx.prisma.vote.findMany({
+        where: {
+          pollId: input.pollId,
         },
       });
     }),

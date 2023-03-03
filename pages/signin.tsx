@@ -9,13 +9,10 @@ import Button from "@/components/Button";
 import { useState } from "react";
 import toast from "react-hot-toast";
 import { validateEmail } from "@/lib/utils";
-import { useRouter } from "next/router";
 
-export default function SignIn({
-  providers,
-}: InferGetServerSidePropsType<typeof getServerSideProps>) {
-  const router = useRouter();
-
+export default function SignIn({}: InferGetServerSidePropsType<
+  typeof getServerSideProps
+>) {
   // States
   const [email, setEmail] = useState("");
 

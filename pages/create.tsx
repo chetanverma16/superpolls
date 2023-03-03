@@ -2,6 +2,7 @@ import React, { useState } from "react";
 import { api } from "@/lib/trpc";
 import { useRouter } from "next/router";
 import toast from "react-hot-toast";
+import { useSession } from "next-auth/react";
 
 // Components
 import CustomInput from "@/components/CustomInput";
@@ -13,6 +14,7 @@ import { Loader2, Plus, X } from "lucide-react";
 const CreateGuest = () => {
   const router = useRouter();
   const mutation = api.polls.createPoll.useMutation();
+  const { data: session } = useSession();
 
   // State
   const [question, setQuestion] = useState("");
@@ -29,9 +31,20 @@ const CreateGuest = () => {
   };
 
   const handleAddOption = () => {
-    if (options.length >= 5) {
-      toast.error("You can only add up to 5 options, please login to add more");
-      return;
+    if (session?.user) {
+      if (options.length >= 10) {
+        toast.error(
+          "You can only add up to 10 options, upgrade to pro for more",
+        );
+        return;
+      }
+    } else {
+      if (options.length >= 5) {
+        toast.error(
+          "You can only add up to 5 options, please login to add more",
+        );
+        return;
+      }
     }
     setOptions((prevOptions) => [...prevOptions, ""]);
   };
@@ -51,10 +64,11 @@ const CreateGuest = () => {
         {
           name: question,
           options: filteredOptions,
+          userId: session?.user.id,
         },
         {
           onSuccess: (data) => {
-            router.push(`/polls/${data.id}`);
+            router.push(`/poll/${data.id}`);
           },
         },
       );

@@ -7,11 +7,13 @@ import toast from "react-hot-toast";
 import { api } from "@/lib/trpc";
 import Skeleton from "@/components/Skeleton";
 import useLocalStorage from "@/lib/hooks/use-local-storage";
+import useCopyToClipboard from "@/lib/hooks/use-copy-to-clipboard";
 
 const PollView = () => {
   const router = useRouter();
   const { id } = router.query;
   const mutation = api.polls.vote.useMutation();
+  const [value, copy] = useCopyToClipboard();
 
   // State
   const [selectedOptionId, setSelectedOptionId] = useState<string | null>(null);
@@ -20,6 +22,7 @@ const PollView = () => {
 
   const handleLinkClick = () => {
     toast.success("Copied to clipboard!");
+    copy(`https://polls.vercel.app/poll/${id}`);
   };
 
   useEffect(() => {
@@ -29,6 +32,7 @@ const PollView = () => {
     }
   }, [id, votes]);
 
+  // Fetch poll
   const {
     data: poll,
     isLoading,
@@ -40,6 +44,7 @@ const PollView = () => {
     { enabled: !!id },
   );
 
+  // Handle current option
   const handleCurrentOption = (id: string) => {
     if (isVoted) {
       toast.error("You have already voted");
@@ -57,6 +62,7 @@ const PollView = () => {
     router.push("/");
   }
 
+  // Handle votes
   const handleVote = () => {
     if (selectedOptionId === null) {
       toast.error("Please select an option to vote");
@@ -83,9 +89,39 @@ const PollView = () => {
     });
   };
 
+  // Fetch voted
+  const {
+    data: voted,
+    isLoading: isLoadingVoted,
+    error: isErrorVoted,
+  } = api.polls.getAllVotes.useQuery(
+    { pollId: id as string },
+    { enabled: !!isVoted },
+  );
+
+  const countVotes = (optionId: string) => {
+    if (isLoadingVoted || isErrorVoted) {
+      return 0;
+    }
+
+    return voted?.filter((vote: any) => vote.optionId === optionId).length;
+  };
+
+  const averageVotes = (optionId: string) => {
+    if (isLoadingVoted || isErrorVoted) {
+      return 0;
+    }
+
+    return Math.round(
+      (voted?.filter((vote: any) => vote.optionId === optionId).length /
+        voted?.length) *
+        100,
+    );
+  };
+
   return (
-    <div className="flex w-full flex-col items-center">
-      <div className="mt-16 w-full rounded-xl bg-gray-50 p-10">
+    <div className="flex w-full flex-col items-center justify-center">
+      <div className="mt-20 w-full max-w-2xl rounded-xl bg-gray-50 p-10">
         {isLoading ? (
           <Skeleton />
         ) : (
@@ -111,7 +147,7 @@ const PollView = () => {
                 onTap={() => handleCurrentOption(option.id)}
                 whileHover={{ scale: 1.02 }}
                 whileTap={{ scale: 0.98 }}
-                className="relative flex w-full items-center rounded-xl bg-white px-3 py-4 text-left shadow-md transition-all duration-200 ease-out hover:!bg-gray-900 hover:!text-white"
+                className="relative flex w-full flex-col items-start rounded-xl bg-white px-3 py-4 text-left text-sm shadow-md transition-all duration-200 ease-out hover:!bg-gray-900 hover:!text-white"
                 style={{
                   backgroundColor:
                     selectedOptionId === option.id ? "#000" : "#fff",
@@ -119,6 +155,27 @@ const PollView = () => {
                 }}
               >
                 {option.title}
+                {isVoted &&
+                  (isLoadingVoted ? (
+                    <Skeleton classes="w-full h-10" />
+                  ) : (
+                    <div className="mt-4 grid w-full grid-cols-2 rounded-md bg-white p-2 text-sm text-gray-900 outline outline-1 outline-gray-200">
+                      <div>
+                        votes:
+                        <span className="font-bold">
+                          {" "}
+                          {countVotes(option.id)}
+                        </span>
+                      </div>
+                      <div>
+                        average:
+                        <span className="font-bold">
+                          {" "}
+                          {averageVotes(option.id)}%
+                        </span>
+                      </div>
+                    </div>
+                  ))}
               </motion.button>
             ))}
           </div>
@@ -127,7 +184,7 @@ const PollView = () => {
           disabled={isVoted}
           onClick={handleVote}
           type="primary"
-          classes="mt-10 w-full px-4 py-4 text-xl"
+          classes="mt-8 w-full py-4 text-base"
         >
           {isVoted ? "Voted" : "Vote"}
         </Button>

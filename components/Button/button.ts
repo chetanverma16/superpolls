@@ -8,4 +8,5 @@ export default interface ButtonProps {
   Icon?: React.ElementType;
   iconPosition?: "left" | "right";
   disabled?: boolean;
+  selected?: boolean;
 }

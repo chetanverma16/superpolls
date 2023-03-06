@@ -23,6 +23,12 @@
     "jsx": "preserve",
     "incremental": true
   },
-  "include": ["next-env.d.ts", "**/*.ts", "**/*.tsx", "prettier.config.js"],
+  "include": [
+    "next-env.d.ts",
+    "**/*.ts",
+    "**/*.tsx",
+    "prettier.config.js",
+    "views/Dashboard/index.tss"
+  ],
   "exclude": ["node_modules"]
 }

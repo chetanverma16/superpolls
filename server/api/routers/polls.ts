@@ -1,6 +1,6 @@
 import { TRPCError } from "@trpc/server";
 import { z } from "zod";
-import { createTRPCRouter, publicProcedure } from "../trpc";
+import { createTRPCRouter, publicProcedure, protectedProcedure } from "../trpc";
 
 export const pollsRouter = createTRPCRouter({
   createPoll: publicProcedure
@@ -77,6 +77,21 @@ export const pollsRouter = createTRPCRouter({
       return ctx.prisma.vote.findMany({
         where: {
           pollId: input.pollId,
+        },
+      });
+    }),
+  getUserPolls: protectedProcedure
+    .input(z.object({ userId: z.string().optional() }))
+    .query(async ({ ctx, input }) => {
+      if (!input.userId) {
+        throw new TRPCError({
+          code: "BAD_REQUEST",
+          message: "User not found",
+        });
+      }
+      return ctx.prisma.poll.findMany({
+        where: {
+          userId: input.userId,
         },
       });
     }),

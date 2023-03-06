@@ -9,6 +9,7 @@ const Button = ({
   classes,
   Icon,
   disabled,
+  selected,
 }: ButtonProps) => {
   if (type === "primary") {
     return (
@@ -46,7 +47,9 @@ const Button = ({
     <button
       disabled={disabled}
       onClick={onClick}
-      className={`inline-flex w-fit items-center justify-center rounded-lg px-3 py-2 text-base transition-all duration-300 ease-in-out hover:bg-gray-100 active:bg-gray-200 ${classes} disabled:cursor-not-allowed disabled:opacity-50`}
+      className={`inline-flex w-fit items-center justify-center rounded-lg px-3 py-2 text-base transition-all duration-300 ease-in-out hover:bg-gray-100 active:bg-gray-200 ${classes} disabled:cursor-not-allowed disabled:opacity-50 ${
+        selected === true && "bg-gray-100 hover:bg-gray-200"
+      }`}
     >
       {Icon && <Icon size={20} className="mr-2" />}
       {children}

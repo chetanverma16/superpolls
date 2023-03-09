@@ -12,7 +12,6 @@ export const pollsRouter = createTRPCRouter({
       }),
     )
     .mutation(({ ctx, input }) => {
-      console.log(input);
       if (input.options.length < 2) {
         throw new TRPCError({
           code: "BAD_REQUEST",
@@ -68,6 +67,7 @@ export const pollsRouter = createTRPCRouter({
         data: {
           pollId: input.pollId,
           optionId: input.optionId,
+          userId: input.userId,
         },
       });
     }),
@@ -92,6 +92,52 @@ export const pollsRouter = createTRPCRouter({
       return ctx.prisma.poll.findMany({
         where: {
           userId: input.userId,
+        },
+        select: {
+          id: true,
+          title: true,
+          _count: {
+            select: {
+              Vote: true,
+              options: true,
+            },
+          },
+        },
+      });
+    }),
+  getUserVotes: protectedProcedure
+    .input(z.object({ userId: z.string().optional() }))
+    .query(async ({ ctx, input }) => {
+      if (!input.userId) {
+        throw new TRPCError({
+          code: "BAD_REQUEST",
+          message: "User not found",
+        });
+      }
+      return ctx.prisma.vote.findMany({
+        where: {
+          userId: input.userId,
+        },
+        select: {
+          id: true,
+          poll: {
+            select: {
+              id: true,
+              title: true,
+              _count: {
+                select: {
+                  Vote: true,
+                  options: true,
+                },
+              },
+            },
+          },
+          option: {
+            select: {
+              id: true,
+              title: true,
+            },
+          },
         },
       });
     }),

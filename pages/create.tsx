@@ -32,16 +32,16 @@ const CreateGuest = () => {
 
   const handleAddOption = () => {
     if (session?.user) {
-      if (options.length >= 10) {
+      if (options.length >= 6) {
         toast.error(
-          "You can only add up to 10 options, upgrade to pro for more",
+          "You can only add up to 6 options, upgrade to pro for more",
         );
         return;
       }
     } else {
-      if (options.length >= 5) {
+      if (options.length >= 3) {
         toast.error(
-          "You can only add up to 5 options, please login to add more",
+          "You can only add up to 3 options, please login to add more",
         );
         return;
       }

@@ -5,6 +5,8 @@ import PollCard from "@/components/PollCard";
 import Button from "@/components/Button";
 import Dropdown from "@/components/Dropdown";
 import { Filter } from "lucide-react";
+import Skeleton from "@/components/Skeleton";
+import toast from "react-hot-toast";
 
 const AllPolls = () => {
   const { data: session } = useSession();
@@ -18,6 +20,10 @@ const AllPolls = () => {
     { userId: session?.user.id },
     { enabled: !!session },
   );
+
+  if (error) {
+    toast.error(`Something went wrong, Error: ${error.message}`);
+  }
 
   return (
     <div className="flex w-full flex-col items-start gap-y-4">
@@ -33,10 +39,24 @@ const AllPolls = () => {
       </div>
 
       <div className="mt-2 grid w-full grid-cols-1 gap-x-4 gap-y-4">
-        <PollCard />
-        <PollCard />
-        <PollCard />
-        <PollCard />
+        {isLoading ? (
+          <>
+            <Skeleton classes="h-24 p-10" />
+            <Skeleton classes="h-24 p-10" />
+            <Skeleton classes="h-24 p-10" />
+            <Skeleton classes="h-24 p-10" />
+          </>
+        ) : (
+          userPolls?.map(({ id, title, _count }) => (
+            <PollCard
+              id={id}
+              key={id}
+              title={title}
+              votes={_count.Vote}
+              options={_count.options}
+            />
+          ))
+        )}
       </div>
     </div>
   );

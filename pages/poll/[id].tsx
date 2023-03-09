@@ -8,17 +8,20 @@ import { api } from "@/lib/trpc";
 import Skeleton from "@/components/Skeleton";
 import useLocalStorage from "@/lib/hooks/use-local-storage";
 import useCopyToClipboard from "@/lib/hooks/use-copy-to-clipboard";
+import { useSession } from "next-auth/react";
 
 const PollView = () => {
   const router = useRouter();
   const { id } = router.query;
   const mutation = api.polls.vote.useMutation();
+  const { data: session } = useSession();
   const [value, copy] = useCopyToClipboard();
 
   // State
   const [selectedOptionId, setSelectedOptionId] = useState<string | null>(null);
   const [isVoted, setIsVoted] = useState(false);
   const [votes, setVotes] = useLocalStorage<any>("votes", []);
+  const [isVoting, setIsVoting] = useState(false);
 
   const handleLinkClick = () => {
     toast.success("Copied to clipboard!");
@@ -46,6 +49,10 @@ const PollView = () => {
 
   // Handle current option
   const handleCurrentOption = (id: string) => {
+    if (isVoting) {
+      toast.error("Voting in progress");
+      return;
+    }
     if (isVoted) {
       toast.error("You have already voted");
       return;
@@ -64,20 +71,29 @@ const PollView = () => {
 
   // Handle votes
   const handleVote = () => {
+    if (isVoting) {
+      toast.error("Voting in progress");
+    }
+
     if (selectedOptionId === null) {
       toast.error("Please select an option to vote");
       return;
     }
-
+    setIsVoting(true);
     const votePromise = mutation.mutateAsync(
       {
         pollId: id as string,
         optionId: selectedOptionId,
+        userId: session?.user?.id,
       },
       {
         onSuccess: () => {
+          setIsVoting(false);
           setIsVoted(true);
           setVotes([...votes, { poll: id, option: selectedOptionId }]);
+        },
+        onError: () => {
+          setIsVoting(false);
         },
       },
     );
@@ -157,7 +173,7 @@ const PollView = () => {
                 {option.title}
                 {isVoted &&
                   (isLoadingVoted ? (
-                    <Skeleton classes="w-full h-10" />
+                    <Skeleton classes="mt-4 w-full h-10" />
                   ) : (
                     <div className="mt-4 grid w-full grid-cols-2 rounded-md bg-white p-2 text-sm text-gray-900 outline outline-1 outline-gray-200">
                       <div>

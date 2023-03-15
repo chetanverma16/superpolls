@@ -1,4 +1,4 @@
-import { Edit, Trash } from "lucide-react";
+import { Check, CheckCircle, Edit, Trash } from "lucide-react";
 import React from "react";
 import Badge from "../Badge";
 import Button from "../Button";
@@ -22,7 +22,7 @@ const PollCard = ({
       onTap={() => router.push(`/poll/${id}`)}
       className="flex cursor-pointer items-start justify-between rounded-xl border border-transparent bg-gray-50 p-6 hover:border-gray-200"
     >
-      <div className="w-4/6">
+      <div className={isVotedScreen ? "w-full" : "w-4/6"}>
         <h1 className="text-lg text-gray-900">{title}</h1>
         <div className="mt-2 flex items-center gap-x-2">
           {votes && (
@@ -31,7 +31,12 @@ const PollCard = ({
           {options && <Badge text={`${options} Options`} />}
         </div>
         {voted && (
-          <Badge backgroundColor="bg-indigo-500" text={`You voted ${voted}`} />
+          <div className="mt-4 flex w-full items-center gap-x-2 rounded-xl bg-gray-200 px-4 py-2 text-gray-800">
+            <CheckCircle className="h-6" />
+            <div>
+              You voted for <span className="font-bold">{voted}</span>
+            </div>
+          </div>
         )}
       </div>
       {!isVotedScreen && (

@@ -31,7 +31,7 @@ const Dashboard = () => {
           Create Poll
         </Button>
       </div>
-      <div className="mt-10">
+      <div className="mt-10 w-full">
         {currentTab === 0 && <AllPolls />}
         {currentTab === 1 && <AllVotes />}
       </div>

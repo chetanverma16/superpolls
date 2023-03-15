@@ -43,8 +43,6 @@ const AllPolls = () => {
           <>
             <Skeleton classes="h-24 p-10" />
             <Skeleton classes="h-24 p-10" />
-            <Skeleton classes="h-24 p-10" />
-            <Skeleton classes="h-24 p-10" />
           </>
         ) : (
           userPolls?.map(({ id, poll, option }) => (

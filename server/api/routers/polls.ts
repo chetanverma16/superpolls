@@ -55,11 +55,32 @@ export const pollsRouter = createTRPCRouter({
         where: {
           id: input.pollId,
         },
+        include: {
+          Vote: true,
+        },
       });
+
+      // Check if poll exists
       if (!poll) {
         throw new TRPCError({
           code: "BAD_REQUEST",
           message: "Poll not found",
+        });
+      }
+
+      // Check if user is voting on their own poll
+      if (poll.userId === input.userId) {
+        throw new TRPCError({
+          code: "BAD_REQUEST",
+          message: "You cannot vote on your own poll",
+        });
+      }
+
+      // Check if user has already voted
+      if (poll.Vote.find((vote) => vote.userId === input.userId)) {
+        throw new TRPCError({
+          code: "BAD_REQUEST",
+          message: "You have already voted on this poll",
         });
       }
 

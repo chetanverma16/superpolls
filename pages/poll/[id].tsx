@@ -92,7 +92,8 @@ const PollView = () => {
           setIsVoted(true);
           setVotes([...votes, { poll: id, option: selectedOptionId }]);
         },
-        onError: () => {
+        onError: (error) => {
+          toast.error(error.message);
           setIsVoting(false);
         },
       },
@@ -101,7 +102,7 @@ const PollView = () => {
     toast.promise(votePromise, {
       loading: "Voting...",
       success: "Voted successfully!",
-      error: "Something went wrong",
+      error: "Failed to vote",
     });
   };
 

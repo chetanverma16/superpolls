@@ -31,10 +31,14 @@ export default function Dropdown({ Trigger, items }: DropdownProps) {
       >
         <Menu.Items className="absolute right-0 z-10 mt-2 flex w-56 origin-top-right flex-col items-start truncate rounded-md border border-gray-200 bg-white shadow-lg">
           <>
-            {items.map(({ title, onClick }, index) => (
+            {items.map(({ title, onClick, selected }, index) => (
               <Menu.Item key={index}>
                 {({ active }) => (
-                  <Button onClick={onClick} classes={`w-full`}>
+                  <Button
+                    onClick={onClick}
+                    classes={`w-full rounded-none`}
+                    selected={selected}
+                  >
                     {title}
                   </Button>
                 )}

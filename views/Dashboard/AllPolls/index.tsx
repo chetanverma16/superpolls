@@ -2,9 +2,6 @@ import React from "react";
 import { useSession } from "next-auth/react";
 import { api } from "@/lib/trpc";
 import PollCard from "@/components/PollCard";
-import Button from "@/components/Button";
-import Dropdown from "@/components/Dropdown";
-import { Filter } from "lucide-react";
 import Skeleton from "@/components/Skeleton";
 import toast from "react-hot-toast";
 
@@ -29,13 +26,6 @@ const AllPolls = () => {
     <div className="flex w-full flex-col items-start gap-y-4">
       <div className="flex w-full items-center justify-between">
         <h2 className="text-2xl font-bold">All Polls</h2>
-        <Dropdown
-          Trigger={<Button Icon={Filter}>Filter</Button>}
-          items={[
-            { title: "Most Voted", onClick: () => console.log("filter") },
-            { title: "Most Options", onClick: () => console.log("filter") },
-          ]}
-        ></Dropdown>
       </div>
 
       <div className="mt-2 grid w-full grid-cols-1 gap-x-4 gap-y-4">
@@ -45,7 +35,7 @@ const AllPolls = () => {
             <Skeleton classes="h-24 p-10" />
           </>
         ) : (
-          userPolls?.map(({ id, title, _count }) => (
+          userPolls?.map(({ id, title, _count }: any) => (
             <PollCard
               id={id}
               key={id}

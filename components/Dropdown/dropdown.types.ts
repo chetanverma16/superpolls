@@ -5,6 +5,6 @@ export default interface DropdownProps {
 
 type Items = {
   title: string;
-  selected: boolean;
+  selected?: boolean;
   onClick: () => void;
 };

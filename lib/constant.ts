@@ -1,1 +1,1 @@
-export const DEFAULT = 'default';
+export const DEFAULT = "default";

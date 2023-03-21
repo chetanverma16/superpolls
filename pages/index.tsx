@@ -1,9 +1,11 @@
 import Button from "@/components/Button";
-import { Plus, User } from "lucide-react";
+import { HomeIcon, Plus, User } from "lucide-react";
+import { useSession } from "next-auth/react";
 import { useRouter } from "next/router";
 
 export default function Home() {
   const router = useRouter();
+  const session = useSession();
   return (
     <div className="mt-20 flex w-full flex-col items-center gap-y-4 text-center">
       <h1 className="text-5xl font-semibold text-gray-900">
@@ -25,13 +27,23 @@ export default function Home() {
         >
           Create Free poll
         </Button>
-        <Button
-          onClick={() => router.push("/signin")}
-          type="primary"
-          Icon={User}
-        >
-          Create account for free
-        </Button>
+        {session ? (
+          <Button
+            onClick={() => router.push("/dashboard")}
+            type="primary"
+            Icon={HomeIcon}
+          >
+            Go to dashboard
+          </Button>
+        ) : (
+          <Button
+            onClick={() => router.push("/signin")}
+            type="primary"
+            Icon={User}
+          >
+            Create account for free
+          </Button>
+        )}
       </div>
     </div>
   );

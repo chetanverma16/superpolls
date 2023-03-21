@@ -1,29 +1,14 @@
-/**
- * YOU PROBABLY DON'T NEED TO EDIT THIS FILE, UNLESS:
- * 1. You want to modify request context (see Part 1)
- * 2. You want to create a new middleware or type of procedure (see Part 3)
- *
- * tl;dr - this is where all the tRPC server stuff is created and plugged in.
- * The pieces you will need to use are documented accordingly near the end
- */
-
-/**
- * 1. CONTEXT
- *
- * This section defines the "contexts" that are available in the backend API
- *
- * These allow you to access things like the database, the session, etc, when
- * processing a request
- *
- */
 import { type CreateNextContextOptions } from "@trpc/server/adapters/next";
 import { type Session } from "next-auth";
 
 import { getServerAuthSession } from "./auth";
 import { prisma } from "./db";
+import { stripe } from "./stripe/client";
 
 type CreateContextOptions = {
   session: Session | null;
+  req: NextApiRequest;
+  res: NextApiResponse;
 };
 
 /**
@@ -36,9 +21,13 @@ type CreateContextOptions = {
  * @see https://create.t3.gg/en/usage/trpc#-servertrpccontextts
  */
 const createInnerTRPCContext = (opts: CreateContextOptions) => {
+  const { req, res } = opts;
   return {
     session: opts.session,
     prisma,
+    stripe,
+    req,
+    res,
   };
 };
 
@@ -55,6 +44,8 @@ export const createTRPCContext = async (opts: CreateNextContextOptions) => {
 
   return createInnerTRPCContext({
     session,
+    req,
+    res,
   });
 };
 
@@ -65,6 +56,7 @@ export const createTRPCContext = async (opts: CreateNextContextOptions) => {
  * transformer
  */
 import { initTRPC, TRPCError } from "@trpc/server";
+import { NextApiRequest, NextApiResponse } from "next";
 
 const t = initTRPC.context<typeof createTRPCContext>().create({
   errorFormatter({ shape }) {

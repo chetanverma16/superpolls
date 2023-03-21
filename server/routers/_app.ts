@@ -1,5 +1,7 @@
 import { pollsRouter } from "./polls";
 import { createTRPCRouter } from "../trpc";
+import { stripeRouter } from "./stripe";
+import { userRouter } from "./user";
 
 /**
  * This is the primary router for your server.
@@ -8,6 +10,8 @@ import { createTRPCRouter } from "../trpc";
  */
 export const appRouter = createTRPCRouter({
   polls: pollsRouter,
+  stripe: stripeRouter,
+  user: userRouter,
 });
 
 // export type definition of API

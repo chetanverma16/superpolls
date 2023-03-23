@@ -5,6 +5,8 @@ import Button from "../Button";
 import { motion } from "framer-motion";
 import PollCardProps from "./pollcard.types";
 import { useRouter } from "next/router";
+import { api } from "@/lib/trpc";
+import toast from "react-hot-toast";
 
 const PollCard = ({
   id,
@@ -15,6 +17,19 @@ const PollCard = ({
   isVotedScreen,
 }: PollCardProps) => {
   const router = useRouter();
+
+  // Delete Poll
+  const removePollMutation = api.polls.removePoll.useMutation();
+
+  const handleDelete = (e: any) => {
+    const removePollPromise = removePollMutation.mutateAsync({ id });
+    toast.promise(removePollPromise, {
+      loading: "Creating Poll",
+      success: "Poll created successfully!",
+      error: "Something went wrong",
+    });
+  };
+
   return (
     <motion.div
       whileHover={{ scale: 1.01, transition: { duration: 0.2 } }}
@@ -42,6 +57,7 @@ const PollCard = ({
       {!isVotedScreen && (
         <div className="flex items-center gap-x-2">
           <Button
+            onClick={handleDelete}
             Icon={Trash}
             classes="bg-red-400 text-white hover:bg-red-500"
           />

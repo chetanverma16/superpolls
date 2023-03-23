@@ -15,11 +15,7 @@ const CreateGuest = () => {
   const router = useRouter();
   const mutation = api.polls.createPoll.useMutation();
   const { data: session } = useSession();
-  const {
-    data: isPro,
-    isLoading,
-    error,
-  } = api.user.subscriptionStatus.useQuery();
+  const { data: isPro } = api.user.subscriptionStatus.useQuery();
 
   // State
   const [question, setQuestion] = useState("");

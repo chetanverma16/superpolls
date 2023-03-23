@@ -1,7 +1,7 @@
 export default interface ButtonProps {
   type?: "primary" | "secondary";
   children?: React.ReactNode;
-  onClick?: () => void;
+  onClick?: (e: any) => void;
   classes?: string;
   Icon?: React.ElementType;
   iconPosition?: "left" | "right";

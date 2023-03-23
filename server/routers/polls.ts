@@ -162,4 +162,13 @@ export const pollsRouter = createTRPCRouter({
         },
       });
     }),
+  removePoll: protectedProcedure
+    .input(z.object({ id: z.string() }))
+    .mutation(async ({ ctx, input }) => {
+      return ctx.prisma.poll.delete({
+        where: {
+          id: input.id,
+        },
+      });
+    }),
 });

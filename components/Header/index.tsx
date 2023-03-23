@@ -33,13 +33,13 @@ const Header = ({}: HeaderProps) => {
         Superpolls
       </Link>
       <nav className="flex items-center gap-x-4">
-        {!session && (
+        {!session?.user && (
           <Link href="/pricing">
             <Button Icon={CreditCard}>Pricing</Button>
           </Link>
         )}
 
-        {session ? (
+        {session?.user ? (
           <>
             <Link href="/dashboard">
               <Button Icon={Home}>Dashboard</Button>

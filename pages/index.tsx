@@ -27,7 +27,7 @@ export default function Home() {
         >
           Create Free poll
         </Button>
-        {session ? (
+        {session?.data ? (
           <Button
             onClick={() => router.push("/dashboard")}
             type="primary"

@@ -15,6 +15,11 @@ const CreateGuest = () => {
   const router = useRouter();
   const mutation = api.polls.createPoll.useMutation();
   const { data: session } = useSession();
+  const {
+    data: isPro,
+    isLoading,
+    error,
+  } = api.user.subscriptionStatus.useQuery();
 
   // State
   const [question, setQuestion] = useState("");
@@ -32,11 +37,22 @@ const CreateGuest = () => {
 
   const handleAddOption = () => {
     if (session?.user) {
-      if (options.length >= 6) {
-        toast.error(
-          "You can only add up to 6 options, upgrade to pro for more",
-        );
+      if (isPro === "active") {
+        if (options.length >= 30) {
+          toast.error(
+            "You can only add up to 30 options, please contact support for more options",
+          );
+          return;
+        }
+        setOptions((prevOptions) => [...prevOptions, ""]);
         return;
+      } else {
+        if (options.length >= 6) {
+          toast.error(
+            "You can only add up to 6 options, upgrade to pro for more",
+          );
+          return;
+        }
       }
     } else {
       if (options.length >= 3) {

@@ -9,6 +9,7 @@ import Dropdown from "../Dropdown";
 import { useRouter } from "next/router";
 import { api } from "@/lib/trpc";
 import toast from "react-hot-toast";
+import Badge from "../Badge";
 
 const Header = ({}: HeaderProps) => {
   const router = useRouter();
@@ -20,6 +21,13 @@ const Header = ({}: HeaderProps) => {
   const { mutateAsync: createBillingPortalSession } =
     api.stripe.createBillingPortalSession.useMutation();
 
+  // Fetch Featured Polls
+  const {
+    data: isPro,
+    isLoading,
+    error,
+  } = api.user.subscriptionStatus.useQuery();
+
   const GoPro = async () => {
     // @ts-ignore : ts doesn't like the fact that we're using a mutation hook as a query hook
     const { checkoutUrl } = await createCheckoutSession();
@@ -27,10 +35,22 @@ const Header = ({}: HeaderProps) => {
     router.push(checkoutUrl);
   };
 
+  const BillingSession = async () => {
+    // @ts-ignore : ts doesn't like the fact that we're using a mutation hook as a query hook
+    const { billingPortalUrl } = await createBillingPortalSession();
+    if (!billingPortalUrl) toast.error("Something went wrong");
+    router.push(billingPortalUrl);
+  };
+
+  if (error) toast.error(`Something went wrong, Error: ${error.message}`);
+
   return (
     <div className="flex items-center justify-between py-2">
-      <Link href="/" className="text-xl font-bold">
-        Superpolls
+      <Link href="/" className="flex items-center text-xl font-bold">
+        Superpolls{" "}
+        {isPro && isPro === "active" && (
+          <Badge text="pro" classnames="ml-2 text-xs" />
+        )}
       </Link>
       <nav className="flex items-center gap-x-4">
         {!session?.user && (
@@ -44,11 +64,20 @@ const Header = ({}: HeaderProps) => {
             <Link href="/dashboard">
               <Button Icon={Home}>Dashboard</Button>
             </Link>
-            <Button onClick={GoPro} Icon={CreditCard}>
-              Go Pro
-            </Button>
+            {!isLoading && isPro !== "active" && (
+              <Button onClick={GoPro} Icon={CreditCard}>
+                Go Pro
+              </Button>
+            )}
+
             <Dropdown
-              items={[{ title: "Sign out", onClick: () => signOut() }]}
+              items={[
+                {
+                  title: "Billing",
+                  onClick: () => BillingSession(),
+                },
+                { title: "Sign out", onClick: () => signOut() },
+              ]}
               Trigger={
                 <Avatar
                   email={session.user?.email || ""}

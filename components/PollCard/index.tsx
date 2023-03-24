@@ -1,4 +1,4 @@
-import { Check, CheckCircle, Edit, Trash } from "lucide-react";
+import { Check, CheckCircle, Edit, ExternalLink, Trash } from "lucide-react";
 import React from "react";
 import Badge from "../Badge";
 import Button from "../Button";
@@ -15,26 +15,22 @@ const PollCard = ({
   votes,
   voted,
   isVotedScreen,
+  handleDelete,
 }: PollCardProps) => {
   const router = useRouter();
 
-  // Delete Poll
-  const removePollMutation = api.polls.removePoll.useMutation();
-
-  const handleDelete = (e: any) => {
-    const removePollPromise = removePollMutation.mutateAsync({ id });
-    toast.promise(removePollPromise, {
-      loading: "Creating Poll",
-      success: "Poll created successfully!",
-      error: "Something went wrong",
-    });
+  const deletePoll = (e: any, id: string) => {
+    e.stopPropagation();
+    if (handleDelete) {
+      handleDelete(id);
+    }
   };
 
   return (
     <motion.div
       whileHover={{ scale: 1.01, transition: { duration: 0.2 } }}
       whileTap={{ scale: 0.99, transition: { duration: 0.2 } }}
-      onTap={() => router.push(`/poll/${id}`)}
+      onClick={() => router.push(`/poll/${id}`)}
       className="flex cursor-pointer items-start justify-between rounded-xl border border-transparent bg-gray-50 p-6 hover:border-gray-200"
     >
       <div className={isVotedScreen ? "w-full" : "w-4/6"}>
@@ -57,9 +53,9 @@ const PollCard = ({
       {!isVotedScreen && (
         <div className="flex items-center gap-x-2">
           <Button
-            onClick={handleDelete}
+            onClick={(e) => deletePoll(e, id)}
             Icon={Trash}
-            classes="bg-red-400 text-white hover:bg-red-500"
+            classes="bg-red-500 text-white hover:bg-red-600"
           />
         </div>
       )}

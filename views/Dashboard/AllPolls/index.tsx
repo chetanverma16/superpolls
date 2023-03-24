@@ -13,6 +13,7 @@ const AllPolls = () => {
     data: userPolls,
     isLoading,
     error,
+    refetch,
   } = api.polls.getUserPolls.useQuery(
     { userId: session?.user.id },
     { enabled: !!session },
@@ -21,6 +22,25 @@ const AllPolls = () => {
   if (error) {
     toast.error(`Something went wrong, Error: ${error.message}`);
   }
+
+  // Delete Poll
+  const removePollMutation = api.polls.removePoll.useMutation();
+
+  const handleDelete = (id: string) => {
+    const removePollPromise = removePollMutation.mutateAsync(
+      { id },
+      {
+        onSuccess: () => {
+          refetch();
+        },
+      },
+    );
+    toast.promise(removePollPromise, {
+      loading: "Removing Poll...",
+      success: "Poll removed successfully!",
+      error: "Something went wrong",
+    });
+  };
 
   return (
     <div className="flex w-full flex-col items-start gap-y-4">
@@ -42,6 +62,7 @@ const AllPolls = () => {
               title={title}
               votes={_count.Vote}
               options={_count.options}
+              handleDelete={handleDelete}
             />
           ))
         )}

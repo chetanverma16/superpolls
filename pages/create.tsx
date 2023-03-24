@@ -10,6 +10,7 @@ import Button from "@/components/Button";
 
 // Icons
 import { Loader2, Plus, X } from "lucide-react";
+import Toggle from "@/components/Toggle";
 
 const CreateGuest = () => {
   const router = useRouter();
@@ -34,9 +35,9 @@ const CreateGuest = () => {
   const handleAddOption = () => {
     if (session?.user) {
       if (isPro === "active") {
-        if (options.length >= 30) {
+        if (options.length >= 50) {
           toast.error(
-            "You can only add up to 30 options, please contact support for more options",
+            "You can only add up to 50 options, please contact support for more options",
           );
           return;
         }
@@ -151,6 +152,16 @@ const CreateGuest = () => {
               >
                 Add another option
               </Button>
+              {isPro && isPro === "active" && (
+                <div className="flex items-center justify-between gap-x-4">
+                  <div className="flex w-full items-center justify-center rounded-md bg-white p-4 shadow-md">
+                    <Toggle /> <span className="ml-2">Results Private</span>
+                  </div>
+                  <div className="flex w-full items-center justify-center rounded-md bg-white p-4 shadow-md">
+                    <Toggle /> <span className="ml-2">Draft</span>
+                  </div>
+                </div>
+              )}
             </div>
             <Button
               onClick={createPoll}

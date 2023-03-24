@@ -2,9 +2,6 @@ import React from "react";
 import { useSession } from "next-auth/react";
 import { api } from "@/lib/trpc";
 import PollCard from "@/components/PollCard";
-import Button from "@/components/Button";
-import Dropdown from "@/components/Dropdown";
-import { Filter } from "lucide-react";
 import Skeleton from "@/components/Skeleton";
 import toast from "react-hot-toast";
 

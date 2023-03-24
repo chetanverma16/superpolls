@@ -36,7 +36,7 @@ const PollCard = ({
       <div className={isVotedScreen ? "w-full" : "w-4/6"}>
         <h1 className="text-lg text-gray-900">{title}</h1>
         <div className="mt-2 flex items-center gap-x-2">
-          {votes && (
+          {votes > 0 && (
             <Badge text={`${votes} votes`} backgroundColor="bg-gray-900" />
           )}
           {options && <Badge text={`${options} Options`} />}

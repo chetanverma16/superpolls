@@ -22,17 +22,17 @@ const Header = ({}: HeaderProps) => {
     api.stripe.createBillingPortalSession.useMutation();
 
   // Fetch Featured Polls
-  const {
-    data: isPro,
-    isLoading,
-    error,
-  } = api.user.subscriptionStatus.useQuery();
+  const { data: isPro, isLoading } = api.user.subscriptionStatus.useQuery();
 
   const GoPro = async () => {
-    // @ts-ignore : ts doesn't like the fact that we're using a mutation hook as a query hook
-    const { checkoutUrl } = await createCheckoutSession();
-    if (!checkoutUrl) toast.error("Something went wrong");
-    router.push(checkoutUrl);
+    if (session?.user) {
+      // @ts-ignore : ts doesn't like the fact that we're using a mutation hook as a query hook
+      const { checkoutUrl } = await createCheckoutSession();
+      if (!checkoutUrl) toast.error("Something went wrong");
+      router.push(checkoutUrl);
+    } else {
+      router.push("/signin");
+    }
   };
 
   const BillingSession = async () => {
@@ -41,8 +41,6 @@ const Header = ({}: HeaderProps) => {
     if (!billingPortalUrl) toast.error("Something went wrong");
     router.push(billingPortalUrl);
   };
-
-  if (error) toast.error(`Something went wrong, Error: ${error.message}`);
 
   return (
     <div className="flex items-center justify-between py-2">

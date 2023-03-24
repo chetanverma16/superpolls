@@ -86,12 +86,15 @@ model VerificationToken {
 }
 
 model Poll {
-  id      String   @id @default(cuid())
-  title   String
-  userId  String?
-  user    User?    @relation(fields: [userId], references: [id], onDelete: Cascade)
-  options Option[]
-  Vote    Vote[]
+  id       String   @id @default(cuid())
+  title    String
+  userId   String?
+  user     User?    @relation(fields: [userId], references: [id], onDelete: Cascade)
+  options  Option[]
+  Vote     Vote[]
+  isLive   Boolean  @default(true)
+  isPublic Boolean  @default(true)
+  template String   @default("default")
 
   @@index([userId])
 }

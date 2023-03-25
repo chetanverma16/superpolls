@@ -9,6 +9,7 @@ import Skeleton from "@/components/Skeleton";
 import useLocalStorage from "@/lib/hooks/use-local-storage";
 import useCopyToClipboard from "@/lib/hooks/use-copy-to-clipboard";
 import { useSession } from "next-auth/react";
+import Badge from "@/components/Badge";
 
 const PollView = () => {
   const router = useRouter();
@@ -46,6 +47,8 @@ const PollView = () => {
     },
     { enabled: !!id },
   );
+
+  console.log(poll);
 
   // Handle current option
   const handleCurrentOption = (id: string) => {
@@ -111,10 +114,7 @@ const PollView = () => {
     data: voted,
     isLoading: isLoadingVoted,
     error: isErrorVoted,
-  } = api.polls.getAllVotes.useQuery(
-    { pollId: id as string },
-    { enabled: !!isVoted },
-  );
+  } = api.polls.getAllVotes.useQuery({ pollId: id as string });
 
   const countVotes = (optionId: string) => {
     if (isLoadingVoted || isErrorVoted) {
@@ -129,85 +129,168 @@ const PollView = () => {
       return 0;
     }
 
-    return Math.round(
+    const value = Math.round(
       (voted?.filter((vote: any) => vote.optionId === optionId).length /
         voted?.length) *
         100,
     );
+    if (isNaN(value)) {
+      return 0;
+    }
+    return value;
   };
 
-  return (
-    <div className="flex w-full flex-col items-center justify-center">
-      <div className="mt-20 w-full max-w-2xl rounded-xl bg-gray-50 p-10">
-        {isLoading ? (
-          <Skeleton />
-        ) : (
-          <div className="flex items-center justify-between">
-            <h1 className="w-4/5 text-2xl font-semibold">{poll?.title}</h1>
-            <div className="flex items-center">
-              <Button onClick={handleLinkClick}>
-                <Link />
-              </Button>
-              <Button>
-                <Share />
+  if (isLoading) {
+    return (
+      <div className="flex w-full flex-col items-center justify-center">
+        <div className="mt-20 w-full max-w-2xl rounded-xl bg-gray-50 p-10">
+          <Skeleton classes="w-4/5 text-2xl font-semibold" />
+          <Skeleton classes="mt-10 h-64" />
+        </div>
+      </div>
+    );
+  }
+
+  if (!isLoading) {
+    if (session?.user?.id === poll?.userId) {
+      return (
+        <div className="flex w-full flex-col items-center justify-center">
+          <div className="mt-20 w-full max-w-2xl rounded-xl bg-gray-50 p-10">
+            <div className="flex items-center justify-between">
+              <h1 className="w-4/5 text-2xl font-semibold">{poll?.title}</h1>
+              <div className="flex items-center">
+                <Button onClick={handleLinkClick}>
+                  <Link />
+                </Button>
+                <Button>
+                  <Share />
+                </Button>
+              </div>
+            </div>
+
+            <div className="mt-10 flex flex-col items-center gap-y-6">
+              {poll?.options.map((option) => (
+                <motion.button
+                  key={option.id}
+                  onTap={() => handleCurrentOption(option.id)}
+                  whileHover={{ scale: 1.02 }}
+                  whileTap={{ scale: 0.98 }}
+                  className="relative flex w-full flex-col items-start rounded-xl bg-white px-3 py-4 text-left text-sm shadow-md transition-all duration-200 ease-out hover:!bg-gray-900 hover:!text-white"
+                  style={{
+                    backgroundColor:
+                      selectedOptionId === option.id ? "#000" : "#fff",
+                    color: selectedOptionId === option.id ? "#fff" : "#000",
+                  }}
+                >
+                  {option.title}
+                  <div className="mt-4 grid w-full grid-cols-2 rounded-md bg-white p-2 text-sm text-gray-900 outline outline-1 outline-gray-200">
+                    <div>
+                      votes:
+                      <span className="font-bold">{countVotes(option.id)}</span>
+                    </div>
+                    <div>
+                      average:
+                      <span className="font-bold">
+                        {averageVotes(option.id)}%
+                      </span>
+                    </div>
+                  </div>
+                </motion.button>
+              ))}
+            </div>
+            <Button
+              disabled={isVoted}
+              onClick={handleVote}
+              type="primary"
+              classes="mt-8 w-full py-4 text-base"
+            >
+              {isVoted ? "Voted" : "Vote"}
+            </Button>
+          </div>
+        </div>
+      );
+    } else {
+      if (poll?.isLive) {
+        return (
+          <div className="flex w-full flex-col items-center justify-center">
+            <div className="mt-20 w-full max-w-2xl rounded-xl bg-gray-50 p-10">
+              <div className="flex items-center justify-between">
+                <h1 className="w-4/5 text-2xl font-semibold">{poll?.title}</h1>
+                <div className="flex items-center">
+                  <Button onClick={handleLinkClick}>
+                    <Link />
+                  </Button>
+                  <Button>
+                    <Share />
+                  </Button>
+                </div>
+              </div>
+
+              <div className="mt-10 flex flex-col items-center gap-y-6">
+                {poll?.options.map((option) => (
+                  <motion.button
+                    key={option.id}
+                    onTap={() => handleCurrentOption(option.id)}
+                    whileHover={{ scale: 1.02 }}
+                    whileTap={{ scale: 0.98 }}
+                    className="relative flex w-full flex-col items-start rounded-xl bg-white px-3 py-4 text-left text-sm shadow-md transition-all duration-200 ease-out hover:!bg-gray-900 hover:!text-white"
+                    style={{
+                      backgroundColor:
+                        selectedOptionId === option.id ? "#000" : "#fff",
+                      color: selectedOptionId === option.id ? "#fff" : "#000",
+                    }}
+                  >
+                    {option.title}
+                    {poll.isPublic &&
+                      isVoted &&
+                      (isLoadingVoted ? (
+                        <Skeleton classes="mt-4 w-full h-10" />
+                      ) : (
+                        <div className="mt-4 grid w-full grid-cols-2 rounded-md bg-white p-2 text-sm text-gray-900 outline outline-1 outline-gray-200">
+                          <div>
+                            votes:
+                            <span className="font-bold">
+                              {countVotes(option.id)}
+                            </span>
+                          </div>
+                          <div>
+                            average:
+                            <span className="font-bold">
+                              {averageVotes(option.id)}%
+                            </span>
+                          </div>
+                        </div>
+                      ))}
+                  </motion.button>
+                ))}
+              </div>
+              <Button
+                disabled={isVoted}
+                onClick={handleVote}
+                type="primary"
+                classes="mt-8 w-full py-4 text-base"
+              >
+                {isVoted ? "Voted" : "Vote"}
               </Button>
             </div>
           </div>
-        )}
-        {isLoading ? (
-          <Skeleton classes="mt-10 h-64" />
-        ) : (
-          <div className="mt-10 flex flex-col items-center gap-y-6">
-            {poll?.options.map((option) => (
-              <motion.button
-                key={option.id}
-                onTap={() => handleCurrentOption(option.id)}
-                whileHover={{ scale: 1.02 }}
-                whileTap={{ scale: 0.98 }}
-                className="relative flex w-full flex-col items-start rounded-xl bg-white px-3 py-4 text-left text-sm shadow-md transition-all duration-200 ease-out hover:!bg-gray-900 hover:!text-white"
-                style={{
-                  backgroundColor:
-                    selectedOptionId === option.id ? "#000" : "#fff",
-                  color: selectedOptionId === option.id ? "#fff" : "#000",
-                }}
-              >
-                {option.title}
-                {isVoted &&
-                  (isLoadingVoted ? (
-                    <Skeleton classes="mt-4 w-full h-10" />
-                  ) : (
-                    <div className="mt-4 grid w-full grid-cols-2 rounded-md bg-white p-2 text-sm text-gray-900 outline outline-1 outline-gray-200">
-                      <div>
-                        votes:
-                        <span className="font-bold">
-                          {" "}
-                          {countVotes(option.id)}
-                        </span>
-                      </div>
-                      <div>
-                        average:
-                        <span className="font-bold">
-                          {" "}
-                          {averageVotes(option.id)}%
-                        </span>
-                      </div>
-                    </div>
-                  ))}
-              </motion.button>
-            ))}
+        );
+      } else {
+        return (
+          <div className="flex w-full flex-col items-center justify-center">
+            <div className="mt-20 flex w-full max-w-2xl flex-col items-center rounded-xl bg-gray-50 p-10 text-center">
+              <h1 className="text-2xl font-semibold">{poll?.title}</h1>
+
+              <Badge
+                classnames="mt-2 w-32 bg-red-100 !text-red-600"
+                text="Not Live"
+              />
+            </div>
           </div>
-        )}
-        <Button
-          disabled={isVoted}
-          onClick={handleVote}
-          type="primary"
-          classes="mt-8 w-full py-4 text-base"
-        >
-          {isVoted ? "Voted" : "Vote"}
-        </Button>
-      </div>
-    </div>
-  );
+        );
+      }
+    }
+  }
 };
 
 export default PollView;

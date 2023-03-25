@@ -21,6 +21,8 @@ const CreateGuest = () => {
   // State
   const [question, setQuestion] = useState("");
   const [options, setOptions] = useState(["", ""]);
+  const [isPublic, setIsPublic] = useState(true);
+  const [isLive, setIsLive] = useState(true);
 
   // Handlers
   const handleChange = (e: React.ChangeEvent<HTMLInputElement>) => {
@@ -78,6 +80,8 @@ const CreateGuest = () => {
           name: question,
           options: filteredOptions,
           userId: session?.user.id,
+          isPublic,
+          isLive,
         },
         {
           onSuccess: (data) => {
@@ -88,7 +92,7 @@ const CreateGuest = () => {
       toast.promise(createPollPromise, {
         loading: "Creating Poll",
         success: "Poll created successfully!",
-        error: "Something went wrong",
+        error: "Error creating poll",
       });
     } else {
       toast.error("Please enter a question and at least 2 options");
@@ -155,10 +159,12 @@ const CreateGuest = () => {
               {isPro && isPro === "active" && (
                 <div className="flex items-center justify-between gap-x-4">
                   <div className="flex w-full items-center justify-center rounded-md bg-white p-4 shadow-md">
-                    <Toggle /> <span className="ml-2">Results Private</span>
+                    <Toggle checked={isPublic} onChange={setIsPublic} />{" "}
+                    <span className="ml-2">Results Public</span>
                   </div>
                   <div className="flex w-full items-center justify-center rounded-md bg-white p-4 shadow-md">
-                    <Toggle /> <span className="ml-2">Draft</span>
+                    <Toggle checked={isLive} onChange={setIsLive} />{" "}
+                    <span className="ml-2">Live</span>
                   </div>
                 </div>
               )}

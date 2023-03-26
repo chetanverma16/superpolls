@@ -7,6 +7,7 @@ import toast from "react-hot-toast";
 
 const AllPolls = () => {
   const { data: session } = useSession();
+  const { data: isPro } = api.user.subscriptionStatus.useQuery();
 
   // Fetch Featured Polls
   const {
@@ -55,14 +56,18 @@ const AllPolls = () => {
             <Skeleton classes="h-24 p-10" />
           </>
         ) : (
-          userPolls?.map(({ id, title, _count }: any) => (
+          userPolls?.map(({ id, title, _count, isPublic, isLive }: any) => (
             <PollCard
               id={id}
               key={id}
               title={title}
               votes={_count.Vote}
               options={_count.options}
+              isPublic={isPublic}
+              isLive={isLive}
               handleDelete={handleDelete}
+              refetch={refetch}
+              isPro={isPro}
             />
           ))
         )}

@@ -1,3 +1,5 @@
+import { StripeSubscriptionStatus } from "@prisma/client";
+
 export default interface PollCardProps {
   id: string;
   title: string;
@@ -6,4 +8,8 @@ export default interface PollCardProps {
   voted?: string;
   isVotedScreen?: boolean;
   handleDelete?: (id: string) => void;
+  isPro?: StripeSubscriptionStatus | null;
+  isLive?: boolean;
+  isPublic?: boolean;
+  refetch?: () => void;
 }

@@ -122,6 +122,8 @@ export const pollsRouter = createTRPCRouter({
         select: {
           id: true,
           title: true,
+          isLive: true,
+          isPublic: true,
           _count: {
             select: {
               Vote: true,
@@ -173,6 +175,25 @@ export const pollsRouter = createTRPCRouter({
       return ctx.prisma.poll.delete({
         where: {
           id: input.id,
+        },
+      });
+    }),
+  updatePoll: protectedProcedure
+    .input(
+      z.object({
+        id: z.string(),
+        isPublic: z.boolean().optional(),
+        isLive: z.boolean().optional(),
+      }),
+    )
+    .mutation(async ({ ctx, input }) => {
+      return ctx.prisma.poll.update({
+        where: {
+          id: input.id,
+        },
+        data: {
+          isPublic: input.isPublic,
+          isLive: input.isLive,
         },
       });
     }),

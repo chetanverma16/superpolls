@@ -1,4 +1,4 @@
 export default interface ToogleProps {
-  checked: boolean;
+  checked?: boolean;
   onChange: (checked: boolean) => void;
 }

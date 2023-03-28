@@ -11,7 +11,6 @@ import useLocalStorage from "@/lib/hooks/use-local-storage";
 import useCopyToClipboard from "@/lib/hooks/use-copy-to-clipboard";
 import { useSession } from "next-auth/react";
 import Badge from "@/components/Badge";
-import CustomDialog from "@/components/Dialog";
 
 const PollView = () => {
   const router = useRouter();
@@ -49,6 +48,8 @@ const PollView = () => {
     },
     { enabled: !!id },
   );
+
+  console.log(poll);
 
   // Handle current option
   const handleCurrentOption = (id: string) => {
@@ -152,7 +153,7 @@ const PollView = () => {
   }
 
   if (!isLoading) {
-    if (session?.user?.id === poll?.userId) {
+    if (poll?.isLive) {
       return (
         <div className="flex w-full flex-col items-center justify-center">
           <div className="mt-20 w-full max-w-2xl rounded-xl bg-gray-50 p-10">
@@ -161,6 +162,9 @@ const PollView = () => {
               <div className="flex items-center">
                 <Button onClick={handleLinkClick}>
                   <LinkIcon />
+                </Button>
+                <Button>
+                  <Share />
                 </Button>
               </div>
             </div>
@@ -180,118 +184,63 @@ const PollView = () => {
                   }}
                 >
                   {option.title}
-                  <div className="mt-4 grid w-full grid-cols-2 rounded-md bg-white p-2 text-sm text-gray-900 outline outline-1 outline-gray-200">
-                    <div>
-                      votes:
-                      <span className="font-bold">{countVotes(option.id)}</span>
-                    </div>
-                    <div>
-                      average:
-                      <span className="font-bold">
-                        {averageVotes(option.id)}%
-                      </span>
-                    </div>
-                  </div>
+                  {poll.isPublic &&
+                    isVoted &&
+                    (isLoadingVoted ? (
+                      <Skeleton classes="mt-4 w-full h-10" />
+                    ) : (
+                      <div className="mt-4 grid w-full grid-cols-2 rounded-md bg-white p-2 text-sm text-gray-900 outline outline-1 outline-gray-200">
+                        <div>
+                          votes:
+                          <span className="font-bold">
+                            {countVotes(option.id)}
+                          </span>
+                        </div>
+                        <div>
+                          average:
+                          <span className="font-bold">
+                            {averageVotes(option.id)}%
+                          </span>
+                        </div>
+                      </div>
+                    ))}
                 </motion.button>
               ))}
             </div>
-            <Button
-              disabled={isVoted}
-              onClick={handleVote}
-              type="primary"
-              classes="mt-8 w-full py-4 text-base"
-            >
-              {isVoted ? "Voted" : "Vote"}
-            </Button>
+            <div className="text-center">
+              <Button
+                disabled={isVoted}
+                onClick={handleVote}
+                type="primary"
+                classes="mt-8 w-full py-4 text-base"
+              >
+                {isVoted ? "Voted" : "Vote"}
+              </Button>
+              <div className="mt-4 w-full text-center text-xs">
+                <Link
+                  href="/create"
+                  className="text-gray-500 hover:text-gray-700"
+                >
+                  Create your own for free
+                </Link>
+              </div>
+            </div>
           </div>
         </div>
       );
     } else {
-      if (poll?.isLive) {
-        return (
-          <div className="flex w-full flex-col items-center justify-center">
-            <div className="mt-20 w-full max-w-2xl rounded-xl bg-gray-50 p-10">
-              <div className="flex items-center justify-between">
-                <h1 className="w-4/5 text-2xl font-semibold">{poll?.title}</h1>
-                <div className="flex items-center">
-                  <Button onClick={handleLinkClick}>
-                    <LinkIcon />
-                  </Button>
-                </div>
-              </div>
+      return (
+        <div className="flex w-full flex-col items-center justify-center">
+          <div className="mt-20 flex w-full max-w-2xl flex-col items-center rounded-xl bg-gray-50 p-10 text-center">
+            <h1 className="text-2xl font-semibold">{poll?.title}</h1>
 
-              <div className="mt-10 flex flex-col items-center gap-y-6">
-                {poll?.options.map((option) => (
-                  <motion.button
-                    key={option.id}
-                    onTap={() => handleCurrentOption(option.id)}
-                    whileHover={{ scale: 1.02 }}
-                    whileTap={{ scale: 0.98 }}
-                    className="relative flex w-full flex-col items-start rounded-xl bg-white px-3 py-4 text-left text-sm shadow-md transition-all duration-200 ease-out hover:!bg-gray-900 hover:!text-white"
-                    style={{
-                      backgroundColor:
-                        selectedOptionId === option.id ? "#000" : "#fff",
-                      color: selectedOptionId === option.id ? "#fff" : "#000",
-                    }}
-                  >
-                    {option.title}
-                    {poll.isPublic &&
-                      isVoted &&
-                      (isLoadingVoted ? (
-                        <Skeleton classes="mt-4 w-full h-10" />
-                      ) : (
-                        <div className="mt-4 grid w-full grid-cols-2 rounded-md bg-white p-2 text-sm text-gray-900 outline outline-1 outline-gray-200">
-                          <div>
-                            votes:
-                            <span className="font-bold">
-                              {countVotes(option.id)}
-                            </span>
-                          </div>
-                          <div>
-                            average:
-                            <span className="font-bold">
-                              {averageVotes(option.id)}%
-                            </span>
-                          </div>
-                        </div>
-                      ))}
-                  </motion.button>
-                ))}
-              </div>
-              <div className="text-center">
-                <Button
-                  disabled={isVoted}
-                  onClick={handleVote}
-                  type="primary"
-                  classes="mt-8 w-full py-4 text-base"
-                >
-                  {isVoted ? "Voted" : "Vote"}
-                </Button>
-                <div className="mt-4 w-full text-center text-xs">
-                  <Link
-                    href="/create"
-                    className="text-gray-500 hover:text-gray-700"
-                  >
-                    Create your own for free
-                  </Link>
-                </div>
-              </div>
-            </div>
+            <Badge
+              classnames="mt-2 w-32 bg-red-100 !text-red-600"
+              text="Not Live"
+            />
           </div>
-        );
-      } else {
-        return (
-          <div className="flex w-full flex-col items-center justify-center">
-            <div className="mt-20 flex w-full max-w-2xl flex-col items-center rounded-xl bg-gray-50 p-10 text-center">
-              <h1 className="text-2xl font-semibold">{poll?.title}</h1>
-              <Badge
-                classnames="mt-2 w-32 bg-red-100 !text-red-600"
-                text="Not Live"
-              />
-            </div>
-          </div>
-        );
-      }
+        </div>
+      );
     }
   }
 };

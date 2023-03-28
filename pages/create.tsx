@@ -9,8 +9,9 @@ import CustomInput from "@/components/CustomInput";
 import Button from "@/components/Button";
 
 // Icons
-import { Loader2, Plus, X } from "lucide-react";
+import { InfoIcon, Loader2, Plus, X } from "lucide-react";
 import Toggle from "@/components/Toggle";
+import Tooltip from "@/components/Tooltip";
 
 const CreateGuest = () => {
   const router = useRouter();
@@ -160,11 +161,20 @@ const CreateGuest = () => {
                 <div className="flex items-center justify-between gap-x-4">
                   <div className="flex w-full items-center justify-center rounded-md bg-white p-4 shadow-md">
                     <Toggle checked={isPublic} onChange={setIsPublic} />{" "}
-                    <span className="ml-2">Results Public</span>
+                    <Tooltip content="Show/Hide Your Results Publically">
+                      <span className="ml-2 flex items-center">
+                        Results Public{" "}
+                        <InfoIcon className="h-4 text-gray-500" />{" "}
+                      </span>
+                    </Tooltip>
                   </div>
                   <div className="flex w-full items-center justify-center rounded-md bg-white p-4 shadow-md">
                     <Toggle checked={isLive} onChange={setIsLive} />{" "}
-                    <span className="ml-2">Live</span>
+                    <Tooltip content="Show/Hide Your Poll">
+                      <span className="ml-2 flex items-center">
+                        Live <InfoIcon className="h-4 text-gray-500" />
+                      </span>
+                    </Tooltip>
                   </div>
                 </div>
               )}

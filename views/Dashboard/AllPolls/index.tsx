@@ -4,8 +4,13 @@ import { api } from "@/lib/trpc";
 import PollCard from "@/components/PollCard";
 import Skeleton from "@/components/Skeleton";
 import toast from "react-hot-toast";
+import EmptyState from "@/components/EmptyState";
+import Button from "@/components/Button";
+import { useRouter } from "next/router";
+import { PlusIcon } from "lucide-react";
 
 const AllPolls = () => {
+  const router = useRouter();
   const { data: session } = useSession();
   const { data: isPro } = api.user.subscriptionStatus.useQuery();
 
@@ -55,6 +60,19 @@ const AllPolls = () => {
             <Skeleton classes="h-24 p-10" />
             <Skeleton classes="h-24 p-10" />
           </>
+        ) : userPolls?.length === 0 ? (
+          <EmptyState
+            title="No poll found"
+            description="Sorry, there are no polls available at the moment. Please create a new poll to get started."
+          >
+            <Button
+              Icon={PlusIcon}
+              onClick={() => router.push("/create")}
+              type="primary"
+            >
+              Create Poll
+            </Button>
+          </EmptyState>
         ) : (
           userPolls?.map(({ id, title, _count, isPublic, isLive }: any) => (
             <PollCard

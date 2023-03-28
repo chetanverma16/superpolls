@@ -1,4 +1,4 @@
-import { CheckCircle, ExternalLink, Trash } from "lucide-react";
+import { CheckCircle, ExternalLink, InfoIcon, Link, Trash } from "lucide-react";
 import React, { useEffect, useState } from "react";
 import Badge from "../Badge";
 import Button from "../Button";
@@ -8,6 +8,7 @@ import { useRouter } from "next/router";
 import Toggle from "../Toggle";
 import { api } from "@/lib/trpc";
 import toast from "react-hot-toast";
+import Tooltip from "@/components/Tooltip";
 
 const PollCard = ({
   id,
@@ -26,6 +27,7 @@ const PollCard = ({
 
   const [isPublicState, setIsPublicState] = useState(isPublic);
   const [isLiveState, setIsLiveState] = useState(isLive);
+  const [disableCheck, setDisableCheck] = useState(false);
 
   const updatePollMutation = api.polls.updatePoll.useMutation();
 
@@ -38,6 +40,7 @@ const PollCard = ({
 
   useEffect(() => {
     if (isPublicState !== isPublic || isLiveState !== isLive) {
+      setDisableCheck(true);
       const updatePollPromise = updatePollMutation.mutateAsync(
         {
           id,
@@ -47,6 +50,7 @@ const PollCard = ({
         {
           onSuccess: () => {
             refetch && refetch();
+            setDisableCheck(false);
           },
         },
       );
@@ -61,13 +65,9 @@ const PollCard = ({
   }, [isPublicState, isLiveState]);
 
   return (
-    <motion.div
-      whileHover={{ scale: 1.01, transition: { duration: 0.2 } }}
-      whileTap={{ scale: 0.99, transition: { duration: 0.2 } }}
-      className="flex cursor-pointer items-start justify-between rounded-xl border border-transparent bg-gray-50 p-6 hover:border-gray-200"
-    >
+    <motion.div className="flex cursor-pointer items-start justify-between rounded-xl border border-transparent bg-gray-50 p-6 hover:border-gray-200">
       <div className={isVotedScreen ? "w-full" : "w-4/6"}>
-        <h1 className="text-lg text-gray-900">{title}</h1>
+        <h1 className="text-lg font-semibold text-gray-900">{title}</h1>
         <div className="mt-2 flex items-center gap-x-2">
           {votes > 0 && (
             <Badge text={`${votes} votes`} backgroundColor="bg-gray-900" />
@@ -85,30 +85,40 @@ const PollCard = ({
         {!voted && isPro && (
           <div className="mt-6 flex items-center gap-x-2">
             <div className="flex items-center justify-center rounded-xl bg-white p-4 shadow-md">
-              <Toggle checked={isPublicState} onChange={setIsPublicState} />{" "}
+              <Toggle
+                checked={isPublicState}
+                onChange={setIsPublicState}
+                disabled={disableCheck}
+              />{" "}
               <span className="ml-2">Results Public</span>
             </div>
             <div className="flex items-center justify-center rounded-xl bg-white p-4 shadow-md">
-              <Toggle checked={isLiveState} onChange={setIsLiveState} />{" "}
-              <span className="ml-2">Live</span>
+              <Toggle
+                checked={isLiveState}
+                onChange={setIsLiveState}
+                disabled={disableCheck}
+              />
+
+              <span className="ml-2">Live </span>
             </div>
           </div>
         )}
       </div>
-      {!isVotedScreen && (
-        <div className="flex items-center gap-x-2">
-          <Button
-            onClick={() => router.push(`/poll/${id}`)}
-            Icon={ExternalLink}
-            classes="bg-blue-500 text-white hover:bg-blue-600"
-          />
+
+      <div className="flex items-center gap-x-2">
+        <Button
+          onClick={() => router.push(`/poll/${id}`)}
+          Icon={ExternalLink}
+          classes="bg-blue-500 text-white hover:!bg-blue-600"
+        />
+        {!isVotedScreen && (
           <Button
             onClick={(e) => deletePoll(e, id)}
             Icon={Trash}
             classes="bg-red-500 text-white hover:bg-red-600"
           />
-        </div>
-      )}
+        )}
+      </div>
     </motion.div>
   );
 };

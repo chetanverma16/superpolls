@@ -3,11 +3,12 @@ import { Switch } from "@headlessui/react";
 import { classNames } from "@/lib/utils";
 import ToogleProps from "./toogle.types";
 
-export default function Toggle({ checked, onChange }: ToogleProps) {
+export default function Toggle({ checked, onChange, disabled }: ToogleProps) {
   return (
     <Switch
       checked={checked}
       onChange={onChange}
+      disabled={disabled}
       className={classNames(
         checked ? "bg-blue-600" : "bg-gray-200",
         "relative inline-flex h-6 w-11 flex-shrink-0 cursor-pointer rounded-full border-2 border-transparent transition-colors duration-200 ease-in-out focus:outline-none",

@@ -14,11 +14,9 @@ export default function Dropdown({ Trigger, items }: DropdownProps) {
 
   return (
     <Menu as="div" className="relative inline-block text-left">
-      <div>
-        <Menu.Button className="inline-flex w-full justify-center rounded-md">
-          {Trigger}
-        </Menu.Button>
-      </div>
+      <Menu.Button className="inline-flex w-full justify-center rounded-md">
+        {Trigger}
+      </Menu.Button>
 
       <Transition
         as={Fragment}

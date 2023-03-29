@@ -49,8 +49,6 @@ const PollView = () => {
     { enabled: !!id },
   );
 
-  console.log(poll);
-
   // Handle current option
   const handleCurrentOption = (id: string) => {
     if (isVoting) {
@@ -143,8 +141,8 @@ const PollView = () => {
 
   if (isLoading) {
     return (
-      <div className="flex w-full flex-col items-center justify-center">
-        <div className="mt-20 w-full max-w-2xl rounded-xl bg-gray-50 p-10">
+      <div className="flex h-screen w-full flex-col items-center justify-center">
+        <div className="w-full max-w-2xl rounded-xl bg-gray-50 p-10">
           <Skeleton classes="w-4/5 text-2xl font-semibold" />
           <Skeleton classes="mt-10 h-64" />
         </div>
@@ -155,16 +153,13 @@ const PollView = () => {
   if (!isLoading) {
     if (poll?.isLive) {
       return (
-        <div className="flex w-full flex-col items-center justify-center">
-          <div className="mt-20 w-full max-w-2xl rounded-xl bg-gray-50 p-10">
+        <div className="flex h-full min-h-screen w-full flex-col items-center justify-center">
+          <div className="w-full max-w-2xl rounded-xl bg-gray-50 p-10">
             <div className="flex items-center justify-between">
               <h1 className="w-4/5 text-2xl font-semibold">{poll?.title}</h1>
               <div className="flex items-center">
                 <Button onClick={handleLinkClick}>
                   <LinkIcon />
-                </Button>
-                <Button>
-                  <Share />
                 </Button>
               </div>
             </div>
@@ -230,10 +225,9 @@ const PollView = () => {
       );
     } else {
       return (
-        <div className="flex w-full flex-col items-center justify-center">
-          <div className="mt-20 flex w-full max-w-2xl flex-col items-center rounded-xl bg-gray-50 p-10 text-center">
+        <div className="flex h-screen w-full flex-col items-center justify-center">
+          <div className="flex w-full max-w-2xl flex-col items-center rounded-xl bg-gray-50 p-10 text-center">
             <h1 className="text-2xl font-semibold">{poll?.title}</h1>
-
             <Badge
               classnames="mt-2 w-32 bg-red-100 !text-red-600"
               text="Not Live"

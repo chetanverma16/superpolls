@@ -2,7 +2,7 @@ import React, { useEffect, useState } from "react";
 import { useRouter } from "next/router";
 import Button from "@/components/Button";
 import Link from "next/link";
-import { Share, LinkIcon } from "lucide-react";
+import { LinkIcon } from "lucide-react";
 import { motion } from "framer-motion";
 import toast from "react-hot-toast";
 import { api } from "@/lib/trpc";
@@ -11,7 +11,7 @@ import useLocalStorage from "@/lib/hooks/use-local-storage";
 import useCopyToClipboard from "@/lib/hooks/use-copy-to-clipboard";
 import { useSession } from "next-auth/react";
 import Badge from "@/components/Badge";
-import CustomDialog from "@/components/Dialog";
+import classNames from "classnames";
 
 const PollView = () => {
   const router = useRouter();
@@ -155,9 +155,19 @@ const PollView = () => {
     if (session?.user?.id === poll?.userId) {
       return (
         <div className="flex w-full flex-col items-center justify-center">
-          <div className="mt-20 w-full max-w-2xl rounded-xl bg-gray-50 p-10">
+          <div
+            className={classNames(
+              "mt-20 w-full max-w-2xl rounded-xl bg-gray-50 p-10",
+            )}
+          >
             <div className="flex items-center justify-between">
-              <h1 className="w-4/5 text-2xl font-semibold">{poll?.title}</h1>
+              <h1
+                className={classNames(
+                  "w-4/5 text-2xl font-semibold text-gray-900",
+                )}
+              >
+                {poll?.title}
+              </h1>
               <div className="flex items-center">
                 <Button onClick={handleLinkClick}>
                   <LinkIcon />

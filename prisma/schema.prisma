@@ -80,7 +80,6 @@ model Poll {
   userId   String?
   isLive   Boolean  @default(true)
   isPublic Boolean  @default(true)
-  template String   @default("default")
   user     User?    @relation(fields: [userId], references: [id], onDelete: Cascade)
   options  Option[]
   Vote     Vote[]

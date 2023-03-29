@@ -11,7 +11,6 @@ export const pollsRouter = createTRPCRouter({
         userId: z.string().optional(),
         isPublic: z.boolean().optional(),
         isLive: z.boolean().optional(),
-        template: z.string().optional(),
       }),
     )
     .mutation(({ ctx, input }) => {

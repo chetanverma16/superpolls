@@ -7,11 +7,11 @@ import { useSession } from "next-auth/react";
 // Components
 import CustomInput from "@/components/CustomInput";
 import Button from "@/components/Button";
+import Toggle from "@/components/Toggle";
+import Tooltip from "@/components/Tooltip";
 
 // Icons
 import { InfoIcon, Loader2, Plus, X } from "lucide-react";
-import Toggle from "@/components/Toggle";
-import Tooltip from "@/components/Tooltip";
 
 const CreateGuest = () => {
   const router = useRouter();
@@ -158,23 +158,25 @@ const CreateGuest = () => {
                 Add another option
               </Button>
               {isPro && isPro === "active" && (
-                <div className="flex items-center justify-between gap-x-4">
-                  <div className="flex w-full items-center justify-center rounded-md bg-white p-4 shadow-md">
-                    <Toggle checked={isPublic} onChange={setIsPublic} />{" "}
-                    <Tooltip content="Show/Hide Your Results Publically">
-                      <span className="ml-2 flex items-center">
-                        Results Public{" "}
-                        <InfoIcon className="h-4 text-gray-500" />{" "}
-                      </span>
-                    </Tooltip>
-                  </div>
-                  <div className="flex w-full items-center justify-center rounded-md bg-white p-4 shadow-md">
-                    <Toggle checked={isLive} onChange={setIsLive} />{" "}
-                    <Tooltip content="Show/Hide Your Poll">
-                      <span className="ml-2 flex items-center">
-                        Live <InfoIcon className="h-4 text-gray-500" />
-                      </span>
-                    </Tooltip>
+                <div className="flex flex-col items-center gap-y-4">
+                  <div className="flex w-full items-center justify-between gap-x-4">
+                    <div className="flex w-full items-center justify-center rounded-md bg-white p-4 shadow-md">
+                      <Toggle checked={isPublic} onChange={setIsPublic} />{" "}
+                      <Tooltip content="Show/Hide Your Results Publically">
+                        <span className="ml-2 flex items-center">
+                          Results Public{" "}
+                          <InfoIcon className="h-4 text-gray-500" />{" "}
+                        </span>
+                      </Tooltip>
+                    </div>
+                    <div className="flex w-full items-center justify-center rounded-md bg-white p-4 shadow-md">
+                      <Toggle checked={isLive} onChange={setIsLive} />{" "}
+                      <Tooltip content="Show/Hide Your Poll">
+                        <span className="ml-2 flex items-center">
+                          Live <InfoIcon className="h-4 text-gray-500" />
+                        </span>
+                      </Tooltip>
+                    </div>
                   </div>
                 </div>
               )}

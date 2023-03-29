@@ -1,4 +1,11 @@
-import { CheckCircle, ExternalLink, InfoIcon, Link, Trash } from "lucide-react";
+import {
+  CheckCircle,
+  ExternalLink,
+  InfoIcon,
+  Link,
+  Link2,
+  Trash,
+} from "lucide-react";
 import React, { useEffect, useState } from "react";
 import Badge from "../Badge";
 import Button from "../Button";
@@ -9,6 +16,7 @@ import Toggle from "../Toggle";
 import { api } from "@/lib/trpc";
 import toast from "react-hot-toast";
 import Tooltip from "@/components/Tooltip";
+import useCopyToClipboard from "@/lib/hooks/use-copy-to-clipboard";
 
 const PollCard = ({
   id,
@@ -24,6 +32,7 @@ const PollCard = ({
   refetch,
 }: PollCardProps) => {
   const router = useRouter();
+  const [value, copy] = useCopyToClipboard();
 
   const [isPublicState, setIsPublicState] = useState(isPublic);
   const [isLiveState, setIsLiveState] = useState(isLive);
@@ -36,6 +45,11 @@ const PollCard = ({
     if (handleDelete) {
       handleDelete(id);
     }
+  };
+
+  const handleLinkClick = () => {
+    toast.success("Copied to clipboard!");
+    copy(`https://polls.vercel.app/poll/${id}`);
   };
 
   useEffect(() => {
@@ -111,6 +125,14 @@ const PollCard = ({
           Icon={ExternalLink}
           classes="bg-blue-500 text-white hover:!bg-blue-600"
         />
+        <Tooltip content="Copy Link">
+          <Button
+            onClick={handleLinkClick}
+            Icon={Link2}
+            classes="bg-green-500 text-white hover:!bg-green-600"
+          />
+        </Tooltip>
+
         {!isVotedScreen && (
           <Button
             onClick={(e) => deletePoll(e, id)}

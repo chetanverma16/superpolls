@@ -8,7 +8,9 @@ const Layout = ({ children }: LayoutProps) => {
   return (
     <div className="mx-auto max-w-5xl p-6">
       {router.pathname === "/embed/[id]" ? null : <Header />}
-      <div className="mt-10">{children}</div>
+      <div className={router.pathname !== "/embed/[id]" ? "mt-10" : ""}>
+        {children}
+      </div>
     </div>
   );
 };

@@ -75,14 +75,16 @@ model VerificationToken {
 }
 
 model Poll {
-  id       String   @id @default(cuid())
-  title    String
-  userId   String?
-  isLive   Boolean  @default(true)
-  isPublic Boolean  @default(true)
-  user     User?    @relation(fields: [userId], references: [id], onDelete: Cascade)
-  options  Option[]
-  Vote     Vote[]
+  id        String   @id @default(cuid())
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+  title     String
+  userId    String?
+  isLive    Boolean  @default(true)
+  isPublic  Boolean  @default(true)
+  user      User?    @relation(fields: [userId], references: [id], onDelete: Cascade)
+  options   Option[]
+  Vote      Vote[]
 
   @@index([userId])
 }
@@ -98,13 +100,14 @@ model Option {
 }
 
 model Vote {
-  id       String  @id @default(cuid())
-  userId   String?
-  pollId   String
-  optionId String
-  user     User?   @relation(fields: [userId], references: [id], onDelete: Cascade)
-  option   Option  @relation(fields: [optionId], references: [id], onDelete: Cascade)
-  poll     Poll    @relation(fields: [pollId], references: [id], onDelete: Cascade)
+  id        String   @id @default(cuid())
+  createdAt DateTime @default(now())
+  userId    String?
+  pollId    String
+  optionId  String
+  user      User?    @relation(fields: [userId], references: [id], onDelete: Cascade)
+  option    Option   @relation(fields: [optionId], references: [id], onDelete: Cascade)
+  poll      Poll     @relation(fields: [pollId], references: [id], onDelete: Cascade)
 
   @@unique([userId, pollId])
   @@index([optionId])

@@ -106,7 +106,12 @@ export const pollsRouter = createTRPCRouter({
       });
     }),
   getUserPolls: protectedProcedure
-    .input(z.object({ userId: z.string().optional() }))
+    .input(
+      z.object({
+        userId: z.string().optional(),
+        page: z.number().optional().default(1),
+      }),
+    )
     .query(async ({ ctx, input }) => {
       if (!input.userId) {
         throw new TRPCError({
@@ -115,6 +120,9 @@ export const pollsRouter = createTRPCRouter({
         });
       }
       return ctx.prisma.poll.findMany({
+        orderBy: {
+          createdAt: "desc",
+        },
         where: {
           userId: input.userId,
         },
@@ -133,7 +141,11 @@ export const pollsRouter = createTRPCRouter({
       });
     }),
   getUserVotes: protectedProcedure
-    .input(z.object({ userId: z.string().optional() }))
+    .input(
+      z.object({
+        userId: z.string().optional(),
+      }),
+    )
     .query(async ({ ctx, input }) => {
       if (!input.userId) {
         throw new TRPCError({

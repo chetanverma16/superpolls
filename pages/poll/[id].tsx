@@ -2,7 +2,7 @@ import React, { useEffect, useState } from "react";
 import { useRouter } from "next/router";
 import Button from "@/components/Button";
 import Link from "next/link";
-import { LinkIcon } from "lucide-react";
+import { LinkIcon, QrCode } from "lucide-react";
 import { motion } from "framer-motion";
 import toast from "react-hot-toast";
 import { api } from "@/lib/trpc";
@@ -12,6 +12,8 @@ import useCopyToClipboard from "@/lib/hooks/use-copy-to-clipboard";
 import { useSession } from "next-auth/react";
 import Badge from "@/components/Badge";
 import classNames from "classnames";
+import CustomDialog from "@/components/Dialog";
+import QRCode from "react-qr-code";
 
 const PollView = () => {
   const router = useRouter();
@@ -25,10 +27,30 @@ const PollView = () => {
   const [isVoted, setIsVoted] = useState(false);
   const [votes, setVotes] = useLocalStorage<any>("votes", []);
   const [isVoting, setIsVoting] = useState(false);
+  const [showQR, setShowQR] = useState(false);
 
   const handleLinkClick = () => {
     toast.success("Copied to clipboard!");
     copy(`https://polls.vercel.app/poll/${id}`);
+  };
+
+  const downloadQR = () => {
+    const svg = document.getElementById("qr") as any;
+    const svgData = new XMLSerializer().serializeToString(svg);
+    const canvas = document.createElement("canvas");
+    const ctx = canvas.getContext("2d");
+    const img = new Image();
+    img.onload = () => {
+      canvas.width = img.width;
+      canvas.height = img.height;
+      if (ctx) ctx.drawImage(img, 0, 0);
+      const pngFile = canvas.toDataURL("image/png");
+      const downloadLink = document.createElement("a");
+      downloadLink.download = "QRCode";
+      downloadLink.href = `${pngFile}`;
+      downloadLink.click();
+    };
+    img.src = `data:image/svg+xml;base64,${btoa(svgData)}`;
   };
 
   useEffect(() => {
@@ -155,6 +177,29 @@ const PollView = () => {
     if (session?.user?.id === poll?.userId) {
       return (
         <div className="flex w-full flex-col items-center justify-center">
+          <CustomDialog isOpen={showQR} setIsOpen={setShowQR}>
+            <div className="flex flex-col items-center gap-y-10 p-2">
+              <QRCode
+                id="qr"
+                size={256}
+                style={{ height: "auto", maxWidth: "100%", width: "100%" }}
+                value={`https://superpolls.io/poll/${id}`}
+                viewBox={`0 0 256 256`}
+              />
+              <div className="flex w-full flex-col gap-y-2">
+                <Button classes="w-full" type="primary" onClick={downloadQR}>
+                  Download
+                </Button>
+                <Button
+                  classes="w-full"
+                  type="secondary"
+                  onClick={() => setShowQR(false)}
+                >
+                  Close
+                </Button>
+              </div>
+            </div>
+          </CustomDialog>
           <div
             className={classNames(
               "mt-20 w-full max-w-2xl rounded-xl bg-gray-50 p-10",
@@ -168,9 +213,12 @@ const PollView = () => {
               >
                 {poll?.title}
               </h1>
-              <div className="flex items-center">
+              <div className="flex items-center gap-x-2">
                 <Button onClick={handleLinkClick}>
                   <LinkIcon />
+                </Button>
+                <Button onClick={() => setShowQR(true)}>
+                  <QrCode />
                 </Button>
               </div>
             </div>

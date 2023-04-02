@@ -70,8 +70,8 @@ export default function Home() {
           The exceptional features that make us stand <br /> out in a crowded
           market...
         </h1>
-        <div className="grid grid-cols-6 gap-6">
-          <div className="col-span-2 flex flex-col gap-y-2 rounded-xl border border-gray-200 p-6 text-left shadow-lg transition-all duration-200 hover:border-gray-400">
+        <div className="grid grid-cols-1 gap-6 lg:grid-cols-6">
+          <div className="col-auto flex flex-col gap-y-2 rounded-xl border border-gray-200 p-6 text-left shadow-lg transition-all duration-200 hover:border-gray-400 lg:col-span-2">
             <Component className="h-10" />
             <h2 className="text-xl font-semibold text-gray-900">
               Amazing Design
@@ -81,7 +81,7 @@ export default function Home() {
               effective way to create beautiful polls.
             </p>
           </div>
-          <div className="col-span-4 flex flex-col gap-y-2 rounded-xl border border-gray-200 p-6 text-left shadow-lg transition-all duration-200 hover:border-gray-400">
+          <div className="col-auto flex flex-col gap-y-2 rounded-xl border border-gray-200 p-6 text-left shadow-lg transition-all duration-200 hover:border-gray-400 lg:col-span-4">
             <ShieldCheck className="h-10" />
             <h2 className="text-xl font-semibold text-gray-900">
               Secure Polls
@@ -91,7 +91,7 @@ export default function Home() {
               above and beyond to ensure your polls are protected.
             </p>
           </div>
-          <div className="col-span-2 flex flex-col gap-y-2 rounded-xl border border-gray-200 p-6 text-left shadow-lg transition-all duration-200 hover:border-gray-400">
+          <div className="col-auto flex flex-col gap-y-2 rounded-xl border border-gray-200 p-6 text-left shadow-lg transition-all duration-200 hover:border-gray-400 lg:col-span-2">
             <Share className="h-10" />
             <h2 className="text-xl font-semibold text-gray-900">Sharing</h2>
             <p className="text-lg text-gray-500">
@@ -99,7 +99,7 @@ export default function Home() {
               select few, our platform makes it easy.
             </p>
           </div>
-          <div className="col-span-2 flex flex-col gap-y-2 rounded-xl border border-gray-200 p-6 text-left shadow-lg transition-all duration-200 hover:border-gray-400">
+          <div className="col-auto flex flex-col gap-y-2 rounded-xl border border-gray-200 p-6 text-left shadow-lg transition-all duration-200 hover:border-gray-400 lg:col-span-2">
             <Joystick className="h-10" />
             <h2 className="text-xl font-semibold text-gray-900">
               Easily Close Poll
@@ -109,7 +109,7 @@ export default function Home() {
               begins and ends on your polls.
             </p>
           </div>
-          <div className="col-span-2 flex flex-col gap-y-2 rounded-xl border border-gray-200 p-6 text-left shadow-lg transition-all duration-200 hover:border-gray-400">
+          <div className="col-auto flex flex-col gap-y-2 rounded-xl border border-gray-200 p-6 text-left shadow-lg transition-all duration-200 hover:border-gray-400 lg:col-span-2">
             <QrCode className="h-10" />
             <h2 className="text-xl font-semibold text-gray-900">Generate QR</h2>
             <p className="text-lg text-gray-500">

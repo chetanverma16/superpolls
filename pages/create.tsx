@@ -13,7 +13,7 @@ import Tooltip from "@/components/Tooltip";
 // Icons
 import { InfoIcon, Loader2, Plus, X } from "lucide-react";
 
-const CreateGuest = () => {
+const Create = () => {
   const router = useRouter();
   const mutation = api.polls.createPoll.useMutation();
   const { data: session } = useSession();
@@ -196,4 +196,4 @@ const CreateGuest = () => {
   );
 };
 
-export default CreateGuest;
+export default Create;

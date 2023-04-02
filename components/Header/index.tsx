@@ -11,7 +11,7 @@ import { api } from "@/lib/trpc";
 import toast from "react-hot-toast";
 import Badge from "../Badge";
 
-const Header = ({}: HeaderProps) => {
+const Header = ({ isPro }: HeaderProps) => {
   const router = useRouter();
   const { data: session } = useSession();
 
@@ -22,7 +22,6 @@ const Header = ({}: HeaderProps) => {
     api.stripe.createBillingPortalSession.useMutation();
 
   // Fetch Featured Polls
-  const { data: isPro, isLoading } = api.user.subscriptionStatus.useQuery();
 
   const GoPro = async () => {
     if (session?.user) {
@@ -53,7 +52,7 @@ const Header = ({}: HeaderProps) => {
       <nav className="flex items-center gap-x-4">
         {!session?.user && (
           <Link href="/pricing">
-            <Button Icon={CreditCard}>Pricing</Button>
+            <Button Icon={CreditCard}>Go Pro</Button>
           </Link>
         )}
 
@@ -62,7 +61,7 @@ const Header = ({}: HeaderProps) => {
             <Link href="/dashboard">
               <Button Icon={Home}>Dashboard</Button>
             </Link>
-            {!isLoading && isPro !== "active" && (
+            {isPro && isPro !== "active" && (
               <Button onClick={GoPro} Icon={CreditCard}>
                 Go Pro
               </Button>
@@ -97,4 +96,4 @@ const Header = ({}: HeaderProps) => {
   );
 };
 
-export default Header;
+export default React.memo(Header);

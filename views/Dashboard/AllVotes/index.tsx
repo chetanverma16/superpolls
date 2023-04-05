@@ -46,7 +46,7 @@ const AllPolls = () => {
           >
             <Button
               Icon={PlusIcon}
-              onClick={() => router.push("/")}
+              onClick={() => router.push("/create")}
               type="primary"
             >
               Create Poll

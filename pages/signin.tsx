@@ -5,14 +5,18 @@ import type {
 import { getProviders, signIn } from "next-auth/react";
 import { getServerSession } from "next-auth/next";
 import { authOptions } from "@/pages/api/auth/[...nextauth]";
-import Button from "@/components/Button";
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import toast from "react-hot-toast";
 import { validateEmail } from "@/lib/utils";
+import { useRouter } from "next/router";
+
+// Components
+import Button from "@/components/Button";
 
 export default function SignIn({}: InferGetServerSidePropsType<
   typeof getServerSideProps
 >) {
+  const router = useRouter();
   // States
   const [email, setEmail] = useState("");
 
@@ -31,6 +35,12 @@ export default function SignIn({}: InferGetServerSidePropsType<
   const handleTwitterSignIn = () => {
     signIn("twitter");
   };
+
+  useEffect(() => {
+    if (router.query.q === "gopro") {
+      toast.error("Please sign in to continue");
+    }
+  }, [router.query]);
 
   return (
     <div className="mt-32 flex w-full flex-col items-center">

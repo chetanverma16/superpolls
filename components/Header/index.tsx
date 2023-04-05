@@ -15,24 +15,10 @@ const Header = ({ isPro }: HeaderProps) => {
   const router = useRouter();
   const { data: session } = useSession();
 
-  const { mutateAsync: createCheckoutSession } =
-    api.stripe.createCheckoutSession.useMutation();
-
   const { mutateAsync: createBillingPortalSession } =
     api.stripe.createBillingPortalSession.useMutation();
 
   // Fetch Featured Polls
-
-  const GoPro = async () => {
-    if (session?.user) {
-      // @ts-ignore : ts doesn't like the fact that we're using a mutation hook as a query hook
-      const { checkoutUrl } = await createCheckoutSession();
-      if (!checkoutUrl) toast.error("Something went wrong");
-      router.push(checkoutUrl);
-    } else {
-      router.push("/signin");
-    }
-  };
 
   const BillingSession = async () => {
     // @ts-ignore : ts doesn't like the fact that we're using a mutation hook as a query hook
@@ -51,7 +37,7 @@ const Header = ({ isPro }: HeaderProps) => {
       </Link>
       <nav className="flex items-center gap-x-4">
         {!session?.user && (
-          <Link href="/pricing">
+          <Link href="/pro">
             <Button Icon={CreditCard}>Go Pro</Button>
           </Link>
         )}
@@ -62,9 +48,9 @@ const Header = ({ isPro }: HeaderProps) => {
               <Button Icon={Home}>Dashboard</Button>
             </Link>
             {isPro && isPro !== "active" && (
-              <Button onClick={GoPro} Icon={CreditCard}>
-                Go Pro
-              </Button>
+              <Link href="/pro">
+                <Button Icon={CreditCard}>Go Pro</Button>
+              </Link>
             )}
 
             <Dropdown

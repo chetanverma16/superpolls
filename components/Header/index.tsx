@@ -47,7 +47,8 @@ const Header = ({ isPro }: HeaderProps) => {
             <Link href="/dashboard">
               <Button Icon={Home}>Dashboard</Button>
             </Link>
-            {isPro && isPro !== "active" && (
+
+            {isPro !== "active" && (
               <Link href="/pro">
                 <Button Icon={CreditCard}>Go Pro</Button>
               </Link>

@@ -115,6 +115,7 @@ const PollView = () => {
         onSuccess: () => {
           setIsVoting(false);
           setIsVoted(true);
+          refetchVoted();
           setVotes([...votes, { poll: id, option: selectedOptionId }]);
         },
         onError: (error) => {
@@ -136,6 +137,7 @@ const PollView = () => {
     data: voted,
     isLoading: isLoadingVoted,
     error: isErrorVoted,
+    refetch: refetchVoted,
   } = api.polls.getAllVotes.useQuery({ pollId: id as string });
 
   const countVotes = (optionId: string) => {

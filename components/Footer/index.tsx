@@ -5,10 +5,7 @@ const navigation = {
     { name: "pro", href: "/pro" },
     { name: "support", href: "mailto:hello@chetanverma.com" },
   ],
-  legal: [
-    { name: "Privacy", href: "/privacy" },
-    { name: "Terms", href: "/terms" },
-  ],
+  legal: [{ name: "Privacy", href: "/privacy" }],
 };
 
 export default function Footer() {

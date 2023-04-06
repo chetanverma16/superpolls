@@ -9,17 +9,16 @@ export default function GoProCTA() {
       <div className="relative isolate bg-gray-50 px-6 pt-16 sm:px-16 md:pt-24 lg:flex lg:gap-x-20 lg:px-24 lg:pt-0">
         <BgSVG />
         <div className="mx-auto flex max-w-md flex-col items-center gap-y-4 text-center lg:mx-0 lg:flex-auto lg:items-start lg:py-32 lg:text-left">
-          <h2 className="text-3xl font-bold tracking-tight text-gray-900 sm:text-4xl">
+          <h2 className="text-2xl font-bold tracking-tight text-gray-900 sm:text-4xl lg:text-4xl">
             Supercharge Your Polls <br /> with Pro.
           </h2>
-          <p className="text-lg leading-8 text-gray-700">
+          <p className="text-sm leading-relaxed text-gray-700 lg:text-lg">
             Upgrade to our Pro feature and supercharge your polls with advanced
             analytics. Get real-time insights into your audience, track
             responses easily, and manage multiple polls with ease. With Pro
             analytics, you&apos;ll have all the data you need to make informed
             decisions and improve your polling strategy.
           </p>
-
           <Button onClick={() => router.push("/pro")} type="primary">
             Superchare your polls with pro
           </Button>

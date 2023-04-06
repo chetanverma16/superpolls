@@ -29,7 +29,10 @@ const Header = ({ isPro }: HeaderProps) => {
 
   return (
     <div className="flex items-center justify-between py-2">
-      <Link href="/" className="flex items-center text-xl font-bold">
+      <Link
+        href="/"
+        className="flex items-center text-base font-bold lg:text-xl"
+      >
         Superpolls{" "}
         {isPro && isPro === "active" && (
           <Badge text="pro" classnames="ml-2 text-xs" />

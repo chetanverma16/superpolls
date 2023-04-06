@@ -162,7 +162,7 @@ function html(params: { url: string; host: string; theme: Theme }) {
           <!--[if mso]>
           <v:rect xmlns:v="urn:schemas-microsoft-com:vml" fill="true" stroke="false" style="height:300px; mso-width-percent: 1000; position: absolute; left: -10px; top: -20px; z-index: -1;">
             <v:fill type="tile" color="#dee2e9" />
-            <v:textbox inset="0,0,0,0">
+            <v:textbox inset="0,0,0,0">Hi,
           <![endif]-->
           <div style="max-height: 40px">
             <div class="dark-bg-gray-900" style="height: 300px; background-color: #DEE2E9"></div>
@@ -183,38 +183,6 @@ function html(params: { url: string; host: string; theme: Theme }) {
                             <td>
                               <a href="https://superpolls.io" class="dark-text-gray-50" style="text-decoration: none; font-weight: 700; color: #191847">
                                 Superpolls                              
-                              </a>
-                            </td>
-                            <td align="right">
-                              <a href="https://example.com" class="dark-text-gray-900 dark-bg-gray-50 hover-bg-slate-100" style="text-decoration: none; display: inline-block; border-radius: 8px; background-color: #f9fafb; padding: 7px 12px; text-align: center; font-size: 12px; font-weight: 700; color: #191847; box-shadow: 0px 1px 3px rgba(0, 0, 0, 0.06), 0px 1px 3px rgba(0, 0, 0, 0.1)">
-                                <!--[if mso
-                                  ]><i
-                                    style="
-                                      letter-spacing: 24px;
-                                      mso-font-width: -100%;
-                                      mso-text-raise: 30px;
-                                    "
-                                    >&nbsp;</i><!
-                                [endif]-->
-                                <span style="mso-text-raise: 15px">
-                                  Account
-                                  <!--[if mso
-                                    ]><i
-                                      style="
-                                        letter-spacing: 6px;
-                                        mso-font-width: -100%;
-                                      "
-                                      >&nbsp;</i><!
-                                  [endif]-->
-                                </span>
-                                <!--[if mso
-                                  ]><i
-                                    style="
-                                      letter-spacing: 24px;
-                                      mso-font-width: -100%;
-                                    "
-                                    >&nbsp;</i><!
-                                [endif]-->
                               </a>
                             </td>
                           </tr>
@@ -295,63 +263,20 @@ function html(params: { url: string; host: string; theme: Theme }) {
           <table class="sm-w-full dark-text-gray-200" style="width: 568px; color: #767E9D" cellpadding="0" cellspacing="0" role="presentation">
             <tr>
               <td style="padding-left: 40px; padding-right: 40px">
-                <a href="https://example.com" class="dark-text-gray-50" style="text-decoration: none; font-weight: 700; color: #767E9D">
-                  COMPANY NAME
+                <a href="https://https://superpolls.io" class="dark-text-gray-50" style="text-decoration: none; font-weight: 700; color: #767E9D">
+                  Superpolls
                 </a>
                 <div style="line-height: 16px">&zwnj;</div>
-                <table class="sm-w-full" style="font-size: 12px; line-height: 16px" cellpadding="0" cellspacing="0" role="presentation">
-                  <tr>
-                    <td class="sm-block sm-w-full">
-                      <a href="https://example.com" class="sm-block sm-py-3 hover-text-slate-600 dark-text-gray-200 dark-hover-text-gray-100" style="text-decoration: none; font-weight: 700; color: #767E9D">
-                        Shop
-                      </a>
-                    </td>
-                    <td class="sm-block sm-px-0" style="padding-left: 12px; padding-right: 12px">
-                      <table class="sm-hidden" cellpadding="0" cellspacing="0" role="presentation">
-                        <tr>
-                          <td class="dark-bg-gray-800" style="height: 24px; width: 1px; background-color: #DEE2E9"></td>
-                        </tr>
-                      </table>
-                      <!--[if !mso]><!-->
-                        <div class="sm-block sm-h-px dark-bg-gray-800" style="mso-hide: all; display: none; background-color: #DEE2E9"></div>
-                      <!--<![endif]-->
-                    </td>
-                    <td class="sm-block sm-w-full">
-                      <a href="https://twitter.com/example" class="sm-py-3 hover-text-slate-600 dark-text-gray-200 dark-hover-text-gray-100" style="text-decoration: none; display: block; font-weight: 700; color: #767E9D">
-                        Twitter
-                      </a>
-                    </td>
-                    <td class="sm-block sm-px-0" style="padding-left: 12px; padding-right: 12px">
-                      <table class="sm-hidden" cellpadding="0" cellspacing="0" role="presentation">
-                        <tr>
-                          <td class="dark-bg-gray-800" style="height: 24px; width: 1px; background-color: #DEE2E9"></td>
-                        </tr>
-                      </table>
-                      <!--[if !mso]><!-->
-                        <div class="sm-block sm-h-px dark-bg-gray-800" style="mso-hide: all; display: none; background-color: #DEE2E9"></div>
-                      <!--<![endif]-->
-                    </td>
-                    <td class="sm-block sm-w-full">
-                      <a href="https://instagram.com/example" class="sm-py-3 hover-text-slate-600 dark-text-gray-200 dark-hover-text-gray-100" style="text-decoration: none; display: block; font-weight: 700; color: #767E9D">
-                        Instagram
-                      </a>
-                    </td>
-                  </tr>
-                </table>
                 <hr class="sm-mt-0 dark-bg-gray-800 dark-text-gray-800" style="margin-top: 12px; margin-bottom: 16px; height: 1px; border-width: 0px; background-color: #DEE2E9; color: #DEE2E9">
                 <p style="margin: 0; font-size: 12px; line-height: 16px">
                   If you have questions or need help, don't hesitate to contact our
                   support team!
-                  <br>
-                  <br>
-                  DEMOCO USA Inc, 4 World Trade Center, 150 Greenwich Street, 62nd Floor,
-                  New York, NY 10007, USA
                 </p>
                 <div style="line-height: 16px">&zwnj;</div>
                 <table class="sm-w-full" style="font-size: 12px; line-height: 16px" cellpadding="0" cellspacing="0" role="presentation">
                   <tr>
                     <td class="sm-block sm-w-full">
-                      <a href="https://example.com" class="sm-py-3 hover-text-slate-600 dark-text-gray-200 dark-hover-text-gray-100" style="text-decoration: none; display: block; font-weight: 700; color: #767E9D">
+                      <a href="https://superpolls.io/terms" class="sm-py-3 hover-text-slate-600 dark-text-gray-200 dark-hover-text-gray-100" style="text-decoration: none; display: block; font-weight: 700; color: #767E9D">
                         Terms &amp; conditions
                       </a>
                     </td>
@@ -366,7 +291,7 @@ function html(params: { url: string; host: string; theme: Theme }) {
                       <!--<![endif]-->
                     </td>
                     <td class="sm-block sm-w-full">
-                      <a href="https://example.com" class="sm-py-3 hover-text-slate-600 dark-text-gray-200 dark-hover-text-gray-100" style="text-decoration: none; display: block; font-weight: 700; color: #767E9D">
+                      <a href="https://superpolls.io/privacy" class="sm-py-3 hover-text-slate-600 dark-text-gray-200 dark-hover-text-gray-100" style="text-decoration: none; display: block; font-weight: 700; color: #767E9D">
                         Privacy policy
                       </a>
                     </td>
@@ -381,7 +306,7 @@ function html(params: { url: string; host: string; theme: Theme }) {
                       <!--<![endif]-->
                     </td>
                     <td class="sm-block sm-w-full">
-                      <a href="https://example.com" class="sm-py-3 hover-text-slate-600 dark-text-gray-200 dark-hover-text-gray-100" style="text-decoration: none; display: block; font-weight: 700; color: #767E9D">
+                      <a href="mailto:hello@chetanverma.com" class="sm-py-3 hover-text-slate-600 dark-text-gray-200 dark-hover-text-gray-100" style="text-decoration: none; display: block; font-weight: 700; color: #767E9D">
                         Contact us
                       </a>
                     </td>
@@ -394,11 +319,9 @@ function html(params: { url: string; host: string; theme: Theme }) {
                 </table>
                 <div style="line-height: 16px">&zwnj;</div>
                 <p style="margin: 0; font-size: 12px; line-height: 16px">
-                  This message was sent to name@domain.com. If you don't want to receive
-                  these emails from DEMOCO in the future, you can
-                  <a href="https://example.com" class="hover-text-slate-600 dark-text-gray-200 dark-hover-text-gray-100" style="text-decoration: none; font-weight: 700; color: #767E9D">edit your profile</a>
-                  or
-                  <a href="https://example.com" class="hover-text-slate-600 dark-text-gray-200 dark-hover-text-gray-100" style="text-decoration: none; font-weight: 700; color: #767E9D">unsubscribe</a>.
+                  This message was sent to ${escapedHost}. If you don't want to receive
+                  these emails from Superpolls in the future, you can
+                  <a href="https://superpolls.io/unsubscribe" class="hover-text-slate-600 dark-text-gray-200 dark-hover-text-gray-100" style="text-decoration: none; font-weight: 700; color: #767E9D">unsubscribe</a>.
                 </p>
                 <div style="line-height: 40px">&zwnj;</div>
               </td>

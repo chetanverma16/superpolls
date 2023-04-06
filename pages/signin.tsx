@@ -12,6 +12,7 @@ import { useRouter } from "next/router";
 
 // Components
 import Button from "@/components/Button";
+import { Twitter } from "lucide-react";
 
 export default function SignIn({}: InferGetServerSidePropsType<
   typeof getServerSideProps
@@ -68,21 +69,20 @@ export default function SignIn({}: InferGetServerSidePropsType<
             <h3 className="px-4 text-gray-400">or</h3>
             <hr className="w-full bg-gray-200" style={{ height: "2px" }} />
           </div>
-
-          <Button
-            type="secondary"
-            classes="w-full justify-center"
-            onClick={handleGoogleSignIn}
-          >
-            Continue With Google
-          </Button>
-          <Button
-            type="secondary"
-            classes="w-full justify-center"
-            onClick={handleTwitterSignIn}
-          >
-            Continue With Twitter
-          </Button>
+          <div className="flex flex-col items-center gap-y-4">
+            <Button
+              classes="w-full justify-center border border-gray-200 shadow-sm bg-white"
+              onClick={handleGoogleSignIn}
+            >
+              Continue With Google
+            </Button>
+            <Button
+              classes="w-full justify-center border border-gray-200 shadow-sm bg-white"
+              onClick={handleTwitterSignIn}
+            >
+              Continue With Twitter
+            </Button>
+          </div>
         </div>
       </div>
     </div>

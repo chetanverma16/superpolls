@@ -61,7 +61,7 @@ export default function Footer() {
         <p className="text-xs leading-5 text-gray-500">
           Made with ❤️ by{" "}
           <Link
-            href="www.chetanverma.com"
+            href="https://chetanverma.com/"
             className="text-gray-500 hover:text-gray-900"
           >
             chetanverma

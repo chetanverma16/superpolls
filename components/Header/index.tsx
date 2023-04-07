@@ -52,7 +52,7 @@ const Header = ({ isPro }: HeaderProps) => {
             </Link>
 
             {isPro !== "active" && (
-              <Link href="/pro">
+              <Link href="/pro" className="hidden lg:block">
                 <Button Icon={CreditCard}>Go Pro</Button>
               </Link>
             )}
@@ -62,6 +62,10 @@ const Header = ({ isPro }: HeaderProps) => {
                 {
                   title: "Billing",
                   onClick: () => BillingSession(),
+                },
+                {
+                  title: "Go Pro",
+                  onClick: () => router.push("/pro"),
                 },
                 { title: "Sign out", onClick: () => signOut() },
               ]}

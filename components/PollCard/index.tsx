@@ -79,9 +79,11 @@ const PollCard = ({
   }, [isPublicState, isLiveState]);
 
   return (
-    <motion.div className="flex cursor-pointer items-start justify-between rounded-xl border border-transparent bg-gray-50 p-6 hover:border-gray-200">
+    <motion.div className="flex cursor-pointer flex-col items-start justify-between gap-y-4 rounded-xl border border-transparent bg-gray-50 p-6 hover:border-gray-200 lg:flex-row">
       <div className={isVotedScreen ? "w-full" : "w-4/6"}>
-        <h1 className="text-lg font-semibold text-gray-900">{title}</h1>
+        <h1 className="text-base font-semibold text-gray-900 lg:text-lg">
+          {title}
+        </h1>
         <div className="mt-2 flex items-center gap-x-2">
           {votes > 0 && (
             <Badge text={`${votes} votes`} backgroundColor="bg-gray-900" />

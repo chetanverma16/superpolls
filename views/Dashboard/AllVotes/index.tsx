@@ -42,7 +42,7 @@ const AllPolls = () => {
         ) : userPolls?.length === 0 ? (
           <EmptyState
             title="No Votes Yet"
-            description="Sorry, there are no polls available at the moment. Please create a new poll to get started."
+            description="Sorry, there are no votes available at the moment. Please create a new poll to get started."
           >
             <Button
               Icon={PlusIcon}

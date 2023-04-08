@@ -204,18 +204,18 @@ const PollView = () => {
           </CustomDialog>
           <div
             className={classNames(
-              "mt-20 w-full max-w-2xl rounded-xl bg-gray-50 p-10",
+              "mt-20 w-full max-w-2xl rounded-xl bg-gray-50 p-6 lg:p-10",
             )}
           >
-            <div className="flex items-center justify-between">
+            <div className="flex flex-col-reverse items-start justify-between lg:flex-row">
               <h1
                 className={classNames(
-                  "w-4/5 text-2xl font-semibold text-gray-900",
+                  "mt-6 w-full text-2xl font-semibold text-gray-900 lg:mt-0 lg:w-4/5",
                 )}
               >
                 {poll?.title}
               </h1>
-              <div className="flex items-center gap-x-2">
+              <div className="flex items-center gap-x-2 self-end lg:self-start">
                 <Button onClick={handleLinkClick}>
                   <LinkIcon />
                 </Button>

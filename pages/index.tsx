@@ -9,6 +9,7 @@ import {
   Share,
   ShieldCheck,
   User,
+  Wand2,
 } from "lucide-react";
 import { useSession } from "next-auth/react";
 import { useRouter } from "next/router";
@@ -89,6 +90,17 @@ export default function Home() {
             <p className="text-md text-gray-500 lg:text-lg">
               We understand the importance of poll security, which is why we go
               above and beyond to ensure your polls are protected.
+            </p>
+          </div>
+          <div className="col-auto flex flex-col gap-y-2 rounded-xl border border-gray-200 p-6 text-left shadow-lg transition-all duration-200 hover:border-gray-400 lg:col-span-6">
+            <Wand2 className="h-10" />
+            <h2 className="text-base font-semibold text-gray-900 lg:text-xl">
+              AI-powered poll options
+            </h2>
+            <p className="text-md text-gray-500 lg:text-lg">
+              This feature leverages advanced machine learning techniques to
+              analyze data and generate a list of potential options for a poll
+              or survey.
             </p>
           </div>
           <div className="col-auto flex flex-col gap-y-2 rounded-xl border border-gray-200 p-6 text-left shadow-lg transition-all duration-200 hover:border-gray-400 lg:col-span-2">

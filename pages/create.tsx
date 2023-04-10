@@ -11,13 +11,16 @@ import Toggle from "@/components/Toggle";
 import Tooltip from "@/components/Tooltip";
 
 // Icons
-import { InfoIcon, Loader2, Plus, X } from "lucide-react";
+import { InfoIcon, Loader2, Plus, Wand2, WandIcon, X } from "lucide-react";
+import Textarea from "@/components/Textarea";
+import { useQuery } from "@tanstack/react-query";
 
 const Create = () => {
   const router = useRouter();
   const mutation = api.polls.createPoll.useMutation();
   const { data: session } = useSession();
   const { data: isPro } = api.user.subscriptionStatus.useQuery();
+  const generateOptionMutation = api.ai.generatePollOptions.useMutation();
 
   // State
   const [question, setQuestion] = useState("");
@@ -100,6 +103,24 @@ const Create = () => {
     }
   };
 
+  const genearateOptions = async () => {
+    if (isPro !== "active") {
+      toast.error("You need to be a pro user to use this feature");
+      return;
+    }
+    const response = await generateOptionMutation.mutateAsync(question);
+    if (response) {
+      const optionText = response.choices[0].text.trim();
+      const options = optionText
+        .split("-")
+        .filter((option: string) => option !== "");
+      const newOptions = options.map((option: string) => option.trim());
+      setOptions(newOptions);
+    }
+  };
+
+  const isOptionsEmpty = options.every((option) => option === "");
+
   return (
     <div className="mt-10 flex flex-col items-center">
       <h1 className="w-4/5 text-center text-3xl font-semibold text-gray-900">
@@ -125,12 +146,22 @@ const Create = () => {
               mutation.isLoading && "cursor-wait opacity-50"
             }`}
           >
-            <CustomInput
+            <Textarea
               value={question}
               onChange={(e) => setQuestion(e.target.value)}
-              type="text"
               placeholder="What's your question?"
+              Icon={
+                isOptionsEmpty &&
+                question.length > 10 && (
+                  <Tooltip content="Generate options with ai">
+                    <Button onClick={genearateOptions}>
+                      <Wand2 />
+                    </Button>
+                  </Tooltip>
+                )
+              }
             />
+            {/* <CustomInput /> */}
 
             <div className="w- mt-10 flex w-full flex-col gap-y-6">
               {options.map((option, index) => (

@@ -46,8 +46,8 @@ export default function SignIn({}: InferGetServerSidePropsType<
   return (
     <div className="mt-32 flex w-full flex-col items-center">
       <h1 className="text-3xl font-semibold text-gray-900">Sign in</h1>
-      <div className="mt-10 flex flex-col items-center gap-y-4 rounded-xl bg-gray-50 p-10 shadow-sm">
-        <div>
+      <div className="mt-10 flex w-full max-w-md flex-col items-center gap-y-4 rounded-xl bg-gray-50 p-10 shadow-sm">
+        <div className="w-full">
           <input
             value={email}
             onChange={(e) => setEmail(e.target.value)}

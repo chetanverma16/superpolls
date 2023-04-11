@@ -31,7 +31,7 @@ const PollView = () => {
 
   const handleLinkClick = () => {
     toast.success("Copied to clipboard!");
-    copy(`https://polls.vercel.app/poll/${id}`);
+    copy(`https://superpoll.app/poll/${id}`);
   };
 
   const downloadQR = () => {
@@ -185,7 +185,7 @@ const PollView = () => {
                 id="qr"
                 size={256}
                 style={{ height: "auto", maxWidth: "100%", width: "100%" }}
-                value={`https://superpolls.io/poll/${id}`}
+                value={`https://superpoll.app/poll/${id}`}
                 viewBox={`0 0 256 256`}
               />
               <div className="flex w-full flex-col gap-y-2">

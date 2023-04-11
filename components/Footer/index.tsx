@@ -65,6 +65,10 @@ export default function Footer() {
             className="text-gray-500 hover:text-gray-900"
           >
             chetanverma
+          </Link>{" "}
+          and designed by{" "}
+          <Link href="https://lovleenthapar.framer.website/">
+            lovleenthapar
           </Link>
         </p>
       </div>

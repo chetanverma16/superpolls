@@ -49,7 +49,7 @@ const PollCard = ({
 
   const handleLinkClick = () => {
     toast.success("Copied to clipboard!");
-    copy(`https://polls.vercel.app/poll/${id}`);
+    copy(`https://superpoll.app/poll/${id}`);
   };
 
   useEffect(() => {

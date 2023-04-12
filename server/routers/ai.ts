@@ -17,7 +17,7 @@ export const aiRouter = createTRPCRouter({
 
       const response = await openai.createCompletion({
         model: "text-davinci-003",
-        prompt: `Poll: ${input} generate poll options and separate by new line: `,
+        prompt: `generate poll options for: ${input}, no numbers and separated by a new line`,
         temperature: 0.4,
         n: 1,
       });

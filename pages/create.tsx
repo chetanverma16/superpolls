@@ -110,10 +110,11 @@ const Create = () => {
     }
     const response = await generateOptionMutation.mutateAsync(question);
     if (response) {
-      const optionText = response.choices[0].text.trim();
-      const options = optionText
-        .split("-")
+      console.log(response.choices[0].text);
+      const options = response.choices[0].text
+        .split(/\r?\n/)
         .filter((option: string) => option !== "");
+      console.log(options);
       const newOptions = options.map((option: string) => option.trim());
       setOptions(newOptions);
     }

@@ -58,7 +58,7 @@ export default function Footer() {
         <p className="text-xs leading-5 text-gray-500">
           &copy; 2022 superpolls, Inc. All rights reserved.
         </p>
-        <p className="text-xs leading-5 text-gray-500">
+        <p className="text-center text-xs leading-5 text-gray-500">
           Made with ❤️ by{" "}
           <Link
             href="https://chetanverma.com/"

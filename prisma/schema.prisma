@@ -76,12 +76,12 @@ model VerificationToken {
 
 model Poll {
   id        String   @id @default(cuid())
-  createdAt DateTime @default(now())
-  updatedAt DateTime @updatedAt
   title     String
   userId    String?
+  createdAt DateTime @default(now())
   isLive    Boolean  @default(true)
   isPublic  Boolean  @default(true)
+  updatedAt DateTime @updatedAt
   user      User?    @relation(fields: [userId], references: [id], onDelete: Cascade)
   options   Option[]
   Vote      Vote[]
@@ -101,10 +101,10 @@ model Option {
 
 model Vote {
   id        String   @id @default(cuid())
-  createdAt DateTime @default(now())
   userId    String?
-  pollId    String
   optionId  String
+  pollId    String
+  createdAt DateTime @default(now())
   user      User?    @relation(fields: [userId], references: [id], onDelete: Cascade)
   option    Option   @relation(fields: [optionId], references: [id], onDelete: Cascade)
   poll      Poll     @relation(fields: [pollId], references: [id], onDelete: Cascade)

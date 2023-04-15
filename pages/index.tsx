@@ -61,12 +61,14 @@ export default function Home() {
           )}
         </div>
 
-        <div className="borde-gray-200 overflow-hidden rounded-xl border shadow-lg">
-          <img
-            className="h-full w-full"
-            src="/images/poll.png"
-            alt="header image"
-          />
+        <div className="borde-gray-200 h-full w-full overflow-hidden rounded-xl border shadow-lg">
+          <iframe
+            className="h-64 w-full md:h-96 lg:h-[32rem]"
+            src="https://www.youtube.com/embed/5M5omZU-csw"
+            title="YouTube video player"
+            allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share"
+            allowFullScreen
+          ></iframe>
         </div>
       </div>
       <div className="mt-20 flex flex-col gap-y-6">

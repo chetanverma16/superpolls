@@ -22,7 +22,6 @@ export default function Home() {
 
   return (
     <>
-      <ProductHunt />
       <div className="mt-10 flex w-full flex-col items-center gap-y-6 text-center lg:mt-20">
         <h1 className="text-4xl font-semibold text-gray-900 lg:text-5xl">
           Say Goodbye to Clunky Polls: Our App Offers an Elegant and Smooth

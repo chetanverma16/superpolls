@@ -1,0 +1,19 @@
+name: Prisma Migration Deploy
+
+on:
+  push:
+    branches:
+      - main
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+
+    steps:
+      - uses: actions/checkout@v2
+
+      - name: Install Prisma
+        run: npm install -g prisma
+
+      - name: Migrate database
+        run: prisma migrate deploy

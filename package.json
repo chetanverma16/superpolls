@@ -8,7 +8,7 @@
     "format:write": "prettier --write \"**/*.{css,js,json,jsx,ts,tsx}\"",
     "format": "prettier \"**/*.{css,js,json,jsx,ts,tsx}\"",
     "start": "next start",
-    "prebuild": "prisma generate",
+    "prebuild": "prisma generate && npx prisma migrate deploy",
     "predev": "prisma generate",
     "lint": "next lint",
     "stripe:listen": "stripe listen --forward-to localhost:3000/api/stripe-webhook --latest"

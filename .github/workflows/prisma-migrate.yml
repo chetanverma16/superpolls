@@ -9,6 +9,9 @@ jobs:
   build:
     runs-on: ubuntu-latest
 
+    env:
+      DATABASE_URL: ${{ secrets.DATABASE_URL }}
+
     steps:
       - uses: actions/checkout@v2
 
@@ -16,4 +19,6 @@ jobs:
         run: npm install -g prisma
 
       - name: Migrate database
-        run: prisma migrate deploy
+        env:
+          DATABASE_URL: ${{ secrets.DATABASE_URL }}
+        run: prisma migrate deploy --schema=./prisma/schema.prisma --preview-feature

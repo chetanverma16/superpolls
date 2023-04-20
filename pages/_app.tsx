@@ -9,6 +9,8 @@ import { Inter } from "@next/font/google";
 import Layout from "@/components/Layout";
 import { api } from "@/lib/trpc";
 import { Toaster } from "react-hot-toast";
+import { useAtom } from "jotai";
+import { isProAtom } from "atoms";
 
 const inter = Inter({
   variable: "--font-inter",
@@ -19,6 +21,13 @@ function MyApp({
   Component,
   pageProps: { session, ...pageProps },
 }: AppProps<{ session: Session }>) {
+  const [, setIsPro] = useAtom(isProAtom);
+  const { data: pro } = api.user.subscriptionStatus.useQuery();
+
+  if (pro && pro === "active") {
+    setIsPro(true);
+  }
+
   return (
     <SessionProvider session={session}>
       <RWBProvider>

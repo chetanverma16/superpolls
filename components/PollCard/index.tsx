@@ -17,6 +17,8 @@ import { api } from "@/lib/trpc";
 import toast from "react-hot-toast";
 import Tooltip from "@/components/Tooltip";
 import useCopyToClipboard from "@/lib/hooks/use-copy-to-clipboard";
+import { useAtom } from "jotai";
+import { isProAtom } from "atoms";
 
 const PollCard = ({
   id,
@@ -26,7 +28,6 @@ const PollCard = ({
   voted,
   isVotedScreen,
   handleDelete,
-  isPro,
   isLive,
   isPublic,
   refetch,
@@ -37,6 +38,7 @@ const PollCard = ({
   const [isPublicState, setIsPublicState] = useState(isPublic);
   const [isLiveState, setIsLiveState] = useState(isLive);
   const [disableCheck, setDisableCheck] = useState(false);
+  const [isPro, setIsPro] = useAtom(isProAtom);
 
   const updatePollMutation = api.polls.updatePoll.useMutation();
 

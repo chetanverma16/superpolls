@@ -12,7 +12,6 @@ import { PlusIcon } from "lucide-react";
 const AllPolls = () => {
   const router = useRouter();
   const { data: session } = useSession();
-  const { data: isPro } = api.user.subscriptionStatus.useQuery();
 
   // Fetch Featured Polls
   const {
@@ -85,7 +84,6 @@ const AllPolls = () => {
               isLive={isLive}
               handleDelete={handleDelete}
               refetch={refetch}
-              isPro={isPro}
             />
           ))
         )}

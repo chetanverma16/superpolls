@@ -1,18 +1,10 @@
-import React from "react";
-import { api } from "@/lib/trpc";
 import PricingSection from "@/components/Pricing";
 import Spinner from "@/components/Spinner";
+import { useAtom } from "jotai";
+import { isProAtom } from "atoms";
 
 const Pricing = () => {
-  const { data: isPro, isLoading } = api.user.subscriptionStatus.useQuery();
-
-  if (isLoading)
-    return (
-      <div className="mt-10 flex h-full w-full items-center justify-center lg:mt-20">
-        <Spinner />
-      </div>
-    );
-
+  const [isPro] = useAtom(isProAtom);
   if (isPro) {
     return (
       <div className="mt-10 flex h-full flex-col items-center justify-center lg:mt-10">

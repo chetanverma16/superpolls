@@ -10,10 +10,15 @@ import { useRouter } from "next/router";
 import { api } from "@/lib/trpc";
 import toast from "react-hot-toast";
 import Badge from "../Badge";
+import LinkButton from "../LinkButton";
+import { useAtom } from "jotai";
+import { isProAtom } from "atoms";
 
-const Header = ({ isPro }: HeaderProps) => {
+const Header = () => {
   const router = useRouter();
   const { data: session } = useSession();
+
+  const [isPro, setIsPro] = useAtom(isProAtom);
 
   const { mutateAsync: createBillingPortalSession } =
     api.stripe.createBillingPortalSession.useMutation();
@@ -33,42 +38,53 @@ const Header = ({ isPro }: HeaderProps) => {
         href="/"
         className="flex items-center text-base font-bold lg:text-xl"
       >
-        Superpolls{" "}
-        {isPro && isPro === "active" && (
-          <Badge text="pro" classnames="ml-2 text-xs" />
-        )}
+        Superpolls {isPro && <Badge text="pro" classnames="ml-2 text-xs" />}
       </Link>
       <nav className="flex items-center gap-x-4">
         {!session?.user && (
-          <Link href="/pro">
-            <Button Icon={CreditCard}>Go Pro</Button>
-          </Link>
+          <LinkButton href="/pro" Icon={CreditCard}>
+            Go Pro
+          </LinkButton>
         )}
 
         {session?.user ? (
           <>
-            <Link href="/dashboard">
-              <Button Icon={Home}>Dashboard</Button>
-            </Link>
+            <LinkButton href="/dashboard" Icon={Home}>
+              Dashboard
+            </LinkButton>
 
-            {isPro !== "active" && (
-              <Link href="/pro" className="hidden lg:block">
-                <Button Icon={CreditCard}>Go Pro</Button>
-              </Link>
+            {!isPro && (
+              <LinkButton
+                href="/pro"
+                classes="hidden lg:block"
+                Icon={CreditCard}
+              >
+                Go Pro
+              </LinkButton>
             )}
 
             <Dropdown
-              items={[
-                {
-                  title: "Billing",
-                  onClick: () => BillingSession(),
-                },
-                {
-                  title: "Go Pro",
-                  onClick: () => router.push("/pro"),
-                },
-                { title: "Sign out", onClick: () => signOut() },
-              ]}
+              items={
+                !isPro
+                  ? [
+                      {
+                        title: "Billing",
+                        onClick: () => BillingSession(),
+                      },
+                      {
+                        title: "Go Pro",
+                        onClick: () => router.push("/pro"),
+                      },
+                      { title: "Sign out", onClick: () => signOut() },
+                    ]
+                  : [
+                      {
+                        title: "Billing",
+                        onClick: () => BillingSession(),
+                      },
+                      { title: "Sign out", onClick: () => signOut() },
+                    ]
+              }
               Trigger={
                 <Avatar
                   email={session.user?.email || ""}
@@ -79,11 +95,9 @@ const Header = ({ isPro }: HeaderProps) => {
             />
           </>
         ) : (
-          <Link href="/signin">
-            <Button type="primary" Icon={User}>
-              Sign in
-            </Button>
-          </Link>
+          <LinkButton href="/signin" type="primary" Icon={User}>
+            Sign in
+          </LinkButton>
         )}
       </nav>
     </div>

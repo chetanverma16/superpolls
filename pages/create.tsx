@@ -3,24 +3,25 @@ import { api } from "@/lib/trpc";
 import { useRouter } from "next/router";
 import toast from "react-hot-toast";
 import { useSession } from "next-auth/react";
+import { useAtom } from "jotai";
+import { isProAtom } from "atoms";
 
 // Components
 import CustomInput from "@/components/CustomInput";
 import Button from "@/components/Button";
 import Toggle from "@/components/Toggle";
 import Tooltip from "@/components/Tooltip";
+import Textarea from "@/components/Textarea";
 
 // Icons
-import { InfoIcon, Loader2, Plus, Wand2, WandIcon, X } from "lucide-react";
-import Textarea from "@/components/Textarea";
-import { useQuery } from "@tanstack/react-query";
+import { InfoIcon, Loader2, Plus, Wand2, X } from "lucide-react";
 
 const Create = () => {
   const router = useRouter();
   const mutation = api.polls.createPoll.useMutation();
   const { data: session } = useSession();
-  const { data: isPro } = api.user.subscriptionStatus.useQuery();
   const generateOptionMutation = api.ai.generatePollOptions.useMutation();
+  const [isPro, setIsPro] = useAtom(isProAtom);
 
   // State
   const [question, setQuestion] = useState("");
@@ -40,7 +41,7 @@ const Create = () => {
 
   const handleAddOption = () => {
     if (session?.user) {
-      if (isPro === "active") {
+      if (isPro) {
         if (options.length >= 50) {
           toast.error(
             "You can only add up to 50 options, please contact support for more options",
@@ -104,7 +105,7 @@ const Create = () => {
   };
 
   const genearateOptions = async () => {
-    if (isPro !== "active") {
+    if (!isPro) {
       toast.error("You need to be a pro user to use this feature");
       return;
     }
@@ -189,7 +190,7 @@ const Create = () => {
               >
                 Add another option
               </Button>
-              {isPro && isPro === "active" && (
+              {isPro && (
                 <div className="flex flex-col items-center gap-y-4">
                   <div className="flex w-full items-center justify-between gap-x-4">
                     <div className="flex w-full items-center justify-center rounded-md bg-white p-4 shadow-md">

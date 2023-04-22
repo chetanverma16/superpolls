@@ -30,6 +30,7 @@ function MyApp({
 
   return (
     <SessionProvider session={session}>
+      <Analytics />
       <RWBProvider>
         <div className={cx(inter.variable)}>
           <Layout>

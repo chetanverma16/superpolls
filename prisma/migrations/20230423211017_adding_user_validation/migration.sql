@@ -1,3 +1,3 @@
-ALTER TABLE Poll
-ADD COLUMN isisAuthenticated BOOLEAN NOT NULL DEFAULT false;
+ALTER TABLE "Poll"
+ADD COLUMN "isAuthenticated" BOOLEAN NOT NULL DEFAULT false;
 

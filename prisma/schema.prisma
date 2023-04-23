@@ -81,8 +81,8 @@ model Poll {
   createdAt       DateTime @default(now())
   isLive          Boolean  @default(true)
   isPublic        Boolean  @default(true)
-  isAuthenticated Boolean  @default(false) // false = user can vote anonymously without logging in
   updatedAt       DateTime @updatedAt
+  isAuthenticated Boolean  @default(false)
   user            User?    @relation(fields: [userId], references: [id], onDelete: Cascade)
   options         Option[]
   Vote            Vote[]

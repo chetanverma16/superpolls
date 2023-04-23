@@ -28,6 +28,7 @@ const Create = () => {
   const [options, setOptions] = useState(["", ""]);
   const [isPublic, setIsPublic] = useState(true);
   const [isLive, setIsLive] = useState(true);
+  const [isAuthenticated, setIsAuthenticated] = useState(false);
 
   // Handlers
   const handleChange = (e: React.ChangeEvent<HTMLInputElement>) => {
@@ -87,6 +88,7 @@ const Create = () => {
           userId: session?.user.id,
           isPublic,
           isLive,
+          isAuthenticated,
         },
         {
           onSuccess: (data) => {
@@ -207,6 +209,20 @@ const Create = () => {
                       <Tooltip content="Show/Hide Your Poll">
                         <span className="ml-2 flex items-center">
                           Live <InfoIcon className="h-4 text-gray-500" />
+                        </span>
+                      </Tooltip>
+                    </div>
+                  </div>
+                  <div className="flex w-full items-center justify-between gap-x-4">
+                    <div className="flex w-full items-center justify-center rounded-md bg-white p-4 shadow-md">
+                      <Toggle
+                        checked={isAuthenticated}
+                        onChange={setIsAuthenticated}
+                      />{" "}
+                      <Tooltip content="Authenticate user before voting">
+                        <span className="ml-2 flex items-center">
+                          Authenticated{" "}
+                          <InfoIcon className="h-4 text-gray-500" />{" "}
                         </span>
                       </Tooltip>
                     </div>

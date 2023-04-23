@@ -11,6 +11,7 @@ export const pollsRouter = createTRPCRouter({
         userId: z.string().optional(),
         isPublic: z.boolean().optional(),
         isLive: z.boolean().optional(),
+        isAuthenticated: z.boolean().optional(),
       }),
     )
     .mutation(({ ctx, input }) => {
@@ -31,6 +32,7 @@ export const pollsRouter = createTRPCRouter({
           userId: input.userId,
           isPublic: input.isPublic,
           isLive: input.isLive,
+          isAuthenticated: input.isAuthenticated,
         },
       });
     }),
@@ -70,6 +72,16 @@ export const pollsRouter = createTRPCRouter({
           code: "BAD_REQUEST",
           message: "Poll not found",
         });
+      }
+
+      if (poll.isAuthenticated) {
+        // Check if user exists
+        if (!input.userId) {
+          throw new TRPCError({
+            code: "BAD_REQUEST",
+            message: "User not found, please login",
+          });
+        }
       }
 
       // Check if user is voting on their own poll

@@ -75,16 +75,17 @@ model VerificationToken {
 }
 
 model Poll {
-  id        String   @id @default(cuid())
-  title     String
-  userId    String?
-  createdAt DateTime @default(now())
-  isLive    Boolean  @default(true)
-  isPublic  Boolean  @default(true)
-  updatedAt DateTime @updatedAt
-  user      User?    @relation(fields: [userId], references: [id], onDelete: Cascade)
-  options   Option[]
-  Vote      Vote[]
+  id              String   @id @default(cuid())
+  title           String
+  userId          String?
+  createdAt       DateTime @default(now())
+  isLive          Boolean  @default(true)
+  isPublic        Boolean  @default(true)
+  isAuthenticated Boolean  @default(false) // false = user can vote anonymously without logging in
+  updatedAt       DateTime @updatedAt
+  user            User?    @relation(fields: [userId], references: [id], onDelete: Cascade)
+  options         Option[]
+  Vote            Vote[]
 
   @@index([userId])
 }

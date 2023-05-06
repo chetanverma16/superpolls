@@ -1,11 +1,11 @@
 import React, { useState } from "react";
-import { GetServerSidePropsContext } from "next";
-import { getServerSession } from "next-auth";
-import { getProviders } from "next-auth/react";
-import { authOptions } from "../api/auth/[...nextauth]";
-import Button from "@/components/Button";
 import { Plus } from "lucide-react";
 import { useRouter } from "next/router";
+
+// Components
+import Button from "@/components/Button";
+
+// Views
 import AllPolls from "@/views/Dashboard/AllPolls";
 import AllVotes from "@/views/Dashboard/AllVotes";
 
@@ -40,19 +40,3 @@ const Dashboard = () => {
 };
 
 export default Dashboard;
-
-export async function getServerSideProps(context: GetServerSidePropsContext) {
-  const session = await getServerSession(context.req, context.res, authOptions);
-
-  // If the user is not logged in, redirect.
-
-  if (!session) {
-    return { redirect: { destination: "/signin" } };
-  }
-
-  const providers = await getProviders();
-
-  return {
-    props: { providers: providers ?? [] },
-  };
-}

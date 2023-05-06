@@ -11,6 +11,8 @@ import { api } from "@/lib/trpc";
 import { Toaster } from "react-hot-toast";
 import { useAtom } from "jotai";
 import { isProAtom } from "atoms";
+import Header from "@/components/Header";
+import Spinner from "@/components/Spinner";
 
 const inter = Inter({
   variable: "--font-inter",
@@ -22,7 +24,7 @@ function MyApp({
   pageProps: { session, ...pageProps },
 }: AppProps<{ session: Session }>) {
   const [, setIsPro] = useAtom(isProAtom);
-  const { data: pro } = api.user.subscriptionStatus.useQuery();
+  const { data: pro, isLoading } = api.user.subscriptionStatus.useQuery();
 
   if (pro && pro === "active") {
     setIsPro(true);
@@ -32,14 +34,20 @@ function MyApp({
     <SessionProvider session={session}>
       <Analytics />
       <RWBProvider>
-        <div className={cx(inter.variable)}>
-          <Layout>
-            <Toaster />
-            <Component {...pageProps} />
-          </Layout>
-        </div>
+        {isLoading ? (
+          <div className="mx-auto flex h-screen w-screen max-w-5xl items-center justify-center p-10">
+            <Spinner />
+          </div>
+        ) : (
+          <div className={cx(inter.variable, "mx-auto max-w-5xl p-6")}>
+            <Layout>
+              <Toaster />
+              <Header />
+              <Component {...pageProps} />
+            </Layout>
+          </div>
+        )}
       </RWBProvider>
-      <Analytics />
     </SessionProvider>
   );
 }

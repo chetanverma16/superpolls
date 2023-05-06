@@ -40,19 +40,3 @@ const Dashboard = () => {
 };
 
 export default Dashboard;
-
-export async function getServerSideProps(context: GetServerSidePropsContext) {
-  const session = await getServerSession(context.req, context.res, authOptions);
-
-  // If the user is not logged in, redirect.
-
-  if (!session) {
-    return { redirect: { destination: "/signin" } };
-  }
-
-  const providers = await getProviders();
-
-  return {
-    props: { providers: providers ?? [] },
-  };
-}

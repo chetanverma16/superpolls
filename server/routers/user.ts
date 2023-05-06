@@ -1,8 +1,14 @@
-import { createTRPCRouter, protectedProcedure } from "@/server/trpc";
+import { createTRPCRouter, publicProcedure } from "@/server/trpc";
 
 export const userRouter = createTRPCRouter({
-  subscriptionStatus: protectedProcedure.query(async ({ ctx }) => {
+  subscriptionStatus: publicProcedure.query(async ({ ctx }) => {
     const { session, prisma } = ctx;
+
+    if (!session) {
+      return {
+        status: "free",
+      };
+    }
 
     if (!session.user?.id) {
       throw new Error("Not authenticated");
@@ -21,6 +27,8 @@ export const userRouter = createTRPCRouter({
       throw new Error("Could not find user");
     }
 
-    return data.stripeSubscriptionStatus;
+    return {
+      status: data.stripeSubscriptionStatus,
+    };
   }),
 });

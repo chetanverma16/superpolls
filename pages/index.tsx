@@ -14,7 +14,6 @@ import {
 import { useSession } from "next-auth/react";
 import { useRouter } from "next/router";
 import Footer from "@/components/Footer";
-import ProductHunt from "@/components/Producthunt";
 
 export default function Home() {
   const router = useRouter();

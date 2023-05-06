@@ -13,6 +13,7 @@ import { useAtom } from "jotai";
 import { isProAtom } from "atoms";
 import Header from "@/components/Header";
 import Spinner from "@/components/Spinner";
+import { useEffect } from "react";
 
 const inter = Inter({
   variable: "--font-inter",
@@ -26,9 +27,15 @@ function MyApp({
   const [, setIsPro] = useAtom(isProAtom);
   const { data: pro, isLoading } = api.user.subscriptionStatus.useQuery();
 
-  if (pro && pro === "active") {
-    setIsPro(true);
-  }
+  useEffect(() => {
+    if (pro) {
+      if (pro.status === "active") {
+        setIsPro(true);
+      } else {
+        setIsPro(false);
+      }
+    }
+  }, [pro, setIsPro]);
 
   return (
     <SessionProvider session={session}>

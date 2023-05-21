@@ -121,7 +121,9 @@ export const pollsRouter = createTRPCRouter({
     .input(
       z.object({
         userId: z.string().optional(),
-        page: z.number().optional().default(1),
+        // Pagination
+        page: z.number().optional(),
+        size: z.number().optional().default(5),
       }),
     )
     .query(async ({ ctx, input }) => {
@@ -131,31 +133,52 @@ export const pollsRouter = createTRPCRouter({
           message: "User not found",
         });
       }
-      return ctx.prisma.poll.findMany({
-        orderBy: {
-          createdAt: "desc",
-        },
-        where: {
-          userId: input.userId,
-        },
-        select: {
-          id: true,
-          title: true,
-          isLive: true,
-          isPublic: true,
-          _count: {
-            select: {
-              Vote: true,
-              options: true,
+      const { page = 1, size, userId } = input;
+      const offset = (page - 1) * size;
+
+      const [items, totalCount] = await Promise.all([
+        ctx.prisma.poll.findMany({
+          skip: offset,
+          take: size,
+          orderBy: {
+            createdAt: "desc",
+          },
+          where: {
+            userId,
+          },
+          select: {
+            id: true,
+            title: true,
+            isLive: true,
+            isPublic: true,
+            _count: {
+              select: {
+                Vote: true,
+                options: true,
+              },
             },
           },
-        },
-      });
+        }),
+        ctx.prisma.poll.count({
+          where: {
+            userId,
+          },
+        }),
+      ]);
+      const totalPages = Math.ceil(totalCount / size);
+
+      return {
+        items,
+        totalPages,
+      };
     }),
   getUserVotes: protectedProcedure
     .input(
       z.object({
         userId: z.string().optional(),
+        // Pagination
+        page: z.number().optional(),
+        size: z.number().optional().default(5),
       }),
     )
     .query(async ({ ctx, input }) => {
@@ -165,32 +188,48 @@ export const pollsRouter = createTRPCRouter({
           message: "User not found",
         });
       }
-      return ctx.prisma.vote.findMany({
-        where: {
-          userId: input.userId,
-        },
-        select: {
-          id: true,
-          poll: {
-            select: {
-              id: true,
-              title: true,
-              _count: {
-                select: {
-                  Vote: true,
-                  options: true,
+      const { page = 1, size, userId } = input;
+      const offset = (page - 1) * size;
+
+      const [items, totalCount] = await Promise.all([
+        ctx.prisma.vote.findMany({
+          where: {
+            userId,
+          },
+          select: {
+            id: true,
+            poll: {
+              select: {
+                id: true,
+                title: true,
+                _count: {
+                  select: {
+                    Vote: true,
+                    options: true,
+                  },
                 },
               },
             },
-          },
-          option: {
-            select: {
-              id: true,
-              title: true,
+            option: {
+              select: {
+                id: true,
+                title: true,
+              },
             },
           },
-        },
-      });
+        }),
+        ctx.prisma.vote.count({
+          where: {
+            userId: input.userId,
+          },
+        }),
+      ]);
+      const totalPages = Math.ceil(totalCount / size);
+
+      return {
+        items,
+        totalPages,
+      };
     }),
   removePoll: protectedProcedure
     .input(z.object({ id: z.string() }))

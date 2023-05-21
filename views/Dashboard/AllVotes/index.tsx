@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useState } from "react";
 import { useSession } from "next-auth/react";
 import { api } from "@/lib/trpc";
 import PollCard from "@/components/PollCard";
@@ -13,13 +13,15 @@ const AllPolls = () => {
   const router = useRouter();
   const { data: session } = useSession();
 
+  const [page, setPage] = useState(1);
+
   // Fetch Featured Polls
   const {
     data: userPolls,
     isLoading,
     error,
   } = api.polls.getUserVotes.useQuery(
-    { userId: session?.user.id },
+    { userId: session?.user.id, page },
     { enabled: !!session },
   );
 
@@ -39,7 +41,7 @@ const AllPolls = () => {
             <Skeleton classes="h-24 p-10" />
             <Skeleton classes="h-24 p-10" />
           </>
-        ) : userPolls?.length === 0 ? (
+        ) : userPolls?.items.length === 0 ? (
           <EmptyState
             title="No Votes Yet"
             description="Sorry, there are no votes available at the moment. Please create a new poll to get started."
@@ -53,17 +55,40 @@ const AllPolls = () => {
             </Button>
           </EmptyState>
         ) : (
-          userPolls?.map(({ id, poll, option }) => (
-            <PollCard
-              key={id}
-              id={poll.id}
-              title={poll.title}
-              options={poll._count.options}
-              votes={poll._count.Vote}
-              voted={option.title}
-              isVotedScreen={true}
-            />
-          ))
+          userPolls && (
+            <div className="flex flex-col gap-y-4">
+              {userPolls.items.map(({ id, poll, option }) => (
+                <PollCard
+                  key={id}
+                  id={poll.id}
+                  title={poll.title}
+                  options={poll._count.options}
+                  votes={poll._count.Vote}
+                  voted={option.title}
+                  isVotedScreen={true}
+                />
+              ))}
+              <div className="flex items-center gap-x-2">
+                <Button
+                  type="secondary"
+                  classes="w-full"
+                  disabled={page === 1}
+                  onClick={() => setPage((prev) => prev - 1)}
+                >
+                  Back
+                </Button>
+
+                <Button
+                  type="secondary"
+                  classes="w-full"
+                  disabled={page >= userPolls.totalPages}
+                  onClick={() => setPage((prev) => prev + 1)}
+                >
+                  Next
+                </Button>
+              </div>
+            </div>
+          )
         )}
       </div>
     </div>

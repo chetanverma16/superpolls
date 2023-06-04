@@ -1,11 +1,4 @@
-import {
-  CheckCircle,
-  ExternalLink,
-  InfoIcon,
-  Link,
-  Link2,
-  Trash,
-} from "lucide-react";
+import { CheckCircle, ExternalLink, Link2, Trash } from "lucide-react";
 import React, { useEffect, useState } from "react";
 import Badge from "../Badge";
 import Button from "../Button";
@@ -17,8 +10,7 @@ import { api } from "@/lib/trpc";
 import toast from "react-hot-toast";
 import Tooltip from "@/components/Tooltip";
 import useCopyToClipboard from "@/lib/hooks/use-copy-to-clipboard";
-import { useAtom } from "jotai";
-import { isProAtom } from "atoms";
+import { useSession } from "next-auth/react";
 
 const PollCard = ({
   id,
@@ -33,12 +25,12 @@ const PollCard = ({
   refetch,
 }: PollCardProps) => {
   const router = useRouter();
+  const session = useSession();
   const [value, copy] = useCopyToClipboard();
 
   const [isPublicState, setIsPublicState] = useState(isPublic);
   const [isLiveState, setIsLiveState] = useState(isLive);
   const [disableCheck, setDisableCheck] = useState(false);
-  const [isPro, setIsPro] = useAtom(isProAtom);
 
   const updatePollMutation = api.polls.updatePoll.useMutation();
 
@@ -100,7 +92,7 @@ const PollCard = ({
             </div>
           </div>
         )}
-        {!voted && isPro && (
+        {!voted && session.data?.user.stripeSubscriptionStatus === "active" && (
           <div className="mt-6 flex items-center gap-x-2">
             <div className="flex items-center justify-center rounded-xl bg-white p-4 shadow-md">
               <Toggle

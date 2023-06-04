@@ -204,7 +204,7 @@ function html(params: { url: string; host: string; theme: Theme }) {
                                 &zwnj;
                               </div>
                               <p class="dark-text-gray-50" style="margin: 0; font-size: 16px; line-height: 26px; color: #191847">
-                                Hi [Customer Name],
+                                Hi,
                                 <br>
                                 <br>
                                 We use this easy sign-in button so you don't

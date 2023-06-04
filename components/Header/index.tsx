@@ -11,14 +11,12 @@ import { api } from "@/lib/trpc";
 import toast from "react-hot-toast";
 import Badge from "../Badge";
 import LinkButton from "../LinkButton";
-import { useAtom } from "jotai";
-import { isProAtom } from "atoms";
 
 const Header = () => {
   const router = useRouter();
   const { data: session } = useSession();
 
-  const [isPro, setIsPro] = useAtom(isProAtom);
+  console.log(session);
 
   const { mutateAsync: createBillingPortalSession } =
     api.stripe.createBillingPortalSession.useMutation();
@@ -38,7 +36,10 @@ const Header = () => {
         href="/"
         className="flex items-center text-base font-bold lg:text-xl"
       >
-        Superpolls {isPro && <Badge text="pro" classnames="ml-2 text-xs" />}
+        Superpolls{" "}
+        {session?.user.stripeSubscriptionStatus === "active" && (
+          <Badge text="pro" classnames="ml-2 text-xs" />
+        )}
       </Link>
       <nav className="flex items-center gap-x-4">
         {!session?.user && (
@@ -52,8 +53,7 @@ const Header = () => {
             <LinkButton href="/dashboard" Icon={Home}>
               Dashboard
             </LinkButton>
-
-            {!isPro && (
+            {session?.user?.stripeSubscriptionStatus !== "active" && (
               <LinkButton
                 href="/pro"
                 classes="hidden lg:block"
@@ -65,7 +65,7 @@ const Header = () => {
 
             <Dropdown
               items={
-                !isPro
+                session?.user?.stripeSubscriptionStatus !== "active"
                   ? [
                       {
                         title: "Billing",

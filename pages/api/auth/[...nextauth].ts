@@ -1,6 +1,7 @@
-import NextAuth, { NextAuthOptions } from "next-auth";
+import NextAuth from "next-auth";
 import { PrismaAdapter } from "@next-auth/prisma-adapter";
 import prisma from "lib/prisma";
+import type { NextAuthOptions } from "next-auth";
 
 // Providers
 import GoogleProvider from "next-auth/providers/google";
@@ -42,17 +43,27 @@ export const authOptions: NextAuthOptions = {
       version: "2.0", // opt-in to Twitter OAuth 2.0
     }),
   ],
+
   pages: {
     signIn: "/signin",
     error: "/signin",
   },
-  theme: {
-    colorScheme: "light",
+  session: {
+    strategy: "jwt",
   },
   callbacks: {
-    session: async ({ session, token, user }) => {
-      if (session?.user) {
-        session.user.id = user.id;
+    jwt: ({ token, user }) => {
+      if (user) {
+        token.id = user.id;
+        token.stripeSubscriptionStatus = user.stripeSubscriptionStatus;
+      }
+      return token;
+    },
+
+    session: ({ session, token }) => {
+      if (token && session.user) {
+        session.user.id = token.id;
+        session.user.stripeSubscriptionStatus = token.stripeSubscriptionStatus;
       }
       return session;
     },

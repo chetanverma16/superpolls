@@ -12,7 +12,6 @@ import { useRouter } from "next/router";
 
 // Components
 import Button from "@/components/Button";
-import { Twitter } from "lucide-react";
 
 export default function SignIn({}: InferGetServerSidePropsType<
   typeof getServerSideProps

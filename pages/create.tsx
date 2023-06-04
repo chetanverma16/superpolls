@@ -3,8 +3,6 @@ import { api } from "@/lib/trpc";
 import { useRouter } from "next/router";
 import toast from "react-hot-toast";
 import { useSession } from "next-auth/react";
-import { useAtom } from "jotai";
-import { isProAtom } from "atoms";
 
 // Components
 import CustomInput from "@/components/CustomInput";
@@ -21,7 +19,6 @@ const Create = () => {
   const mutation = api.polls.createPoll.useMutation();
   const { data: session } = useSession();
   const generateOptionMutation = api.ai.generatePollOptions.useMutation();
-  const [isPro, setIsPro] = useAtom(isProAtom);
 
   // State
   const [question, setQuestion] = useState("");
@@ -42,7 +39,7 @@ const Create = () => {
 
   const handleAddOption = () => {
     if (session?.user) {
-      if (isPro) {
+      if (session?.user?.stripeSubscriptionStatus === "active") {
         if (options.length >= 50) {
           toast.error(
             "You can only add up to 50 options, please contact support for more options",
@@ -107,7 +104,7 @@ const Create = () => {
   };
 
   const genearateOptions = async () => {
-    if (!isPro) {
+    if (session?.user?.stripeSubscriptionStatus !== "active") {
       toast.error("You need to be a pro user to use this feature");
       return;
     }
@@ -192,7 +189,7 @@ const Create = () => {
               >
                 Add another option
               </Button>
-              {isPro && (
+              {session?.user.stripeSubscriptionStatus === "active" && (
                 <div className="flex flex-col items-center gap-y-4">
                   <div className="flex w-full items-center justify-between gap-x-4">
                     <div className="flex w-full items-center justify-center rounded-md bg-white p-4 shadow-md">

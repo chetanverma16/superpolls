@@ -193,6 +193,8 @@ export const pollsRouter = createTRPCRouter({
 
       const [items, totalCount] = await Promise.all([
         ctx.prisma.vote.findMany({
+          skip: offset,
+          take: size,
           where: {
             userId,
           },

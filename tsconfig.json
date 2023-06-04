@@ -11,7 +11,8 @@
       "@/lib/*": ["lib/*"],
       "@/styles/*": ["styles/*"],
       "@/server/*": ["server/*"],
-      "@/views/*": ["views/*"]
+      "@/views/*": ["views/*"],
+      "@/types/*": ["types/*"]
     },
     "strict": true,
     "forceConsistentCasingInFileNames": true,
@@ -24,6 +25,12 @@
     "jsx": "preserve",
     "incremental": true
   },
-  "include": ["next-env.d.ts", "**/*.ts", "**/*.tsx", "prettier.config.js"],
+  "include": [
+    "next-env.d.ts",
+    "**/*.ts",
+    "**/*.tsx",
+    "prettier.config.js",
+    "types/next-auth.d.ts"
+  ],
   "exclude": ["node_modules"]
 }

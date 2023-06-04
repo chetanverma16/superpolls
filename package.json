@@ -37,7 +37,6 @@
     "eslint-config-next": "13.1.6",
     "focus-trap-react": "^10.0.2",
     "framer-motion": "^8.4.2",
-    "jotai": "^2.0.4",
     "lucide-react": "0.105.0-alpha.4",
     "micro": "^10.0.1",
     "next": "13.1.6",

@@ -121,6 +121,7 @@ export const pollsRouter = createTRPCRouter({
     .input(
       z.object({
         userId: z.string().optional(),
+        search: z.string().optional(),
         // Pagination
         page: z.number().optional(),
         size: z.number().optional().default(5),
@@ -133,9 +134,27 @@ export const pollsRouter = createTRPCRouter({
           message: "User not found",
         });
       }
+
       const { page = 1, size, userId } = input;
       const offset = (page - 1) * size;
 
+      let where: {
+        userId: string;
+        title?: {
+          search: string;
+        };
+      } = {
+        userId,
+      };
+
+      if (input.search) {
+        where = {
+          ...where,
+          title: {
+            search: input.search,
+          },
+        };
+      }
       const [items, totalCount] = await Promise.all([
         ctx.prisma.poll.findMany({
           skip: offset,
@@ -143,9 +162,7 @@ export const pollsRouter = createTRPCRouter({
           orderBy: {
             createdAt: "desc",
           },
-          where: {
-            userId,
-          },
+          where,
           select: {
             id: true,
             title: true,
@@ -160,11 +177,10 @@ export const pollsRouter = createTRPCRouter({
           },
         }),
         ctx.prisma.poll.count({
-          where: {
-            userId,
-          },
+          where,
         }),
       ]);
+
       const totalPages = Math.ceil(totalCount / size);
 
       return {

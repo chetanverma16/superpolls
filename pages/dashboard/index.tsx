@@ -3,9 +3,13 @@ import { GetServerSidePropsContext } from "next";
 import { getServerSession } from "next-auth";
 import { getProviders } from "next-auth/react";
 import { authOptions } from "../api/auth/[...nextauth]";
-import Button from "@/components/Button";
 import { Plus } from "lucide-react";
 import { useRouter } from "next/router";
+
+// Component
+import Button from "@/components/Button";
+
+// View
 import AllPolls from "@/views/Dashboard/AllPolls";
 import AllVotes from "@/views/Dashboard/AllVotes";
 

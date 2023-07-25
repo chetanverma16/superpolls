@@ -1,40 +1,42 @@
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import { useSession } from "next-auth/react";
 import { api } from "@/lib/trpc";
-import PollCard from "@/components/PollCard";
-import Skeleton from "@/components/Skeleton";
 import toast from "react-hot-toast";
-import EmptyState from "@/components/EmptyState";
-import Button from "@/components/Button";
 import { useRouter } from "next/router";
 import { PlusIcon } from "lucide-react";
+import { useDebounce } from "@/lib/hooks/use-debounce";
+
+// Component
+import EmptyState from "@/components/EmptyState";
+import Button from "@/components/Button";
+import PollCard from "@/components/PollCard";
+import Skeleton from "@/components/Skeleton";
 
 const AllPolls = () => {
   const router = useRouter();
   const { data: session } = useSession();
 
+  // State
   const [page, setPage] = useState(1);
+  const [search, setSearch] = useState("");
 
-  // Fetch Featured Polls
+  const debouncedSearch = useDebounce(search, 500);
+
+  // Mutation
+  const removePollMutation = api.polls.removePoll.useMutation();
+
+  // Query
   const {
     data: userPolls,
     isLoading,
     error,
     refetch,
   } = api.polls.getUserPolls.useQuery(
-    { userId: session?.user.id, page },
+    { userId: session?.user.id, page, search: debouncedSearch },
     { enabled: !!session },
   );
 
-  if (error) {
-    toast.error(`Something went wrong, Error: ${error.message}`);
-  }
-
-  console.log(userPolls);
-
   // Delete Poll
-  const removePollMutation = api.polls.removePoll.useMutation();
-
   const handleDelete = (id: string) => {
     const removePollPromise = removePollMutation.mutateAsync(
       { id },
@@ -51,10 +53,29 @@ const AllPolls = () => {
     });
   };
 
+  if (error) {
+    toast.error(`Something went wrong, Error: ${error.message}`);
+  }
+
+  // Effect
+  useEffect(() => {
+    if (debouncedSearch.length > 0) {
+      refetch();
+    }
+  }, [debouncedSearch]);
+
   return (
     <div className="flex w-full flex-col items-start gap-y-4">
       <div className="flex w-full items-center justify-between">
         <h2 className="text-2xl font-bold">All Polls</h2>
+
+        <input
+          className="h-full w-96 rounded-lg border border-gray-200 p-2 text-base focus:outline-none focus:ring-2 focus:ring-blue-500"
+          type="text"
+          placeholder="Search Polls"
+          value={search}
+          onChange={(e) => setSearch(e.target.value)}
+        />
       </div>
 
       <div className="mt-2 grid w-full grid-cols-1 gap-x-4 gap-y-4">

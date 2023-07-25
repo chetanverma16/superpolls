@@ -1,6 +1,7 @@
 import { TRPCError } from "@trpc/server";
 import { z } from "zod";
 import { createTRPCRouter, publicProcedure, protectedProcedure } from "../trpc";
+import { Prisma } from "@prisma/client";
 
 export const pollsRouter = createTRPCRouter({
   createPoll: publicProcedure
@@ -138,12 +139,7 @@ export const pollsRouter = createTRPCRouter({
       const { page = 1, size, userId } = input;
       const offset = (page - 1) * size;
 
-      let where: {
-        userId: string;
-        title?: {
-          search: string;
-        };
-      } = {
+      let where: Prisma.PollWhereInput = {
         userId,
       };
 
@@ -151,7 +147,8 @@ export const pollsRouter = createTRPCRouter({
         where = {
           ...where,
           title: {
-            search: input.search,
+            contains: input.search,
+            mode: "insensitive",
           },
         };
       }
@@ -175,22 +172,16 @@ export const pollsRouter = createTRPCRouter({
           },
         },
       });
+
       const totalCount = await ctx.prisma.poll.count({
         where,
       });
 
-      if (totalCount === 0) {
-        return {
-          items: [],
-          totalPages: 0,
-        };
-      } else {
-        const totalPages = Math.ceil(totalCount / size);
-        return {
-          items,
-          totalPages,
-        };
-      }
+      const totalPages = Math.ceil(totalCount / size);
+      return {
+        items,
+        totalPages,
+      };
     }),
   getUserVotes: protectedProcedure
     .input(

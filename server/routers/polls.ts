@@ -155,38 +155,42 @@ export const pollsRouter = createTRPCRouter({
           },
         };
       }
-      const [items, totalCount] = await Promise.all([
-        ctx.prisma.poll.findMany({
-          skip: offset,
-          take: size,
-          orderBy: {
-            createdAt: "desc",
-          },
-          where,
-          select: {
-            id: true,
-            title: true,
-            isLive: true,
-            isPublic: true,
-            _count: {
-              select: {
-                Vote: true,
-                options: true,
-              },
+      const items = await ctx.prisma.poll.findMany({
+        skip: offset,
+        take: size,
+        orderBy: {
+          createdAt: "desc",
+        },
+        where,
+        select: {
+          id: true,
+          title: true,
+          isLive: true,
+          isPublic: true,
+          _count: {
+            select: {
+              Vote: true,
+              options: true,
             },
           },
-        }),
-        ctx.prisma.poll.count({
-          where,
-        }),
-      ]);
+        },
+      });
+      const totalCount = await ctx.prisma.poll.count({
+        where,
+      });
 
-      const totalPages = Math.ceil(totalCount / size);
-
-      return {
-        items,
-        totalPages,
-      };
+      if (totalCount === 0) {
+        return {
+          items: [],
+          totalPages: 0,
+        };
+      } else {
+        const totalPages = Math.ceil(totalCount / size);
+        return {
+          items,
+          totalPages,
+        };
+      }
     }),
   getUserVotes: protectedProcedure
     .input(

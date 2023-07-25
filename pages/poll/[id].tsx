@@ -1,19 +1,23 @@
-import React, { useEffect, useState } from "react";
+import { useEffect, useState } from "react";
 import { useRouter } from "next/router";
-import Button from "@/components/Button";
 import Link from "next/link";
 import { LinkIcon, QrCode } from "lucide-react";
 import { motion } from "framer-motion";
 import toast from "react-hot-toast";
 import { api } from "@/lib/trpc";
-import Skeleton from "@/components/Skeleton";
+import { useSession } from "next-auth/react";
+import classNames from "classnames";
+import QRCode from "react-qr-code";
+
+// Hooks
 import useLocalStorage from "@/lib/hooks/use-local-storage";
 import useCopyToClipboard from "@/lib/hooks/use-copy-to-clipboard";
-import { useSession } from "next-auth/react";
+
+// Component
+import Skeleton from "@/components/Skeleton";
 import Badge from "@/components/Badge";
-import classNames from "classnames";
 import CustomDialog from "@/components/Dialog";
-import QRCode from "react-qr-code";
+import Button from "@/components/Button";
 
 const PollView = () => {
   const router = useRouter();
@@ -29,11 +33,20 @@ const PollView = () => {
   const [isVoting, setIsVoting] = useState(false);
   const [showQR, setShowQR] = useState(false);
 
+  useEffect(() => {
+    if (votes.find((vote: any) => vote.poll === id)) {
+      setIsVoted(true);
+      setSelectedOptionId(votes.find((vote: any) => vote.poll === id).option);
+    }
+  }, [id, votes]);
+
+  // Handle link click
   const handleLinkClick = () => {
     toast.success("Copied to clipboard!");
     copy(`https://superpoll.app/poll/${id}`);
   };
 
+  // Download QR
   const downloadQR = () => {
     const svg = document.getElementById("qr") as any;
     const svgData = new XMLSerializer().serializeToString(svg);
@@ -52,13 +65,6 @@ const PollView = () => {
     };
     img.src = `data:image/svg+xml;base64,${btoa(svgData)}`;
   };
-
-  useEffect(() => {
-    if (votes.find((vote: any) => vote.poll === id)) {
-      setIsVoted(true);
-      setSelectedOptionId(votes.find((vote: any) => vote.poll === id).option);
-    }
-  }, [id, votes]);
 
   // Fetch poll
   const {

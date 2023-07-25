@@ -1,5 +1,3 @@
-import Button from "@/components/Button";
-import GoProCTA from "@/components/GoProCta";
 import {
   Component,
   HomeIcon,
@@ -13,7 +11,11 @@ import {
 } from "lucide-react";
 import { useSession } from "next-auth/react";
 import { useRouter } from "next/router";
+
+// Component
 import Footer from "@/components/Footer";
+import Button from "@/components/Button";
+import GoProCTA from "@/components/GoProCta";
 
 export default function Home() {
   const router = useRouter();

@@ -7,6 +7,7 @@ import { useSession } from "next-auth/react";
 import Button from "../Button";
 
 const includedFeatures = [
+  "Advanced analytics",
   "AI powered poll options",
   "Unlimited polls",
   "Unlimited responses",

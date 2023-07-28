@@ -1,6 +1,6 @@
 generator client {
   provider        = "prisma-client-js"
-  previewFeatures = ["filteredRelationCount", "fullTextSearch", "fullTextIndex"]
+  previewFeatures = ["fullTextSearch", "fullTextIndex", "filteredRelationCount"]
 }
 
 datasource db {
@@ -86,6 +86,7 @@ model Poll {
   user            User?    @relation(fields: [userId], references: [id], onDelete: Cascade)
   options         Option[]
   Vote            Vote[]
+  Views           Views[]
 
   @@index([userId])
 }
@@ -112,6 +113,15 @@ model Vote {
 
   @@unique([userId, pollId])
   @@index([optionId])
+  @@index([pollId])
+}
+
+model Views {
+  id        String   @id @default(cuid())
+  pollId    String
+  createdAt DateTime @default(now())
+  poll      Poll     @relation(fields: [pollId], references: [id], onDelete: Cascade)
+
   @@index([pollId])
 }
 

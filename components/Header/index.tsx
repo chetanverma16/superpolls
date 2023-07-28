@@ -1,8 +1,6 @@
 import Link from "next/link";
 import React from "react";
-import Button from "components/Button";
-import HeaderProps from "./header";
-import { CreditCard, Home, User } from "lucide-react";
+import { Activity, CreditCard, Home, User } from "lucide-react";
 import { useSession, signOut } from "next-auth/react";
 import Avatar from "../Avatar";
 import Dropdown from "../Dropdown";
@@ -15,8 +13,6 @@ import LinkButton from "../LinkButton";
 const Header = () => {
   const router = useRouter();
   const { data: session } = useSession();
-
-  console.log(session);
 
   const { mutateAsync: createBillingPortalSession } =
     api.stripe.createBillingPortalSession.useMutation();
@@ -52,6 +48,9 @@ const Header = () => {
           <>
             <LinkButton href="/dashboard" Icon={Home}>
               Dashboard
+            </LinkButton>
+            <LinkButton href="/dashboard/analytics" Icon={Activity}>
+              Analytics
             </LinkButton>
             {session?.user?.stripeSubscriptionStatus !== "active" && (
               <LinkButton

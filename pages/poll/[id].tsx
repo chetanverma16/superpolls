@@ -20,9 +20,11 @@ import CustomDialog from "@/components/Dialog";
 import Button from "@/components/Button";
 
 const PollView = () => {
+  // Router
   const router = useRouter();
   const { id } = router.query;
-  const mutation = api.polls.vote.useMutation();
+
+  // Hooks
   const { data: session } = useSession();
   const [value, copy] = useCopyToClipboard();
 
@@ -33,12 +35,23 @@ const PollView = () => {
   const [isVoting, setIsVoting] = useState(false);
   const [showQR, setShowQR] = useState(false);
 
+  // Mutation
+  const mutation = api.polls.vote.useMutation();
+  const { mutateAsync: increaseViewCount } =
+    api.analytics.increaseViewCount.useMutation();
+
   useEffect(() => {
     if (votes.find((vote: any) => vote.poll === id)) {
       setIsVoted(true);
       setSelectedOptionId(votes.find((vote: any) => vote.poll === id).option);
     }
   }, [id, votes]);
+
+  useEffect(() => {
+    if (id) {
+      increaseViewCount({ id: id as string, userId: session?.user?.id });
+    }
+  }, [id, session?.user?.id]);
 
   // Handle link click
   const handleLinkClick = () => {

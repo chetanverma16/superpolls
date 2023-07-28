@@ -11,6 +11,7 @@ import EmptyState from "@/components/EmptyState";
 import Button from "@/components/Button";
 import PollCard from "@/components/PollCard";
 import Skeleton from "@/components/Skeleton";
+import { Title } from "@tremor/react";
 
 const AllPolls = () => {
   const router = useRouter();
@@ -67,10 +68,9 @@ const AllPolls = () => {
   return (
     <div className="flex w-full flex-col items-start gap-y-4">
       <div className="flex w-full items-center justify-between">
-        <h2 className="text-2xl font-bold">All Polls</h2>
-
+        <Title>All Polls</Title>
         <input
-          className="h-full w-96 rounded-lg border border-gray-200 p-2 text-base focus:outline-none focus:ring-2 focus:ring-blue-500"
+          className="h-full w-96 rounded-lg border border-gray-200 p-2 text-sm focus:outline-none focus:ring-2 focus:ring-blue-500"
           type="text"
           placeholder="Search Polls"
           value={search}

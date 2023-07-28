@@ -1,8 +1,4 @@
 import React, { useState } from "react";
-import { GetServerSidePropsContext } from "next";
-import { getServerSession } from "next-auth";
-import { getProviders } from "next-auth/react";
-import { authOptions } from "../api/auth/[...nextauth]";
 import { Plus } from "lucide-react";
 import { useRouter } from "next/router";
 

@@ -30,6 +30,7 @@ export const analyticsRouter = createTRPCRouter({
       }
     }),
   getAnalytics: protectedProcedure.query(async ({ ctx }) => {
+    if (ctx.session.user.stripeSubscriptionStatus !== "active") return null;
     const views = await ctx.prisma.views.findMany({
       where: {
         createdAt: {
@@ -56,7 +57,10 @@ export const analyticsRouter = createTRPCRouter({
     return chartData;
   }),
   getTopViewedPollsByUser: protectedProcedure.query(async ({ ctx }) => {
+    if (ctx.session.user.stripeSubscriptionStatus !== "active") return null;
     const allViewsbyPoll = await ctx.prisma.poll.findMany({
+      skip: 0,
+      take: 10,
       where: {
         userId: ctx.session.user.id,
       },
@@ -77,7 +81,10 @@ export const analyticsRouter = createTRPCRouter({
     return sortedViews;
   }),
   getTopVotedPollsByUser: protectedProcedure.query(async ({ ctx }) => {
+    if (ctx.session.user.stripeSubscriptionStatus !== "active") return null;
     const allVotesbyPoll = await ctx.prisma.poll.findMany({
+      skip: 0,
+      take: 10,
       where: {
         userId: ctx.session.user.id,
       },

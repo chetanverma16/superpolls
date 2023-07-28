@@ -1,5 +1,4 @@
 import React from "react";
-import { useRouter } from "next/router";
 
 // Components
 import {
@@ -12,13 +11,9 @@ import {
   BarList,
 } from "@tremor/react";
 import { api } from "@/lib/trpc";
-import Spinner from "@/components/Spinner";
-import { is } from "date-fns/locale";
 import Skeleton from "@/components/Skeleton";
 
 const Anayltics = () => {
-  const router = useRouter();
-
   // Query
   const { data, isLoading } = api.analytics.getAnalytics.useQuery();
   const { data: topViews, isLoading: topViewLoading } =

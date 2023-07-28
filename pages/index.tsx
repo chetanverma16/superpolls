@@ -1,4 +1,5 @@
 import {
+  Activity,
   Component,
   HomeIcon,
   Joystick,
@@ -98,7 +99,7 @@ export default function Home() {
               above and beyond to ensure your polls are protected.
             </p>
           </div>
-          <div className="col-auto flex flex-col gap-y-2 rounded-xl border border-gray-200 p-6 text-left shadow-lg transition-all duration-200 hover:border-gray-400 lg:col-span-6">
+          <div className="col-auto flex flex-col gap-y-2 rounded-xl border border-gray-200 p-6 text-left shadow-lg transition-all duration-200 hover:border-gray-400 lg:col-span-4">
             <Wand2 className="h-10" />
             <h2 className="text-base font-semibold text-gray-900 lg:text-xl">
               AI-powered poll options
@@ -107,6 +108,16 @@ export default function Home() {
               This feature leverages advanced machine learning techniques to
               analyze data and generate a list of potential options for a poll
               or survey.
+            </p>
+          </div>
+          <div className="col-auto flex flex-col gap-y-2 rounded-xl border border-gray-200 p-6 text-left shadow-lg transition-all duration-200 hover:border-gray-400 lg:col-span-2">
+            <Activity className="h-10" />
+            <h2 className="text-base font-semibold text-gray-900 lg:text-xl">
+              Advance Analytics
+            </h2>
+            <p className="text-md text-gray-500 lg:text-lg">
+              Our advanced analytics feature allows you to see how your poll is
+              performing in real-time.
             </p>
           </div>
           <div className="col-auto flex flex-col gap-y-2 rounded-xl border border-gray-200 p-6 text-left shadow-lg transition-all duration-200 hover:border-gray-400 lg:col-span-2">

@@ -1,13 +1,16 @@
 import React, { useState } from "react";
 import { useSession } from "next-auth/react";
 import { api } from "@/lib/trpc";
-import PollCard from "@/components/PollCard";
-import Skeleton from "@/components/Skeleton";
 import toast from "react-hot-toast";
-import EmptyState from "@/components/EmptyState";
-import Button from "@/components/Button";
 import { useRouter } from "next/router";
 import { PlusIcon } from "lucide-react";
+
+// Components
+import { Title } from "@tremor/react";
+import PollCard from "@/components/PollCard";
+import Skeleton from "@/components/Skeleton";
+import EmptyState from "@/components/EmptyState";
+import Button from "@/components/Button";
 
 const AllPolls = () => {
   const router = useRouter();
@@ -32,7 +35,7 @@ const AllPolls = () => {
   return (
     <div className="flex w-full flex-col items-start gap-y-4">
       <div className="flex w-full items-center justify-between">
-        <h2 className="text-2xl font-bold">All Votes</h2>
+        <Title>All Polls</Title>
       </div>
 
       <div className="mt-2 grid w-full grid-cols-1 gap-x-4 gap-y-4">

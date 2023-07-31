@@ -114,7 +114,6 @@ const Create = () => {
       const options = response.choices[0].text
         .split(/\r?\n/)
         .filter((option: string) => option !== "");
-      console.log(options);
       const newOptions = options.map((option: string) => option.trim());
       setOptions(newOptions);
     }

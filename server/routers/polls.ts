@@ -22,6 +22,19 @@ export const pollsRouter = createTRPCRouter({
           message: "Poll must have at least 2 options",
         });
       }
+      if (input.isAuthenticated || input.isLive || input.isPublic) {
+        if (
+          ctx.session &&
+          ctx.session.user.stripeSubscriptionStatus !== "active"
+        ) {
+          throw new TRPCError({
+            code: "BAD_REQUEST",
+            message:
+              "You must have an active subscription to create a private poll",
+          });
+        }
+      }
+
       return ctx.prisma.poll.create({
         data: {
           title: input.name,
@@ -262,6 +275,12 @@ export const pollsRouter = createTRPCRouter({
       }),
     )
     .mutation(async ({ ctx, input }) => {
+      if (ctx.session.user.stripeSubscriptionStatus !== "active") {
+        throw new TRPCError({
+          code: "BAD_REQUEST",
+          message: "You need to be subscribed to update your poll",
+        });
+      }
       return ctx.prisma.poll.update({
         where: {
           id: input.id,

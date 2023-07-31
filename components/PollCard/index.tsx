@@ -75,7 +75,7 @@ const PollCard = ({
   return (
     <motion.div className="flex cursor-pointer flex-col items-start justify-between gap-y-4 rounded-xl border border-transparent bg-gray-50 p-6 hover:border-gray-200 lg:flex-row">
       <div className={isVotedScreen ? "w-full" : "w-4/6"}>
-        <h1 className="text-base font-semibold text-gray-900 lg:text-lg">
+        <h1 className="text-lg font-semibold text-gray-900 lg:text-xl">
           {title}
         </h1>
         <div className="mt-2 flex items-center gap-x-2">
@@ -93,14 +93,14 @@ const PollCard = ({
           </div>
         )}
         {!voted && session.data?.user.stripeSubscriptionStatus === "active" && (
-          <div className="mt-6 flex items-center gap-x-2">
+          <div className="mt-6 flex flex-col items-start gap-y-2 lg:flex-row lg:items-center lg:gap-x-2">
             <div className="flex items-center justify-center rounded-xl bg-white p-4 shadow-md">
               <Toggle
                 checked={isPublicState}
                 onChange={setIsPublicState}
                 disabled={disableCheck}
-              />{" "}
-              <span className="ml-2">Results Public</span>
+              />
+              <span className="ml-2 text-sm">Results Public</span>
             </div>
             <div className="flex items-center justify-center rounded-xl bg-white p-4 shadow-md">
               <Toggle
@@ -109,7 +109,7 @@ const PollCard = ({
                 disabled={disableCheck}
               />
 
-              <span className="ml-2">Live </span>
+              <span className="ml-2 text-sm">Live </span>
             </div>
           </div>
         )}

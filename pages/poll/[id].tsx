@@ -137,8 +137,7 @@ const PollView = () => {
           refetchVoted();
           setVotes([...votes, { poll: id, option: selectedOptionId }]);
         },
-        onError: (error) => {
-          toast.error(error.message);
+        onError: () => {
           setIsVoting(false);
         },
       },
@@ -147,7 +146,9 @@ const PollView = () => {
     toast.promise(votePromise, {
       loading: "Voting...",
       success: "Voted successfully!",
-      error: "Failed to vote",
+      error: (err) => {
+        return err.message;
+      },
     });
   };
 

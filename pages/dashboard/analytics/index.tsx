@@ -1,4 +1,6 @@
 import React from "react";
+import { api } from "@/lib/trpc";
+import { useSession } from "next-auth/react";
 
 // Components
 import {
@@ -9,11 +11,8 @@ import {
   Flex,
   Bold,
   BarList,
-  Button,
 } from "@tremor/react";
-import { api } from "@/lib/trpc";
 import Skeleton from "@/components/Skeleton";
-import { useSession } from "next-auth/react";
 import LinkButton from "@/components/LinkButton";
 
 const Anayltics = () => {
@@ -80,7 +79,6 @@ const Anayltics = () => {
             viewing behavior.
           </Text>
         </div>
-        {}
         <div className="flex flex-col gap-y-6 py-6">
           <Card>
             <Title>
@@ -99,7 +97,7 @@ const Anayltics = () => {
               />
             )}
           </Card>
-          <div className="grid grid-cols-2 gap-6">
+          <div className="grid grid-cols-1 gap-6 lg:grid-cols-2">
             <Card>
               <Title>Top Viewed Polls </Title>
               <Flex className="mt-4">

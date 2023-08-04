@@ -11,7 +11,7 @@ const ChangeLogItem = ({ date, title, image, improvements }: ChangelogItem) => {
         alt={title}
         className="h-full w-full overflow-hidden rounded-xl border border-gray-100 object-cover shadow-xl"
       />
-      <div className="flex justify-between gap-y-1">
+      <div className="flex flex-col justify-between gap-y-1 lg:flex-row">
         <h2 className="flex items-center text-3xl text-gray-900">{title}</h2>
         <Text>
           <span className="text-gray-500">

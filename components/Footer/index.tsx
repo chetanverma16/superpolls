@@ -67,9 +67,7 @@ export default function Footer() {
             chetanverma
           </Link>{" "}
           and designed by{" "}
-          <Link href="https://lovleenthapar.framer.website/">
-            lovleenthapar
-          </Link>
+          <Link href="https://www.lovleenthapar.com/">lovleenthapar</Link>
         </p>
       </div>
     </footer>

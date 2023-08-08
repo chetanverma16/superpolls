@@ -177,6 +177,7 @@ export const pollsRouter = createTRPCRouter({
           title: true,
           isLive: true,
           isPublic: true,
+          isAuthenticated: true,
           _count: {
             select: {
               Vote: true,
@@ -272,6 +273,7 @@ export const pollsRouter = createTRPCRouter({
         id: z.string(),
         isPublic: z.boolean().optional(),
         isLive: z.boolean().optional(),
+        isAuthenticated: z.boolean().optional(),
       }),
     )
     .mutation(async ({ ctx, input }) => {
@@ -288,6 +290,7 @@ export const pollsRouter = createTRPCRouter({
         data: {
           isPublic: input.isPublic,
           isLive: input.isLive,
+          isAuthenticated: input.isAuthenticated,
         },
       });
     }),

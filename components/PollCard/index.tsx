@@ -23,6 +23,7 @@ const PollCard = ({
   isLive,
   isPublic,
   refetch,
+  isAuthenticated,
 }: PollCardProps) => {
   const router = useRouter();
   const session = useSession();
@@ -30,6 +31,8 @@ const PollCard = ({
 
   const [isPublicState, setIsPublicState] = useState(isPublic);
   const [isLiveState, setIsLiveState] = useState(isLive);
+  const [isAuthenticatedState, setIsAuthenticatedState] =
+    useState(isAuthenticated);
   const [disableCheck, setDisableCheck] = useState(false);
 
   const updatePollMutation = api.polls.updatePoll.useMutation();
@@ -47,13 +50,18 @@ const PollCard = ({
   };
 
   useEffect(() => {
-    if (isPublicState !== isPublic || isLiveState !== isLive) {
+    if (
+      isPublicState !== isPublic ||
+      isLiveState !== isLive ||
+      isAuthenticatedState !== isAuthenticated
+    ) {
       setDisableCheck(true);
       const updatePollPromise = updatePollMutation.mutateAsync(
         {
           id,
           isPublic: isPublicState,
           isLive: isLiveState,
+          isAuthenticated: isAuthenticatedState,
         },
         {
           onSuccess: () => {
@@ -70,7 +78,7 @@ const PollCard = ({
       });
     }
     // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [isPublicState, isLiveState]);
+  }, [isPublicState, isLiveState, isAuthenticatedState]);
 
   return (
     <motion.div className="flex cursor-pointer flex-col items-start justify-between gap-y-4 rounded-xl border border-transparent bg-gray-50 p-6 hover:border-gray-200 lg:flex-row">
@@ -110,6 +118,14 @@ const PollCard = ({
               />
 
               <span className="ml-2 text-sm">Live </span>
+            </div>
+            <div className="flex items-center justify-center rounded-xl bg-white p-4 shadow-md">
+              <Toggle
+                checked={isAuthenticatedState}
+                onChange={setIsAuthenticatedState}
+                disabled={disableCheck}
+              />
+              <span className="ml-2 text-sm">Authenticated Users</span>
             </div>
           </div>
         )}

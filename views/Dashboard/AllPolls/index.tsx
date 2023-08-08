@@ -101,7 +101,14 @@ const AllPolls = () => {
           userPolls && (
             <div className="flex flex-col gap-y-4">
               {userPolls.items.map(
-                ({ id, title, _count, isPublic, isLive }: any) => (
+                ({
+                  id,
+                  title,
+                  _count,
+                  isPublic,
+                  isLive,
+                  isAuthenticated,
+                }: any) => (
                   <PollCard
                     id={id}
                     key={id}
@@ -110,6 +117,7 @@ const AllPolls = () => {
                     options={_count.options}
                     isPublic={isPublic}
                     isLive={isLive}
+                    isAuthenticated={isAuthenticated}
                     handleDelete={handleDelete}
                     refetch={refetch}
                   />

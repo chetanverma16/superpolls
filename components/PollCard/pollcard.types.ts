@@ -11,5 +11,7 @@ export default interface PollCardProps {
   isPro?: StripeSubscriptionStatus | null;
   isLive?: boolean;
   isPublic?: boolean;
+  isAuthenticated?: boolean;
+
   refetch?: () => void;
 }

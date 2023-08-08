@@ -14,19 +14,19 @@ export const analyticsRouter = createTRPCRouter({
           return {
             success: false,
           };
-      }
-
-      try {
-        await ctx.prisma.views.create({
-          data: {
-            pollId: id as string,
-          },
-        });
-      } catch (err) {
-        console.log(err);
-        return {
-          success: false,
-        };
+      } else {
+        try {
+          await ctx.prisma.views.create({
+            data: {
+              pollId: id as string,
+            },
+          });
+        } catch (err) {
+          console.log(err);
+          return {
+            success: false,
+          };
+        }
       }
     }),
   getAnalytics: protectedProcedure.query(async ({ ctx }) => {
@@ -41,7 +41,6 @@ export const analyticsRouter = createTRPCRouter({
         },
       },
     });
-
     const votes = await ctx.prisma.vote.findMany({
       where: {
         createdAt: {
@@ -56,6 +55,39 @@ export const analyticsRouter = createTRPCRouter({
 
     return chartData;
   }),
+  getAnalyticsById: protectedProcedure
+    .input(
+      z.object({
+        id: z.string(),
+      }),
+    )
+    .query(async ({ ctx, input }) => {
+      if (ctx.session.user.stripeSubscriptionStatus !== "active") return null;
+      const { id } = input;
+      const views = await ctx.prisma.views.findMany({
+        where: {
+          createdAt: {
+            gte: new Date(new Date().getTime() - 10 * 24 * 60 * 60 * 1000), // 10 days
+          },
+          poll: {
+            id: id as string,
+          },
+        },
+      });
+      const votes = await ctx.prisma.vote.findMany({
+        where: {
+          createdAt: {
+            gte: new Date(new Date().getTime() - 10 * 24 * 60 * 60 * 1000), // 10 days
+          },
+          poll: {
+            id: id as string,
+          },
+        },
+      });
+      const chartData = generateChartData(views, votes);
+
+      return chartData;
+    }),
   getTopViewedPollsByUser: protectedProcedure.query(async ({ ctx }) => {
     if (ctx.session.user.stripeSubscriptionStatus !== "active") return null;
     const allViewsbyPoll = await ctx.prisma.poll.findMany({

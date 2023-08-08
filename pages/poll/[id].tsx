@@ -1,7 +1,7 @@
 import { useEffect, useState } from "react";
 import { useRouter } from "next/router";
 import Link from "next/link";
-import { LinkIcon, QrCode } from "lucide-react";
+import { Activity, LinkIcon, QrCode } from "lucide-react";
 import { motion } from "framer-motion";
 import toast from "react-hot-toast";
 import { api } from "@/lib/trpc";
@@ -16,8 +16,9 @@ import useCopyToClipboard from "@/lib/hooks/use-copy-to-clipboard";
 // Component
 import Skeleton from "@/components/Skeleton";
 import Badge from "@/components/Badge";
-import CustomDialog from "@/components/Dialog";
 import Button from "@/components/Button";
+import Modal from "@/components/Modal";
+import { AreaChart } from "@tremor/react";
 
 const PollView = () => {
   // Router
@@ -34,6 +35,7 @@ const PollView = () => {
   const [votes, setVotes] = useLocalStorage<any>("votes", []);
   const [isVoting, setIsVoting] = useState(false);
   const [showQR, setShowQR] = useState(false);
+  const [showAnalytics, setShowAnalytics] = useState(false);
 
   // Mutation
   const mutation = api.polls.vote.useMutation();
@@ -90,6 +92,12 @@ const PollView = () => {
     },
     { enabled: !!id },
   );
+
+  // getAnalytics
+  const { data: analytics, isLoading: analyticsLoading } =
+    api.analytics.getAnalyticsById.useQuery({
+      id: id as string,
+    });
 
   // Handle current option
   const handleCurrentOption = (id: string) => {
@@ -199,8 +207,9 @@ const PollView = () => {
     if (session?.user?.id === poll?.userId) {
       return (
         <div className="flex w-full flex-col items-center justify-center">
-          <CustomDialog isOpen={showQR} setIsOpen={setShowQR}>
-            <div className="flex flex-col items-center gap-y-10 p-2">
+          {/* QR Modal */}
+          <Modal showModal={showQR} setShowModal={setShowQR}>
+            <div className="flex h-96 flex-col items-center gap-y-10 p-2">
               <QRCode
                 id="qr"
                 size={256}
@@ -221,7 +230,21 @@ const PollView = () => {
                 </Button>
               </div>
             </div>
-          </CustomDialog>
+          </Modal>
+
+          {/* Analytics Modal */}
+          <Modal showModal={showAnalytics} setShowModal={setShowAnalytics}>
+            <div tabIndex={0} className="flex items-center">
+              <AreaChart
+                className="h-96"
+                data={analytics ? analytics : []}
+                index="date"
+                categories={["views", "votes"]}
+                colors={["indigo", "cyan"]}
+              />
+            </div>
+          </Modal>
+
           <div
             className={classNames(
               "mt-20 w-full max-w-2xl rounded-xl bg-gray-50 p-6 lg:p-10",
@@ -241,6 +264,9 @@ const PollView = () => {
                 </Button>
                 <Button onClick={() => setShowQR(true)}>
                   <QrCode />
+                </Button>
+                <Button onClick={() => setShowAnalytics(true)}>
+                  <Activity />
                 </Button>
               </div>
             </div>

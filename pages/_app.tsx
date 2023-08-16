@@ -10,6 +10,8 @@ import Layout from "@/components/Layout";
 import { api } from "@/lib/trpc";
 import { Toaster } from "react-hot-toast";
 import Header from "@/components/Header";
+import { Crisp } from "crisp-sdk-web";
+import { useEffect } from "react";
 
 const inter = Inter({
   variable: "--font-inter",
@@ -20,6 +22,10 @@ function MyApp({
   Component,
   pageProps: { session, ...pageProps },
 }: AppProps<{ session: Session }>) {
+  useEffect(() => {
+    Crisp.configure("a5b4004f-6647-4ad9-afd4-4f133e9238a7");
+  }, []);
+
   return (
     <SessionProvider session={session}>
       <Analytics />

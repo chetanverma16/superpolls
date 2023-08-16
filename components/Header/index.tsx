@@ -1,6 +1,6 @@
 import Link from "next/link";
 import React from "react";
-import { Activity, CreditCard, Home, User } from "lucide-react";
+import { Activity, CreditCard, Home, Inbox, User } from "lucide-react";
 import { useSession, signOut } from "next-auth/react";
 import Avatar from "../Avatar";
 import Dropdown from "../Dropdown";
@@ -46,21 +46,38 @@ const Header = () => {
 
         {session?.user ? (
           <>
-            <LinkButton href="/dashboard" Icon={Home}>
-              Dashboard
-            </LinkButton>
-            <LinkButton href="/dashboard/analytics" Icon={Activity}>
-              Analytics
-            </LinkButton>
-            {session?.user?.stripeSubscriptionStatus !== "active" && (
-              <LinkButton
-                href="/pro"
-                classes="hidden lg:block"
-                Icon={CreditCard}
-              >
-                Go Pro
+            {/* Desktop */}
+            <div className="hidden items-center gap-x-2 lg:flex">
+              <LinkButton href="/dashboard" Icon={Home}>
+                Dashboard
               </LinkButton>
-            )}
+              <LinkButton href="/dashboard/analytics" Icon={Activity}>
+                Analytics
+              </LinkButton>
+              <LinkButton href="https://feedback.superpoll.app/" Icon={Inbox}>
+                Submit feedback
+              </LinkButton>
+
+              {session?.user?.stripeSubscriptionStatus !== "active" && (
+                <LinkButton
+                  href="/pro"
+                  classes="hidden lg:block"
+                  Icon={CreditCard}
+                >
+                  Go Pro
+                </LinkButton>
+              )}
+            </div>
+
+            {/* Mobile */}
+            <div className="flex items-center gap-x-2 lg:hidden">
+              <LinkButton href="/dashboard" Icon={Home} />
+              <LinkButton href="/dashboard/analytics" Icon={Activity} />
+              <LinkButton href="https://feedback.superpoll.app/" Icon={Inbox} />
+              {session?.user?.stripeSubscriptionStatus !== "active" && (
+                <LinkButton href="/pro" Icon={CreditCard} />
+              )}
+            </div>
 
             <Dropdown
               items={

@@ -39,9 +39,24 @@ const Header = () => {
       </Link>
       <nav className="flex items-center gap-x-4">
         {!session?.user && (
-          <LinkButton href="/pro" Icon={CreditCard}>
-            Go Pro
-          </LinkButton>
+          <>
+            {/* Desktop */}
+            <div className="hidden items-center gap-x-2 lg:flex">
+              <LinkButton href="/pro" Icon={CreditCard}>
+                Go Pro
+              </LinkButton>
+              <LinkButton href="https://feedback.superpoll.app/" Icon={Inbox}>
+                Submit feedback
+              </LinkButton>
+            </div>
+            {/* Mobile */}
+            <div className="flex items-center gap-x-2 lg:hidden">
+              <LinkButton href="/pro" Icon={CreditCard}>
+                Go Pro
+              </LinkButton>
+              <LinkButton href="https://feedback.superpoll.app/" Icon={Inbox} />
+            </div>
+          </>
         )}
 
         {session?.user ? (

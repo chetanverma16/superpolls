@@ -89,6 +89,7 @@ model Poll {
   Views           Views[]
 
   @@index([userId])
+  @@index([id])
 }
 
 model Option {

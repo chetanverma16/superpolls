@@ -19,6 +19,7 @@ import Badge from "@/components/Badge";
 import Button from "@/components/Button";
 import Modal from "@/components/Modal";
 import { AreaChart } from "@tremor/react";
+import Spinner from "@/components/Spinner";
 
 const PollView = () => {
   // Router
@@ -95,9 +96,14 @@ const PollView = () => {
 
   // getAnalytics
   const { data: analytics, isLoading: analyticsLoading } =
-    api.analytics.getAnalyticsById.useQuery({
-      id: id as string,
-    });
+    api.analytics.getAnalyticsById.useQuery(
+      {
+        id: id as string,
+      },
+      {
+        enabled: showAnalytics,
+      },
+    );
 
   // Handle current option
   const handleCurrentOption = (id: string) => {
@@ -234,14 +240,21 @@ const PollView = () => {
 
           {/* Analytics Modal */}
           <Modal showModal={showAnalytics} setShowModal={setShowAnalytics}>
-            <div tabIndex={0} className="flex items-center">
-              <AreaChart
-                className="h-96"
-                data={analytics ? analytics : []}
-                index="date"
-                categories={["views", "votes"]}
-                colors={["indigo", "cyan"]}
-              />
+            <div
+              tabIndex={0}
+              className="flex w-full items-center justify-center"
+            >
+              {analyticsLoading ? (
+                <Spinner />
+              ) : (
+                <AreaChart
+                  className="h-96"
+                  data={analytics ? analytics : []}
+                  index="date"
+                  categories={["views", "votes"]}
+                  colors={["indigo", "cyan"]}
+                />
+              )}
             </div>
           </Modal>
 

@@ -45,7 +45,10 @@ const Header = () => {
               <LinkButton href="/pro" Icon={CreditCard}>
                 Go Pro
               </LinkButton>
-              <LinkButton href="https://feedback.superpoll.app/" Icon={Inbox}>
+              <LinkButton
+                href="https://superpoll.featurebase.app/"
+                Icon={Inbox}
+              >
                 Submit feedback
               </LinkButton>
             </div>
@@ -69,7 +72,10 @@ const Header = () => {
               <LinkButton href="/dashboard/analytics" Icon={Activity}>
                 Analytics
               </LinkButton>
-              <LinkButton href="https://feedback.superpoll.app/" Icon={Inbox}>
+              <LinkButton
+                href="https://superpoll.featurebase.app/"
+                Icon={Inbox}
+              >
                 Submit feedback
               </LinkButton>
 
@@ -88,7 +94,10 @@ const Header = () => {
             <div className="flex items-center gap-x-2 lg:hidden">
               <LinkButton href="/dashboard" Icon={Home} />
               <LinkButton href="/dashboard/analytics" Icon={Activity} />
-              <LinkButton href="https://feedback.superpoll.app/" Icon={Inbox} />
+              <LinkButton
+                href="https://superpoll.featurebase.app/"
+                Icon={Inbox}
+              />
               {session?.user?.stripeSubscriptionStatus !== "active" && (
                 <LinkButton href="/pro" Icon={CreditCard} />
               )}

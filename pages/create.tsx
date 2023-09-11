@@ -13,6 +13,7 @@ import Textarea from "@/components/Textarea";
 
 // Icons
 import { InfoIcon, Loader2, Plus, Wand2, X } from "lucide-react";
+import Head from "next/head";
 
 const Create = () => {
   const router = useRouter();
@@ -122,122 +123,152 @@ const Create = () => {
   const isOptionsEmpty = options.every((option) => option === "");
 
   return (
-    <div className="mt-10 flex flex-col items-center">
-      <h1 className="w-4/5 text-center text-3xl font-semibold text-gray-900">
-        Elevate your polling game with Superpolls - the app that creates
-        beautiful and engaging polls in minutes.
-      </h1>
-      <div className="mt-10 w-full max-w-xl rounded-xl bg-gray-50 p-10">
-        {mutation.isLoading ? (
-          <div className="flex flex-col items-center justify-center gap-y-2">
-            <div className="flex items-center gap-x-2">
-              <h2 className="text-xl font-semibold">Creating Poll</h2>
-              <Loader2 className="animate-spin" />
+    <>
+      <Head>
+        <title>Superpoll - Create free polls</title>
+        <meta name="title" content="Superpoll - Create free polls" />
+        <meta
+          name="description"
+          content="
+        Discover the ultimate polling experience with our app's elegant interface! Create and share polls effortlessly, with advanced features like customizable templates, real-time results, and in-depth analytics. Engage your audience and gain valuable insights with beautiful polls. Try it now!"
+        />
+        <meta property="og:type" content="website" />
+        <meta property="og:url" content="https://superpoll.app/" />
+        <meta property="og:title" content="Superpoll - Create free polls" />
+        <meta
+          property="og:description"
+          content="Discover the ultimate polling experience with our app's elegant interface! Create and share polls effortlessly, with advanced features like customizable templates, real-time results, and in-depth analytics. Engage your audience and gain valuable insights with beautiful polls. Try it now!"
+        />
+        <meta property="og:image" content="/og.webp" />
+        <meta property="twitter:card" content="summary_large_image" />
+        <meta property="twitter:url" content="https://superpoll.app/" />
+        <meta
+          property="twitter:title"
+          content="Superpoll - Create free polls"
+        />
+        <meta
+          property="twitter:description"
+          content="Discover the ultimate polling experience with our app's elegant interface! Create and share polls effortlessly, with advanced features like customizable templates, real-time results, and in-depth analytics. Engage your audience and gain valuable insights with beautiful polls. Try it now!"
+        />
+        <meta property="twitter:image" content="/og.webp" />
+      </Head>
+      <div className="mt-10 flex flex-col items-center">
+        <h1 className="w-4/5 text-center text-3xl font-semibold text-gray-900">
+          Elevate your polling game with Superpolls - the app that creates
+          beautiful and engaging polls in minutes.
+        </h1>
+        <div className="mt-10 w-full max-w-xl rounded-xl bg-gray-50 p-10">
+          {mutation.isLoading ? (
+            <div className="flex flex-col items-center justify-center gap-y-2">
+              <div className="flex items-center gap-x-2">
+                <h2 className="text-xl font-semibold">Creating Poll</h2>
+                <Loader2 className="animate-spin" />
+              </div>
+              <p className="text-center text-gray-500">
+                You will be redirected to the poll, once the poll is created.
+                <br />
+                please be patient.
+              </p>
             </div>
-            <p className="text-center text-gray-500">
-              You will be redirected to the poll, once the poll is created.
-              <br />
-              please be patient.
-            </p>
-          </div>
-        ) : (
-          <div
-            className={`flex flex-col items-center ${
-              mutation.isLoading && "cursor-wait opacity-50"
-            }`}
-          >
-            <Textarea
-              value={question}
-              onChange={(e) => setQuestion(e.target.value)}
-              placeholder="What's your question?"
-              Icon={
-                isOptionsEmpty &&
-                question.length > 10 && (
-                  <Tooltip content="Generate options with ai">
-                    <Button onClick={genearateOptions}>
-                      <Wand2 />
-                    </Button>
-                  </Tooltip>
-                )
-              }
-            />
-            {/* <CustomInput /> */}
-
-            <div className="w- mt-10 flex w-full flex-col gap-y-6">
-              {options.map((option, index) => (
-                <CustomInput
-                  name={index.toString()}
-                  onChange={handleChange}
-                  key={index}
-                  type="text"
-                  placeholder={`Option ${index + 1}`}
-                  value={option}
-                  Icon={
-                    options.length > 2 && (
-                      <X className="stroke-gray-400 hover:stroke-gray-600" />
-                    )
-                  }
-                  IconButtonOnClick={() => handleDeleteOption(index)}
-                />
-              ))}
-              <Button
-                classes="w-full border"
-                type="secondary"
-                onClick={handleAddOption}
-                Icon={Plus}
-              >
-                Add another option
-              </Button>
-              {session?.user.stripeSubscriptionStatus === "active" && (
-                <div className="flex flex-col items-center gap-y-4">
-                  <div className="flex w-full items-center justify-between gap-x-4">
-                    <div className="flex w-full items-center justify-center rounded-md bg-white p-4 shadow-md">
-                      <Toggle checked={isPublic} onChange={setIsPublic} />{" "}
-                      <Tooltip content="Show/Hide Your Results Publically">
-                        <span className="ml-2 flex items-center">
-                          Results Public{" "}
-                          <InfoIcon className="h-4 text-gray-500" />{" "}
-                        </span>
-                      </Tooltip>
-                    </div>
-                    <div className="flex w-full items-center justify-center rounded-md bg-white p-4 shadow-md">
-                      <Toggle checked={isLive} onChange={setIsLive} />{" "}
-                      <Tooltip content="Show/Hide Your Poll">
-                        <span className="ml-2 flex items-center">
-                          Live <InfoIcon className="h-4 text-gray-500" />
-                        </span>
-                      </Tooltip>
-                    </div>
-                  </div>
-                  <div className="flex w-full items-center justify-between gap-x-4">
-                    <div className="flex w-full items-center justify-center rounded-md bg-white p-4 shadow-md">
-                      <Toggle
-                        checked={isAuthenticated}
-                        onChange={setIsAuthenticated}
-                      />{" "}
-                      <Tooltip content="Authenticate user before voting">
-                        <span className="ml-2 flex items-center">
-                          Authenticated{" "}
-                          <InfoIcon className="h-4 text-gray-500" />{" "}
-                        </span>
-                      </Tooltip>
-                    </div>
-                  </div>
-                </div>
-              )}
-            </div>
-            <Button
-              onClick={createPoll}
-              classes="w-full mt-10 justify-center"
-              type="primary"
-              disabled={mutation.isLoading}
+          ) : (
+            <div
+              className={`flex flex-col items-center ${
+                mutation.isLoading && "cursor-wait opacity-50"
+              }`}
             >
-              Create Poll
-            </Button>
-          </div>
-        )}
+              <Textarea
+                value={question}
+                onChange={(e) => setQuestion(e.target.value)}
+                placeholder="What's your question?"
+                Icon={
+                  isOptionsEmpty &&
+                  question.length > 10 && (
+                    <Tooltip content="Generate options with ai">
+                      <Button onClick={genearateOptions}>
+                        <Wand2 />
+                      </Button>
+                    </Tooltip>
+                  )
+                }
+              />
+              {/* <CustomInput /> */}
+
+              <div className="w- mt-10 flex w-full flex-col gap-y-6">
+                {options.map((option, index) => (
+                  <CustomInput
+                    name={index.toString()}
+                    onChange={handleChange}
+                    key={index}
+                    type="text"
+                    placeholder={`Option ${index + 1}`}
+                    value={option}
+                    Icon={
+                      options.length > 2 && (
+                        <X className="stroke-gray-400 hover:stroke-gray-600" />
+                      )
+                    }
+                    IconButtonOnClick={() => handleDeleteOption(index)}
+                  />
+                ))}
+                <Button
+                  classes="w-full border"
+                  type="secondary"
+                  onClick={handleAddOption}
+                  Icon={Plus}
+                >
+                  Add another option
+                </Button>
+                {session?.user.stripeSubscriptionStatus === "active" && (
+                  <div className="flex flex-col items-center gap-y-4">
+                    <div className="flex w-full items-center justify-between gap-x-4">
+                      <div className="flex w-full items-center justify-center rounded-md bg-white p-4 shadow-md">
+                        <Toggle checked={isPublic} onChange={setIsPublic} />{" "}
+                        <Tooltip content="Show/Hide Your Results Publically">
+                          <span className="ml-2 flex items-center">
+                            Results Public{" "}
+                            <InfoIcon className="h-4 text-gray-500" />{" "}
+                          </span>
+                        </Tooltip>
+                      </div>
+                      <div className="flex w-full items-center justify-center rounded-md bg-white p-4 shadow-md">
+                        <Toggle checked={isLive} onChange={setIsLive} />{" "}
+                        <Tooltip content="Show/Hide Your Poll">
+                          <span className="ml-2 flex items-center">
+                            Live <InfoIcon className="h-4 text-gray-500" />
+                          </span>
+                        </Tooltip>
+                      </div>
+                    </div>
+                    <div className="flex w-full items-center justify-between gap-x-4">
+                      <div className="flex w-full items-center justify-center rounded-md bg-white p-4 shadow-md">
+                        <Toggle
+                          checked={isAuthenticated}
+                          onChange={setIsAuthenticated}
+                        />{" "}
+                        <Tooltip content="Authenticate user before voting">
+                          <span className="ml-2 flex items-center">
+                            Authenticated{" "}
+                            <InfoIcon className="h-4 text-gray-500" />{" "}
+                          </span>
+                        </Tooltip>
+                      </div>
+                    </div>
+                  </div>
+                )}
+              </div>
+              <Button
+                onClick={createPoll}
+                classes="w-full mt-10 justify-center"
+                type="primary"
+                disabled={mutation.isLoading}
+              >
+                Create Poll
+              </Button>
+            </div>
+          )}
+        </div>
       </div>
-    </div>
+    </>
   );
 };
 

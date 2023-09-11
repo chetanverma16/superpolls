@@ -19,6 +19,7 @@ import Button from "@/components/Button";
 import Modal from "@/components/Modal";
 import { AreaChart } from "@tremor/react";
 import Spinner from "@/components/Spinner";
+import Head from "next/head";
 
 const PollView = () => {
   // Router
@@ -216,130 +217,145 @@ const PollView = () => {
   if (!isLoading) {
     if (poll?.isLive) {
       return (
-        <div className="flex w-full flex-col items-center justify-center">
-          {/* QR */}
-          <Modal showModal={showQR} setShowModal={setShowQR}>
-            <div className="flex h-96 flex-col items-center gap-y-10 p-2">
-              <QRCode
-                id="qr"
-                size={256}
-                style={{ height: "auto", maxWidth: "100%", width: "100%" }}
-                value={`https://superpoll.app/poll/${id}`}
-                viewBox={`0 0 256 256`}
-              />
-              <div className="flex w-full flex-col gap-y-2">
-                <Button classes="w-full" type="primary" onClick={downloadQR}>
-                  Download
-                </Button>
-                <Button
-                  classes="w-full"
-                  type="secondary"
-                  onClick={() => setShowQR(false)}
-                >
-                  Close
-                </Button>
-              </div>
-            </div>
-          </Modal>
-
-          {/* Analytics Modal */}
-          <Modal showModal={showAnalytics} setShowModal={setShowAnalytics}>
-            <div
-              tabIndex={0}
-              className="flex w-full items-center justify-center"
-            >
-              {analyticsLoading ? (
-                <Spinner />
-              ) : (
-                <AreaChart
-                  className="h-96"
-                  data={analytics ? analytics : []}
-                  index="date"
-                  categories={["views", "votes"]}
-                  colors={["indigo", "cyan"]}
+        <>
+          <Head>
+            <title>{poll?.title} | Superpoll</title>
+            <meta name="title" content={poll?.title} />
+            <meta name="description" content={poll?.title} />
+            <meta property="og:type" content="website" />
+            <meta property="og:url" content="https://superpoll.app/" />
+            <meta property="og:title" content={poll?.title} />
+            <meta property="og:image" content="/og.webp" />
+            <meta property="twitter:card" content="summary_large_image" />
+            <meta property="twitter:url" content="https://superpoll.app/" />
+            <meta property="twitter:title" content={poll?.title} />
+            <meta property="twitter:image" content="/og.webp" />
+          </Head>
+          <div className="flex w-full flex-col items-center justify-center">
+            {/* QR */}
+            <Modal showModal={showQR} setShowModal={setShowQR}>
+              <div className="flex h-96 flex-col items-center gap-y-10 p-2">
+                <QRCode
+                  id="qr"
+                  size={256}
+                  style={{ height: "auto", maxWidth: "100%", width: "100%" }}
+                  value={`https://superpoll.app/poll/${id}`}
+                  viewBox={`0 0 256 256`}
                 />
-              )}
-            </div>
-          </Modal>
-          <div className="mt-20 w-full max-w-2xl rounded-xl bg-gray-50 p-10">
-            <div className="flex items-center justify-between">
-              <h1 className="w-4/5 text-2xl font-semibold">{poll?.title}</h1>
-              <div className="flex items-center">
-                <Button onClick={handleLinkClick}>
-                  <LinkIcon />
-                </Button>
+                <div className="flex w-full flex-col gap-y-2">
+                  <Button classes="w-full" type="primary" onClick={downloadQR}>
+                    Download
+                  </Button>
+                  <Button
+                    classes="w-full"
+                    type="secondary"
+                    onClick={() => setShowQR(false)}
+                  >
+                    Close
+                  </Button>
+                </div>
+              </div>
+            </Modal>
 
-                {session?.user?.id === poll?.userId && (
-                  <Button onClick={() => setShowQR(true)}>
-                    <QrCode />
-                  </Button>
-                )}
-                {session?.user?.id === poll?.userId && (
-                  <Button onClick={() => setShowAnalytics(true)}>
-                    <Activity />
-                  </Button>
+            {/* Analytics Modal */}
+            <Modal showModal={showAnalytics} setShowModal={setShowAnalytics}>
+              <div
+                tabIndex={0}
+                className="flex w-full items-center justify-center"
+              >
+                {analyticsLoading ? (
+                  <Spinner />
+                ) : (
+                  <AreaChart
+                    className="h-96"
+                    data={analytics ? analytics : []}
+                    index="date"
+                    categories={["views", "votes"]}
+                    colors={["indigo", "cyan"]}
+                  />
                 )}
               </div>
-            </div>
+            </Modal>
+            <div className="mt-20 w-full max-w-2xl rounded-xl bg-gray-50 p-10">
+              <div className="flex items-center justify-between">
+                <h1 className="w-4/5 text-2xl font-semibold">{poll?.title}</h1>
+                <div className="flex items-center">
+                  <Button onClick={handleLinkClick}>
+                    <LinkIcon />
+                  </Button>
 
-            <div className="mt-10 flex flex-col items-center gap-y-6">
-              {poll?.options.map((option) => (
-                <motion.button
-                  key={option.id}
-                  onTap={() => handleCurrentOption(option.id)}
-                  whileHover={{ scale: 1.02 }}
-                  whileTap={{ scale: 0.98 }}
-                  className="relative flex w-full flex-col items-start rounded-xl bg-white px-3 py-4 text-left text-sm shadow-md transition-all duration-200 ease-out hover:!bg-gray-900 hover:!text-white"
-                  style={{
-                    backgroundColor:
-                      selectedOptionId === option.id ? "#000" : "#fff",
-                    color: selectedOptionId === option.id ? "#fff" : "#000",
-                  }}
-                >
-                  {option.title}
-                  {poll.isPublic &&
-                    (isVoted || session?.user.id === poll.userId) &&
-                    (isLoadingVoted ? (
-                      <Skeleton classes="mt-4 w-full h-10" />
-                    ) : (
-                      <div className="mt-4 grid w-full grid-cols-2 rounded-md bg-white p-2 text-sm text-gray-900 outline outline-1 outline-gray-200">
-                        <div>
-                          votes:
-                          <span className="font-bold">
-                            {countVotes(option.id)}
-                          </span>
+                  {session?.user?.id === poll?.userId && (
+                    <Button onClick={() => setShowQR(true)}>
+                      <QrCode />
+                    </Button>
+                  )}
+                  {session?.user?.id === poll?.userId && (
+                    <Button onClick={() => setShowAnalytics(true)}>
+                      <Activity />
+                    </Button>
+                  )}
+                </div>
+              </div>
+
+              <div className="mt-10 flex flex-col items-center gap-y-6">
+                {poll?.options.map((option) => (
+                  <motion.button
+                    key={option.id}
+                    onTap={() => handleCurrentOption(option.id)}
+                    whileHover={{ scale: 1.02 }}
+                    whileTap={{ scale: 0.98 }}
+                    className="relative flex w-full flex-col items-start rounded-xl bg-white px-3 py-4 text-left text-sm shadow-md transition-all duration-200 ease-out hover:!bg-gray-900 hover:!text-white"
+                    style={{
+                      backgroundColor:
+                        selectedOptionId === option.id ? "#000" : "#fff",
+                      color: selectedOptionId === option.id ? "#fff" : "#000",
+                    }}
+                  >
+                    {option.title}
+                    {poll.isPublic &&
+                      (isVoted || session?.user.id === poll.userId) &&
+                      (isLoadingVoted ? (
+                        <Skeleton classes="mt-4 w-full h-10" />
+                      ) : (
+                        <div className="mt-4 grid w-full grid-cols-2 rounded-md bg-white p-2 text-sm text-gray-900 outline outline-1 outline-gray-200">
+                          <div>
+                            votes:
+                            <span className="font-bold">
+                              {countVotes(option.id)}
+                            </span>
+                          </div>
+                          <div>
+                            average:
+                            <span className="font-bold">
+                              {averageVotes(option.id)}%
+                            </span>
+                          </div>
                         </div>
-                        <div>
-                          average:
-                          <span className="font-bold">
-                            {averageVotes(option.id)}%
-                          </span>
-                        </div>
-                      </div>
-                    ))}
-                </motion.button>
-              ))}
-            </div>
-            <div className="text-center">
-              <Button
-                disabled={isVoted}
-                onClick={handleVote}
-                type="primary"
-                classes="mt-8 w-full py-4 text-base"
-              >
-                {isVoted ? "Voted" : "Vote"}
-              </Button>
-              <div className="mt-4 w-full text-center text-xs">
-                <Link
-                  href="/create"
-                  className="text-gray-500 hover:text-gray-700"
+                      ))}
+                  </motion.button>
+                ))}
+              </div>
+              <div className="text-center">
+                <Button
+                  disabled={isVoted}
+                  onClick={handleVote}
+                  type="primary"
+                  classes="mt-8 w-full py-4 text-base"
                 >
-                  Create your own for free
-                </Link>
+                  {isVoted ? "Voted" : "Vote"}
+                </Button>
+                <div className="mt-4 w-full text-center text-xs">
+                  <Link
+                    href="/create"
+                    className="text-gray-500 hover:text-gray-700"
+                  >
+                    Create your own for free
+                  </Link>
+                </div>
               </div>
             </div>
           </div>
-        </div>
+        </>
       );
     } else {
       return (

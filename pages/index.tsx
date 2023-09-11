@@ -17,6 +17,7 @@ import { useRouter } from "next/router";
 import Footer from "@/components/Footer";
 import Button from "@/components/Button";
 import GoProCTA from "@/components/GoProCta";
+import Head from "next/head";
 
 export default function Home() {
   const router = useRouter();
@@ -24,6 +25,34 @@ export default function Home() {
 
   return (
     <>
+      <Head>
+        <title>Superpoll - Create free polls</title>
+        <meta name="title" content="Superpoll - Create free polls" />
+        <meta
+          name="description"
+          content="
+        Discover the ultimate polling experience with our app's elegant interface! Create and share polls effortlessly, with advanced features like customizable templates, real-time results, and in-depth analytics. Engage your audience and gain valuable insights with beautiful polls. Try it now!"
+        />
+        <meta property="og:type" content="website" />
+        <meta property="og:url" content="https://superpoll.app/" />
+        <meta property="og:title" content="Superpoll - Create free polls" />
+        <meta
+          property="og:description"
+          content="Discover the ultimate polling experience with our app's elegant interface! Create and share polls effortlessly, with advanced features like customizable templates, real-time results, and in-depth analytics. Engage your audience and gain valuable insights with beautiful polls. Try it now!"
+        />
+        <meta property="og:image" content="/og.webp" />
+        <meta property="twitter:card" content="summary_large_image" />
+        <meta property="twitter:url" content="https://superpoll.app/" />
+        <meta
+          property="twitter:title"
+          content="Superpoll - Create free polls"
+        />
+        <meta
+          property="twitter:description"
+          content="Discover the ultimate polling experience with our app's elegant interface! Create and share polls effortlessly, with advanced features like customizable templates, real-time results, and in-depth analytics. Engage your audience and gain valuable insights with beautiful polls. Try it now!"
+        />
+        <meta property="twitter:image" content="/og.webp" />
+      </Head>
       <div className="mt-10 flex w-full flex-col items-center gap-y-6 text-center lg:mt-20">
         <h1 className="text-4xl font-semibold text-gray-900 lg:text-5xl">
           Say Goodbye to Clunky Polls: Our App Offers an Elegant and Smooth

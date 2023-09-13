@@ -3,6 +3,8 @@ import Link from "next/link";
 const navigation = {
   company: [
     { name: "pro", href: "/pro" },
+    { name: "blog", href: "/blog" },
+    { name: "create", href: "/create" },
     { name: "support", href: "mailto:hello@chetanverma.com" },
   ],
   legal: [{ name: "Privacy", href: "/privacy" }],

@@ -1,6 +1,13 @@
 import Link from "next/link";
 import React from "react";
-import { Activity, CreditCard, Home, Inbox, User } from "lucide-react";
+import {
+  Activity,
+  CreditCard,
+  GraduationCap,
+  Home,
+  Inbox,
+  User,
+} from "lucide-react";
 import { useSession, signOut } from "next-auth/react";
 import Avatar from "../Avatar";
 import Dropdown from "../Dropdown";
@@ -45,6 +52,9 @@ const Header = () => {
               <LinkButton href="/pro" Icon={CreditCard}>
                 Go Pro
               </LinkButton>
+              <LinkButton href="/blog" Icon={GraduationCap}>
+                Blog
+              </LinkButton>
               <LinkButton
                 href="https://superpoll.featurebase.app/"
                 Icon={Inbox}
@@ -68,6 +78,9 @@ const Header = () => {
             <div className="hidden items-center gap-x-2 lg:flex">
               <LinkButton href="/dashboard" Icon={Home}>
                 Dashboard
+              </LinkButton>
+              <LinkButton href="/blog" Icon={GraduationCap}>
+                Blog
               </LinkButton>
               <LinkButton href="/dashboard/analytics" Icon={Activity}>
                 Analytics
@@ -93,6 +106,7 @@ const Header = () => {
             {/* Mobile */}
             <div className="flex items-center gap-x-2 lg:hidden">
               <LinkButton href="/dashboard" Icon={Home} />
+              <LinkButton href="/blog" Icon={GraduationCap} />
               <LinkButton href="/dashboard/analytics" Icon={Activity} />
               <LinkButton
                 href="https://superpoll.featurebase.app/"

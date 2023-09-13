@@ -1,3 +1,5 @@
+"use client";
+
 import fs from "fs";
 import { GetStaticPropsContext, InferGetStaticPropsType } from "next";
 import { serialize } from "next-mdx-remote/serialize";

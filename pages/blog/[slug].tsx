@@ -82,5 +82,7 @@ export async function getStaticProps(
     props: {
       source: mdxSource,
     },
+    // enable ISR
+    revalidate: 60,
   };
 }

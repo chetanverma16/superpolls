@@ -13,6 +13,8 @@ import H3 from "@/components/mdx/H3";
 import BlockQuote from "@/components/mdx/BlockQuote";
 import UnorderedList from "@/components/mdx/UnorderedList";
 import Footer from "@/components/Footer";
+import path from "path";
+import { PostPreview } from "@/types/posts";
 
 export default function PostPage({
   source,
@@ -73,7 +75,7 @@ export async function getStaticProps(
 
   // retrieve the MDX blog post file associated
   // with the specified slug parameter
-  const postFile = fs.readFileSync(`_posts/${slug}.mdx`);
+  const postFile = fs.readFileSync(`${process.cwd()}/_posts/${slug}.mdx`);
 
   // read the MDX serialized content along with the frontmatter
   // from the .mdx blog post file

@@ -1,3 +1,4 @@
+import Head from "next/head";
 import { InferGetStaticPropsType } from "next";
 import fs from "fs";
 import { serialize } from "next-mdx-remote/serialize";
@@ -8,7 +9,6 @@ import PostCard from "@/components/BlogCard";
 
 // Types
 import { PostPreview } from "@/types/posts";
-import Head from "next/head";
 
 export default function Home({
   postPreviews,

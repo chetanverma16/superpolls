@@ -1,5 +1,3 @@
-// pages/[slug].tsx
-
 import fs from "fs";
 import { GetStaticPropsContext, InferGetStaticPropsType } from "next";
 import { serialize } from "next-mdx-remote/serialize";
@@ -8,7 +6,6 @@ import Head from "next/head";
 
 // Components
 import H1 from "@/components/mdx/H1";
-import HeroImage from "@/components/mdx/HeroImage";
 import React from "react";
 import P from "@/components/mdx/P";
 import H2 from "@/components/mdx/H2";
@@ -85,7 +82,5 @@ export async function getStaticProps(
     props: {
       source: mdxSource,
     },
-    // enable ISR
-    revalidate: 60,
   };
 }

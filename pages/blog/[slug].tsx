@@ -15,6 +15,7 @@ import H2 from "@/components/mdx/H2";
 import H3 from "@/components/mdx/H3";
 import BlockQuote from "@/components/mdx/BlockQuote";
 import UnorderedList from "@/components/mdx/UnorderedList";
+import Footer from "@/components/Footer";
 
 export default function PostPage({
   source,
@@ -57,6 +58,7 @@ export default function PostPage({
           }}
         />
       </div>
+      <Footer />
     </article>
   );
 }

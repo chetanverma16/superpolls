@@ -1,6 +1,5 @@
 import "@/styles/globals.css";
 import type { AppProps } from "next/app";
-import { Analytics } from "@vercel/analytics/react";
 import type { Session } from "next-auth";
 import { SessionProvider } from "next-auth/react";
 import { Provider as RWBProvider } from "react-wrap-balancer";
@@ -28,7 +27,6 @@ function MyApp({
 
   return (
     <SessionProvider session={session}>
-      <Analytics />
       <RWBProvider>
         <div className={cx(inter.variable, "mx-auto max-w-5xl p-6")}>
           <Layout>

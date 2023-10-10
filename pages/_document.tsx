@@ -5,13 +5,11 @@ export default function Document() {
   return (
     <Html lang="en">
       <Head>
-        <Script id="clarity" strategy="afterInteractive">
-          {`    (function(c,l,a,r,i,t,y){
-        c[a]=c[a]||function(){(c[a].q=c[a].q||[]).push(arguments)};
-        t=l.createElement(r);t.async=1;t.src="https://www.clarity.ms/tag/"+i;
-        y=l.getElementsByTagName(r)[0];y.parentNode.insertBefore(t,y);
-    })(window, document, "clarity", "script", "ivfscmsunr");`}
-        </Script>
+        <Script
+          async
+          src="https://analytics.eu.umami.is/script.js"
+          data-website-id="9b1eed9f-09b2-4040-b965-113f032bf1c9"
+        />
       </Head>
       <body>
         <Main />

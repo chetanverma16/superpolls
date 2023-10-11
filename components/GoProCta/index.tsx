@@ -1,6 +1,7 @@
 import { useRouter } from "next/router";
 import Button from "../Button";
 import BgSVG from "./BgSVG";
+import Image from "next/image";
 
 export default function GoProCTA() {
   const router = useRouter();
@@ -24,9 +25,9 @@ export default function GoProCTA() {
           </Button>
         </div>
         <div className="relative mt-16 h-80 lg:mt-8">
-          <img
+          <Image
             className="absolute left-0 top-0 w-[57rem] max-w-none rounded-2xl bg-white/5 shadow-xl ring-1 ring-white/10"
-            src="images/dashboard-pro.png"
+            src="/images/dashboard-pro.webp"
             alt="App screenshot"
             width={1824}
             height={1080}

@@ -1,15 +1,4 @@
-import {
-  Activity,
-  Component,
-  HomeIcon,
-  Joystick,
-  Plus,
-  QrCode,
-  Share,
-  ShieldCheck,
-  User,
-  Wand2,
-} from "lucide-react";
+import { useState, useTransition } from "react";
 import { useSession } from "next-auth/react";
 import { useRouter } from "next/router";
 
@@ -19,9 +8,27 @@ import Button from "@/components/Button";
 import GoProCTA from "@/components/GoProCta";
 import Head from "next/head";
 
+// Icons
+import {
+  Activity,
+  Component,
+  HomeIcon,
+  Joystick,
+  Play,
+  Plus,
+  QrCode,
+  Share,
+  ShieldCheck,
+  User,
+  Wand2,
+} from "lucide-react";
+
 export default function Home() {
   const router = useRouter();
   const session = useSession();
+  const [, startTransition] = useTransition();
+  const [isVideoReady, setIsVideoReady] = useState(false);
+  const [showVideo, setShowVideo] = useState(false);
 
   return (
     <>
@@ -92,14 +99,40 @@ export default function Home() {
           )}
         </div>
 
-        <div className="borde-gray-200 h-full w-full overflow-hidden rounded-xl border shadow-lg">
-          <iframe
-            className="h-64 w-full md:h-96 lg:h-[32rem]"
-            src="https://www.youtube.com/embed/5M5omZU-csw"
-            title="YouTube video player"
-            allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share"
-            allowFullScreen
-          ></iframe>
+        <div className="relative flex h-64 w-full items-center justify-center overflow-hidden rounded-xl border border-gray-200 shadow-lg md:h-96 lg:h-[40rem]">
+          {(!showVideo || !isVideoReady) && (
+            <div className="group absolute h-full w-full">
+              <div
+                className="relative h-full w-full cursor-pointer "
+                onClick={() => {
+                  startTransition(() => setShowVideo(true));
+                }}
+              >
+                <img
+                  src="/images/dashboard.webp"
+                  alt="Hero"
+                  className="h-64 w-full object-cover md:h-96 lg:h-[40rem]"
+                />
+                <div className="absolute top-1/2 left-1/2 flex -translate-x-1/2 -translate-y-1/2 scale-100 transform items-center justify-center rounded-full bg-black p-6 shadow-xl transition-all duration-200 group-hover:scale-105">
+                  <Play className="text-white" />
+                </div>
+              </div>
+            </div>
+          )}
+
+          {showVideo && (
+            <iframe
+              onLoad={() => {
+                setIsVideoReady(true);
+              }}
+              className="absolute top-0 left-0 h-full w-full"
+              src="https://www.youtube.com/embed/5M5omZU-csw"
+              title="YouTube video player"
+              loading="lazy"
+              allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share"
+              allowFullScreen
+            />
+          )}
         </div>
       </div>
       <div className="mt-20 flex flex-col gap-y-6">
